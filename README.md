@@ -1,4 +1,4 @@
-# [React Memo](https://github.com/alitaheri/react-mixout)
+# [React Mixout](https://github.com/alitaheri/react-mixout)
 [![npm](https://badge.fury.io/js/react-mixout.svg)](https://badge.fury.io/js/react-mixout)
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
@@ -45,6 +45,11 @@ npm install react-mixout
 ## Typings
 
 The typescript type definitions are also available and are installed via npm.
+
+## Thanks
+
+Great thanks to material-ui team and specially @nathanmarks for providing
+valuable insight that made this possible. 
 
 ## License
 This project is licensed under the [MIT license](https://github.com/alitaheri/react-mixout/blob/master/LICENSE).

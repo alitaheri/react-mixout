@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "target": "es3",
     "module": "commonjs"
   },
   "exclude": [
     "node_modules",
-    "typings"
+    "typings/browser.d.ts",
+    "typings/browser"
   ]
 }

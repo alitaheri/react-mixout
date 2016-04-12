@@ -2,18 +2,17 @@
   "name": "react-mixout",
   "version": "0.0.1",
   "description": "Higher order... mixin!",
-  "main": "main.js",
+  "main": "lib/main.js",
   "files": [
-    "*.js",
-    "*.d.ts",
+    "lib",
     "typings.json"
   ],
   "scripts": {
-    "build": "tsc -d typings/main.d.ts src/main.ts  --outDir . --jsx react --module commonjs --removeComments",
+    "build": "tsc -d typings/main.d.ts src/main.ts  --outDir lib --module commonjs --removeComments",
     "prepublish": "typings install && npm run build",
     "ci-test": "npm run test",
     "pretest": "tsc",
-    "test": "mocha"
+    "test": "mocha src/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +31,7 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "peerDependencies": {
-    "react": ">=0.4.0"
+    "react": ">=0.14.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
