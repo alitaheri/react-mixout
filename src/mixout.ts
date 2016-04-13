@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Injector, decompose, ImperativeMethodImplementation} from './injector';
 
 export interface MixoutWrapper {
-  <P>(Component: React.ComponentClass<P> | React.StatelessComponent<P>): React.ComponentClass<P>;
+  (Component: React.ComponentClass<any> | React.StatelessComponent<any>): React.ComponentClass<any>;
 }
 
 export interface Mixout {
@@ -23,7 +23,7 @@ export default (function mixout(...injectors: Injector[]) {
     imperativeMethodInjectors,
   } = decompose(injectors);
 
-  return function mixoutWrapper<P>(Component: React.ComponentClass<P> | React.StatelessComponent<P>) {
+  return function mixoutWrapper(Component: React.ComponentClass<any> | React.StatelessComponent<any>) {
 
     const isClass = isClassComponent(Component);
 
@@ -83,7 +83,7 @@ export default (function mixout(...injectors: Injector[]) {
           propInjector(setProp, ownProps, ownContext, ownState[propInjector.id]);
         });
 
-        return React.createElement<P>(Component, passDownProps);
+        return React.createElement(Component, passDownProps);
       }
     }
 
