@@ -6,6 +6,7 @@ export interface ForwardContextOptions<T> {
   validator?: React.Validator<T>;
   defaultValue?: T;
   defaultGenerator?: (ownProps: any, ownContext: any) => T;
+  transform?: (value: T) => any;
 }
 
 export function forwardContext<T>(name: string, options: ForwardContextOptions<T> = {}): Injector {
@@ -27,13 +28,15 @@ export function forwardContext<T>(name: string, options: ForwardContextOptions<T
       : () => defaultValue;
   }
 
+  const transform = typeof options.transform === 'function' ? options.transform : v => v;
+
   const contextTypeInjector = setContextType => setContextType(name, validator);
 
   const propInjector = (ownProp, ownContext, setProp) => {
     if (ownContext && name in ownContext) {
-      setProp(alias, ownContext[name]);
+      setProp(alias, transform(ownContext[name]));
     } else if (hasDefault) {
-      setProp(alias, getDefault(ownProp, ownContext));
+      setProp(alias, transform(getDefault(ownProp, ownContext)));
     }
   };
 
