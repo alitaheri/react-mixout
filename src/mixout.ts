@@ -44,11 +44,12 @@ export default (function mixout(...injectors: Injector[]) {
     };
     contextTypeInjectors.forEach(contextTypeInjector => contextTypeInjector(setContextType));
 
-    class Mixout extends React.Component<any, { [id: number]: any }> {
+    class Mixout extends React.Component<any, void> {
       static propTypes = propTypes;
       static contextTypes = contextTypes;
       static defaultProps = defaultProps;
 
+      private injectorStates;
       private child: React.ReactInstance;
       private setChild = (instance) => {
         this.child = instance;
@@ -68,14 +69,14 @@ export default (function mixout(...injectors: Injector[]) {
 
           initialStateInjector(setState, props, context);
         });
-        this.state = state;
+        this.injectorStates = state;
       }
 
       render() {
         // do not let "this" be captured in a closure.
         const ownProps: any = this.props;
         const ownContext: any = this.context;
-        const ownState: any = this.state;
+        const ownState: any = this.injectorStates;
 
         const passDownProps: any = {};
 
@@ -108,25 +109,19 @@ export default (function mixout(...injectors: Injector[]) {
         Mixout.prototype['name'] = function(...args: any[]) {
           const ownProps = this.props;
           const ownContext = this.context;
-          const ownState = this.state[id];
+          const ownState = this.injectorStates[id];
           const child = this.child;
 
-          const newState = {};
           let modified = false;
           function setState(name: string, value: any) {
             modified = true;
-            newState[name] = value;
+            ownState[name] = value;
           }
 
           const results = implementation(setState, args, ownProps, ownContext, ownState, child);
 
           if (modified) {
-            for (let key in ownState) {
-              if (!(key in newState)) {
-                newState[key] = ownState[key];
-              }
-            }
-            this.setState({ [id]: newState });
+            this.forceUpdate();
           }
 
           return results;
