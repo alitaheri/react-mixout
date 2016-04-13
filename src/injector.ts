@@ -9,7 +9,7 @@ export interface ContextTypeInjector {
 }
 
 export interface PropTypeInjector {
-  (setPropType: (name: string, validator: React.Validator<any>) => void): void;
+  (setPropType: (name: string, validator: React.Validator<any>, defaultValue?: any) => void): void;
 }
 
 export interface PropInjector {

@@ -28,9 +28,13 @@ export default (function mixout(...injectors: Injector[]) {
 
     const isClass = isClassComponent(Component);
 
+    const defaultProps: any = {};
     const propTypes: React.ValidationMap<any> = {};
-    function setPropType(name: string, validator: React.Validator<any>) {
+    function setPropType(name: string, validator: React.Validator<any>, defaultValue: any) {
       propTypes[name] = validator;
+      if (typeof defaultValue !== 'undefined') {
+        defaultProps[name] = defaultValue;
+      }
     };
     propTypeInjectors.forEach(propTypeInjector => propTypeInjector(setPropType));
 
@@ -43,6 +47,7 @@ export default (function mixout(...injectors: Injector[]) {
     class Mixout extends React.Component<any, { [id: number]: any }> {
       static propTypes = propTypes;
       static contextTypes = contextTypes;
+      static defaultProps = defaultProps;
 
       private child: React.ReactInstance;
       private setChild = (instance) => {
