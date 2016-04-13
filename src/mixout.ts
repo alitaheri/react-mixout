@@ -17,6 +17,7 @@ function isClassComponent(Component) {
 
 export default (function mixout(...injectors: Injector[]) {
   const {
+    propTypeInjectors,
     contextTypeInjectors,
     propInjectors,
     initialStateInjectors,
@@ -27,6 +28,12 @@ export default (function mixout(...injectors: Injector[]) {
 
     const isClass = isClassComponent(Component);
 
+    const propTypes: React.ValidationMap<any> = {};
+    function setPropType(name: string, validator: React.Validator<any>) {
+      propTypes[name] = validator;
+    };
+    propTypeInjectors.forEach(propTypeInjector => propTypeInjector(setPropType));
+
     const contextTypes: React.ValidationMap<any> = {};
     function setContextType(name: string, validator: React.Validator<any>) {
       contextTypes[name] = validator;
@@ -34,6 +41,7 @@ export default (function mixout(...injectors: Injector[]) {
     contextTypeInjectors.forEach(contextTypeInjector => contextTypeInjector(setContextType));
 
     class Mixout extends React.Component<any, { [id: number]: any }> {
+      static propTypes = propTypes;
       static contextTypes = contextTypes;
 
       private child: React.ReactInstance;

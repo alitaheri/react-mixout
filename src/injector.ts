@@ -8,6 +8,10 @@ export interface ContextTypeInjector {
   (setContextType: (name: string, validator: React.Validator<any>) => void): void;
 }
 
+export interface PropTypeInjector {
+  (setPropType: (name: string, validator: React.Validator<any>) => void): void;
+}
+
 export interface PropInjector {
   (setProp: Setter, ownProps: any, ownContext: any, ownState: any): void;
   id?: number;
@@ -30,6 +34,7 @@ export interface ImperativeMethodInjector {
 export interface Injector {
   id?: number;
   combined?: Injector[];
+  propTypeInjector?: PropTypeInjector;
   contextTypeInjector?: ContextTypeInjector;
   propInjector?: PropInjector;
   initialStateInjector?: InitialStateInjector;
@@ -37,6 +42,7 @@ export interface Injector {
 }
 
 export interface DecomposeResult {
+  propTypeInjectors: PropTypeInjector[];
   contextTypeInjectors: ContextTypeInjector[];
   propInjectors: PropInjector[];
   initialStateInjectors: InitialStateInjector[];
@@ -46,14 +52,19 @@ export interface DecomposeResult {
 export function decompose(injectors: Injector[]): DecomposeResult {
   let id = 0;
 
-  let contextTypeInjectors: ContextTypeInjector[] = [];
-  let propInjectors: PropInjector[] = [];
-  let initialStateInjectors: InitialStateInjector[] = [];
-  let imperativeMethodInjectors: ImperativeMethodInjector[] = [];
+  const propTypeInjectors: PropTypeInjector[] = [];
+  const contextTypeInjectors: ContextTypeInjector[] = [];
+  const propInjectors: PropInjector[] = [];
+  const initialStateInjectors: InitialStateInjector[] = [];
+  const imperativeMethodInjectors: ImperativeMethodInjector[] = [];
 
   injectors.forEach(injector => {
     id += 1;
     injector.id = id;
+
+    if (injector.propTypeInjector) {
+      propTypeInjectors.push(injector.propTypeInjector);
+    }
 
     if (injector.contextTypeInjector) {
       contextTypeInjectors.push(injector.contextTypeInjector);
@@ -76,6 +87,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   });
 
   return {
+    propTypeInjectors,
     contextTypeInjectors,
     propInjectors,
     initialStateInjectors,
