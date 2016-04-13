@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Injector, decompose} from './injector';
+import {Injector, decompose, ImperativeMethodImplementation} from './injector';
 
 export interface MixoutWrapper {
   <P>(Component: React.ComponentClass<P> | React.StatelessComponent<P>): React.ComponentClass<P>;
@@ -10,12 +10,24 @@ export interface Mixout {
   (...injectors: Injector[]): MixoutWrapper;
 }
 
+// copied from https://github.com/acdlite/recompose
+function isClassComponent(Component) {
+  return Boolean(Component && Component.prototype && typeof Component.prototype.isReactComponent === 'object');
+}
+
 export default (function mixout(...injectors: Injector[]) {
-  const { contextTypeInjectors, propInjectors, initialStateInjectors } = decompose(injectors);
+  const {
+    contextTypeInjectors,
+    propInjectors,
+    initialStateInjectors,
+    imperativeMethodInjectors,
+  } = decompose(injectors);
 
   return function mixoutWrapper<P>(Component: React.ComponentClass<P> | React.StatelessComponent<P>) {
 
-    const contextTypes = {};
+    const isClass = isClassComponent(Component);
+
+    const contextTypes: React.ValidationMap<any> = {};
     function setContextType(name: string, validator: React.Validator<any>) {
       contextTypes[name] = validator;
     };
@@ -24,18 +36,24 @@ export default (function mixout(...injectors: Injector[]) {
     class Mixout extends React.Component<any, { [id: number]: any }> {
       static contextTypes = contextTypes;
 
+      private child: React.ReactInstance;
+      private setChild = (instance) => {
+        this.child = instance;
+      };
+
       constructor(props, context) {
         super(props, context);
-
         const state: { [id: number]: any } = {};
         initialStateInjectors.forEach(initialStateInjector => {
           if (!state[initialStateInjector.id]) {
             state[initialStateInjector.id] = {};
           };
 
-          initialStateInjector(props, context, function setState(name, value) {
+          function setState(name, value) {
             state[initialStateInjector.id][name] = value;
-          })
+          };
+
+          initialStateInjector(setState, props, context);
         });
         this.state = state;
       }
@@ -46,23 +64,65 @@ export default (function mixout(...injectors: Injector[]) {
         const ownContext: any = this.context;
         const ownState: any = this.state;
 
-        const props: any = {};
+        const passDownProps: any = {};
+
+        if (isClass) {
+          passDownProps.ref = this.setChild;
+        }
+
         function setProp(name: string, value: any) {
-          props[name] = value;
+          passDownProps[name] = value;
         };
 
         // pass down own props.
         for (let prop in ownProps) {
-          props[prop] = ownProps[prop];
+          passDownProps[prop] = ownProps[prop];
         }
 
-        propInjectors.forEach(
-          propInjector => propInjector(ownProps, ownContext, ownState[propInjector.id], setProp)
-        );
+        propInjectors.forEach(propInjector => {
+          propInjector(setProp, ownProps, ownContext, ownState[propInjector.id]);
+        });
 
-        return React.createElement<P>(Component, props);
+        return React.createElement<P>(Component, passDownProps);
       }
     }
 
+    imperativeMethodInjectors.forEach(imperativeMethodInjector => {
+
+      const id = imperativeMethodInjector.id;
+
+      function setImperativeMethod(name: string, implementation: ImperativeMethodImplementation) {
+        Mixout.prototype['name'] = function(...args: any[]) {
+          const ownProps = this.props;
+          const ownContext = this.context;
+          const ownState = this.state[id];
+          const child = this.child;
+
+          const newState = {};
+          let modified = false;
+          function setState(name: string, value: any) {
+            modified = true;
+            newState[name] = value;
+          }
+
+          const results = implementation(setState, args, ownProps, ownContext, ownState, child);
+
+          if (modified) {
+            for (let key in ownState) {
+              if (!(key in newState)) {
+                newState[key] = ownState[key];
+              }
+            }
+            this.setState({ [id]: newState });
+          }
+
+          return results;
+        }
+      }
+
+      imperativeMethodInjector(setImperativeMethod);
+    });
+
+    return Mixout;
   }
 }) as Mixout;
