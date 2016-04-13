@@ -11,7 +11,6 @@ export interface Mixout {
 }
 
 export default (function mixout(...injectors: Injector[]) {
-
   const { contextTypeInjectors, propInjectors, initialStateInjectors } = decompose(injectors);
 
   return function mixoutWrapper<P>(Component: React.ComponentClass<P> | React.StatelessComponent<P>) {
@@ -29,14 +28,15 @@ export default (function mixout(...injectors: Injector[]) {
         super(props, context);
 
         const state: { [id: number]: any } = {};
-        initialStateInjectors.forEach(
-          initialStateInjector => initialStateInjector(props, context, function setState(name, value) {
-            if (!state[initialStateInjector.id]) {
-              state[initialStateInjector.id] = {};
-            };
+        initialStateInjectors.forEach(initialStateInjector => {
+          if (!state[initialStateInjector.id]) {
+            state[initialStateInjector.id] = {};
+          };
+
+          initialStateInjector(props, context, function setState(name, value) {
             state[initialStateInjector.id][name] = value;
           })
-        );
+        });
         this.state = state;
       }
 
