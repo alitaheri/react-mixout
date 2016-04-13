@@ -5,7 +5,7 @@ export interface ForwardContextOptions<T> {
   alias?: string;
   validator?: React.Validator<T>;
   defaultValue?: T;
-  defaultGenerator?: (ownProps: any, ownContext: any) => T;
+  defaultGenerator?: (ownProps: any) => T;
   mapToPropValue?: (value: T) => any;
 }
 
