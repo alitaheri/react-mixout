@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import {flatten} from './combine';
+
 export interface ImperativeMethodImplementation {
   (args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
 }
@@ -89,6 +91,8 @@ export interface DecomposeResult {
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
+  injectors = flatten(injectors);
+
   let id = 0;
 
   const ids: number[] = [];
