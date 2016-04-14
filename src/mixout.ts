@@ -91,14 +91,14 @@ export default (function mixout(...injectors: Injector[]) {
 
         if (modified) {
           this.forceUpdate();
-      }
+        }
       }
 
       render() {
         // do not let "this" be captured in a closure.
         const ownProps: any = this.props;
         const ownContext: any = this.context;
-        const ownState: any = this.injectorStates;
+        const states: any = this.injectorStates;
 
         const passDownProps: any = {};
 
@@ -116,7 +116,7 @@ export default (function mixout(...injectors: Injector[]) {
         }
 
         propInjectors.forEach(propInjector => {
-          propInjector(setProp, ownProps, ownContext, ownState[propInjector.id]);
+          propInjector(setProp, ownProps, ownContext, states[propInjector.id]);
         });
 
         return React.createElement(Component, passDownProps);
@@ -128,19 +128,19 @@ export default (function mixout(...injectors: Injector[]) {
       const id = imperativeMethodInjector.id;
 
       function setImperativeMethod(name: string, implementation: ImperativeMethodImplementation) {
-        Mixout.prototype['name'] = function(...args: any[]) {
+        Mixout.prototype['name'] = function (...args: any[]) {
           const ownProps = this.props;
           const ownContext = this.context;
-          const ownState = this.injectorStates[id];
+          const states = this.injectorStates[id];
           const child = this.child;
 
           let modified = false;
           function setState(name: string, value: any) {
             modified = true;
-            ownState[name] = value;
+            states[name] = value;
           }
 
-          const results = implementation(setState, args, ownProps, ownContext, ownState, child);
+          const results = implementation(setState, args, ownProps, ownContext, states, child);
 
           if (modified) {
             this.forceUpdate();
