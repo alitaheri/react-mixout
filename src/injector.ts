@@ -44,6 +44,10 @@ export interface ComponentWillUpdateHook {
   (nextProps: any, nextContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
 }
 
+export interface ComponentDidUpdateHook {
+  (prevProps: any, prevContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+}
+
 export interface MethodWithId<T> {
   method: T;
   id: number;
@@ -59,6 +63,7 @@ export interface Injector {
   componentDidMountHook?: ComponentDidMountHook;
   componentWillUnmountHook?: ComponentWillUnmountHook;
   componentWillUpdateHook?: ComponentWillUpdateHook;
+  componentDidUpdateHook?: ComponentDidUpdateHook;
 }
 
 export interface DecomposeResult {
@@ -72,6 +77,7 @@ export interface DecomposeResult {
   componentDidMountHooks: MethodWithId<ComponentDidMountHook>[];
   componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[];
   componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[];
+  componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -87,6 +93,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const componentDidMountHooks: MethodWithId<ComponentDidMountHook>[] = [];
   const componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[] = [];
   const componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[] = [];
+  const componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -128,6 +135,10 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     if (injector.componentWillUpdateHook) {
       componentWillUpdateHooks.push({ id, method: injector.componentWillUpdateHook });
     }
+
+    if (injector.componentDidUpdateHook) {
+      componentDidUpdateHooks.push({ id, method: injector.componentDidUpdateHook });
+    }
   });
 
   return {
@@ -141,5 +152,6 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     componentDidMountHooks,
     componentWillUnmountHooks,
     componentWillUpdateHooks,
+    componentDidUpdateHooks,
   };
 }
