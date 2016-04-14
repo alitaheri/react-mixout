@@ -32,12 +32,12 @@ export interface ImperativeMethodInjector {
 }
 
 export interface ComponentWillMountHook {
-  (setState: Setter, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+  (ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
   id?: number;
 }
 
 export interface ComponentDidMountHook {
-  (setState: Setter, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+  (ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
   id?: number;
 }
 

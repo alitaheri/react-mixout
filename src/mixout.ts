@@ -82,19 +82,10 @@ export default (function mixout(...injectors: Injector[]) {
         const states: any = this.injectorStates;
         const child = this.child;
 
-        let modified = false;
         componentWillMountHooks.forEach(componentWillMountHook => {
           const ownState = states[componentWillMountHook.id];
-          function setState(name: string, value: any) {
-            modified = true;
-            ownState[name] = value;
-          }
-          componentWillMountHook(setState, ownProps, ownContext, ownState, child);
+          componentWillMountHook(ownProps, ownContext, ownState, child);
         });
-
-        if (modified) {
-          this.forceUpdate();
-        }
       }
 
       componentDidMount() {
@@ -103,19 +94,10 @@ export default (function mixout(...injectors: Injector[]) {
         const states: any = this.injectorStates;
         const child = this.child;
 
-        let modified = false;
         componentDidMountHooks.forEach(componentDidMountHook => {
           const ownState = states[componentDidMountHook.id];
-          function setState(name: string, value: any) {
-            modified = true;
-            ownState[name] = value;
-          }
-          componentDidMountHook(setState, ownProps, ownContext, ownState, child);
+          componentDidMountHook(ownProps, ownContext, ownState, child);
         });
-
-        if (modified) {
-          this.forceUpdate();
-        }
       }
 
       componentWillUnmount() {
