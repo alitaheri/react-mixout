@@ -44,6 +44,10 @@ export interface ComponentDidUpdateHook {
   (prevProps: any, prevContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
 }
 
+export interface ShouldComponentUpdateHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any): boolean;
+}
+
 export interface MethodWithId<T> {
   method: T;
   id: number;
@@ -60,6 +64,7 @@ export interface Injector {
   componentWillUnmountHook?: ComponentWillUnmountHook;
   componentWillUpdateHook?: ComponentWillUpdateHook;
   componentDidUpdateHook?: ComponentDidUpdateHook;
+  shouldComponentUpdateHook?: ShouldComponentUpdateHook;
 }
 
 export interface DecomposeResult {
@@ -74,6 +79,7 @@ export interface DecomposeResult {
   componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[];
   componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[];
   componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[];
+  shouldComponentUpdateHooks: ShouldComponentUpdateHook[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -90,6 +96,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[] = [];
   const componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[] = [];
   const componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[] = [];
+  const shouldComponentUpdateHooks: ShouldComponentUpdateHook[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -135,6 +142,10 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     if (injector.componentDidUpdateHook) {
       componentDidUpdateHooks.push({ id, method: injector.componentDidUpdateHook });
     }
+
+    if (injector.shouldComponentUpdateHook) {
+      shouldComponentUpdateHooks.push(injector.shouldComponentUpdateHook);
+    }
   });
 
   return {
@@ -149,5 +160,6 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     componentWillUnmountHooks,
     componentWillUpdateHooks,
     componentDidUpdateHooks,
+    shouldComponentUpdateHooks,
   };
 }
