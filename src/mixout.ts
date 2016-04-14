@@ -25,6 +25,7 @@ export default (function mixout(...injectors: Injector[]) {
     componentWillMountHooks,
     componentDidMountHooks,
     componentWillUnmountHooks,
+    componentWillUpdateHooks,
   } = decompose(injectors);
 
   return function mixoutWrapper(Component: React.ComponentClass<any> | React.StatelessComponent<any>) {
@@ -125,6 +126,18 @@ export default (function mixout(...injectors: Injector[]) {
         componentWillUnmountHooks.forEach(componentWillUnmountHook => {
           const ownState = states[componentWillUnmountHook.id];
           componentWillUnmountHook(ownProps, ownContext, ownState);
+        });
+      }
+
+      componentWillUpdate(nextProps: any, nextState: any, nextContext: any) {
+        const ownProps: any = this.props;
+        const ownContext: any = this.context;
+        const states: any = this.injectorStates;
+        const child = this.child;
+
+        componentWillUpdateHooks.forEach(componentWillUpdateHook => {
+          const ownState = states[componentWillUpdateHook.id];
+          componentWillUpdateHook(nextProps, nextContext, ownProps, ownContext, ownState, child);
         });
       }
 

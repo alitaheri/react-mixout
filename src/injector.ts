@@ -46,6 +46,11 @@ export interface ComponentWillUnmountHook {
   id?: number;
 }
 
+export interface ComponentWillUpdateHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+  id?: number;
+}
+
 export interface Injector {
   id?: number;
   combined?: Injector[];
@@ -57,6 +62,7 @@ export interface Injector {
   componentWillMountHook?: ComponentWillMountHook;
   componentDidMountHook?: ComponentDidMountHook;
   componentWillUnmountHook?: ComponentWillUnmountHook;
+  componentWillUpdateHook?: ComponentWillUpdateHook;
 }
 
 export interface DecomposeResult {
@@ -68,6 +74,7 @@ export interface DecomposeResult {
   componentWillMountHooks: ComponentWillMountHook[];
   componentDidMountHooks: ComponentDidMountHook[];
   componentWillUnmountHooks: ComponentWillUnmountHook[];
+  componentWillUpdateHooks: ComponentWillUpdateHook[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -81,6 +88,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const componentWillMountHooks: ComponentWillMountHook[] = [];
   const componentDidMountHooks: ComponentDidMountHook[] = [];
   const componentWillUnmountHooks: ComponentWillUnmountHook[] = [];
+  const componentWillUpdateHooks: ComponentWillUpdateHook[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -123,6 +131,11 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       injector.componentWillUnmountHook.id = id;
       componentWillUnmountHooks.push(injector.componentWillUnmountHook);
     }
+
+    if (injector.componentWillUpdateHook) {
+      injector.componentWillUpdateHook.id = id;
+      componentWillUpdateHooks.push(injector.componentWillUpdateHook);
+    }
   });
 
   return {
@@ -134,5 +147,6 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     componentWillMountHooks,
     componentDidMountHooks,
     componentWillUnmountHooks,
+    componentWillUpdateHooks,
   };
 }
