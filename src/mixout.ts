@@ -22,6 +22,7 @@ export default (function mixout(...injectors: Injector[]) {
     propInjectors,
     initialStateInjectors,
     imperativeMethodInjectors,
+    componentWillMountHooks,
   } = decompose(injectors);
 
   return function mixoutWrapper(Component: React.ComponentClass<any> | React.StatelessComponent<any>) {
@@ -70,6 +71,27 @@ export default (function mixout(...injectors: Injector[]) {
           initialStateInjector(setState, props, context);
         });
         this.injectorStates = state;
+      }
+
+      componentWillMount() {
+        const ownProps: any = this.props;
+        const ownContext: any = this.context;
+        const states: any = this.injectorStates;
+        const child = this.child;
+
+        let modified = false;
+        componentWillMountHooks.forEach(componentWillMountHook => {
+          const ownState = states[componentWillMountHook.id];
+          function setState(name: string, value: any) {
+            modified = true;
+            ownState[name] = value;
+          }
+          componentWillMountHook(setState, ownProps, ownContext, ownState, child);
+        });
+
+        if (modified) {
+          this.forceUpdate();
+      }
       }
 
       render() {

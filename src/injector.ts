@@ -4,6 +4,10 @@ export interface Setter {
   (name: string, value: any): void;
 }
 
+export interface ImperativeMethodImplementation {
+  (setState: Setter, args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
+}
+
 export interface ContextTypeInjector {
   (setContextType: (name: string, validator: React.Validator<any>) => void): void;
 }
@@ -22,12 +26,13 @@ export interface InitialStateInjector {
   id?: number;
 }
 
-export interface ImperativeMethodImplementation {
-  (setState: Setter, args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
-}
-
 export interface ImperativeMethodInjector {
   (setImperativeMethod: (name: string, implementation: ImperativeMethodImplementation) => any): void;
+  id?: number;
+}
+
+export interface ComponentWillMountHook {
+  (setState: Setter, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
   id?: number;
 }
 
@@ -39,6 +44,7 @@ export interface Injector {
   propInjector?: PropInjector;
   initialStateInjector?: InitialStateInjector;
   imperativeMethodInjector?: ImperativeMethodInjector;
+  componentWillMountHook?: ComponentWillMountHook;
 }
 
 export interface DecomposeResult {
@@ -47,6 +53,7 @@ export interface DecomposeResult {
   propInjectors: PropInjector[];
   initialStateInjectors: InitialStateInjector[];
   imperativeMethodInjectors: ImperativeMethodInjector[];
+  componentWillMountHooks: ComponentWillMountHook[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -57,6 +64,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const propInjectors: PropInjector[] = [];
   const initialStateInjectors: InitialStateInjector[] = [];
   const imperativeMethodInjectors: ImperativeMethodInjector[] = [];
+  const componentWillMountHooks: ComponentWillMountHook[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -84,6 +92,11 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       injector.imperativeMethodInjector.id = id;
       imperativeMethodInjectors.push(injector.imperativeMethodInjector);
     }
+
+    if (injector.componentWillMountHook) {
+      injector.componentWillMountHook.id = id;
+      componentWillMountHooks.push(injector.componentWillMountHook);
+    }
   });
 
   return {
@@ -91,6 +104,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     contextTypeInjectors,
     propInjectors,
     initialStateInjectors,
-    imperativeMethodInjectors
+    imperativeMethodInjectors,
+    componentWillMountHooks,
   };
 }
