@@ -100,15 +100,25 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentWillUnmount() {
+      shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any): boolean {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
-        const states: any = this.injectorStates;
 
-        componentWillUnmountHooks.forEach(componentWillUnmountHook => {
-          const ownState = states[componentWillUnmountHook.id];
-          componentWillUnmountHook.method(ownProps, ownContext, ownState);
+        let injectorsSaySomething = false;
+        let injectorsSayUpdate = false;
+
+        shouldComponentUpdateHooks.forEach(shouldComponentUpdateHook => {
+          const result = shouldComponentUpdateHook(nextProps, nextContext, ownProps, ownContext);
+          if (typeof result === 'boolean') {
+            injectorsSaySomething = true;
+            injectorsSayUpdate = injectorsSayUpdate || result;
+          }
         });
+
+        if (!injectorsSaySomething) {
+          return true;
+        }
+        return injectorsSayUpdate;
       }
 
       componentWillUpdate(nextProps: any, nextState: any, nextContext: any) {
@@ -135,25 +145,15 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any): boolean {
+      componentWillUnmount() {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
+        const states: any = this.injectorStates;
 
-        let injectorsSaySomething = false;
-        let injectorsSayUpdate = false;
-
-        shouldComponentUpdateHooks.forEach(shouldComponentUpdateHook => {
-          const result = shouldComponentUpdateHook(nextProps, nextContext, ownProps, ownContext);
-          if (typeof result === 'boolean') {
-            injectorsSaySomething = true;
-            injectorsSayUpdate = injectorsSayUpdate || result;
-          }
+        componentWillUnmountHooks.forEach(componentWillUnmountHook => {
+          const ownState = states[componentWillUnmountHook.id];
+          componentWillUnmountHook.method(ownProps, ownContext, ownState);
         });
-
-        if (!injectorsSaySomething) {
-          return true;
-        }
-        return injectorsSayUpdate;
       }
 
       render() {

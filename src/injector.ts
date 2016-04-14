@@ -32,8 +32,8 @@ export interface ComponentDidMountHook {
   (ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
 }
 
-export interface ComponentWillUnmountHook {
-  (ownProps: any, ownContext: any, ownState: any): void;
+export interface ShouldComponentUpdateHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any): boolean;
 }
 
 export interface ComponentWillUpdateHook {
@@ -44,8 +44,8 @@ export interface ComponentDidUpdateHook {
   (prevProps: any, prevContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
 }
 
-export interface ShouldComponentUpdateHook {
-  (nextProps: any, nextContext: any, ownProps: any, ownContext: any): boolean;
+export interface ComponentWillUnmountHook {
+  (ownProps: any, ownContext: any, ownState: any): void;
 }
 
 export interface MethodWithId<T> {
@@ -61,10 +61,10 @@ export interface Injector {
   imperativeMethodInjector?: ImperativeMethodInjector;
   componentWillMountHook?: ComponentWillMountHook;
   componentDidMountHook?: ComponentDidMountHook;
-  componentWillUnmountHook?: ComponentWillUnmountHook;
+  shouldComponentUpdateHook?: ShouldComponentUpdateHook;
   componentWillUpdateHook?: ComponentWillUpdateHook;
   componentDidUpdateHook?: ComponentDidUpdateHook;
-  shouldComponentUpdateHook?: ShouldComponentUpdateHook;
+  componentWillUnmountHook?: ComponentWillUnmountHook;
 }
 
 export interface DecomposeResult {
@@ -76,10 +76,10 @@ export interface DecomposeResult {
   imperativeMethodInjectors: MethodWithId<ImperativeMethodInjector>[];
   componentWillMountHooks: MethodWithId<ComponentWillMountHook>[];
   componentDidMountHooks: MethodWithId<ComponentDidMountHook>[];
-  componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[];
+  shouldComponentUpdateHooks: ShouldComponentUpdateHook[];
   componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[];
   componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[];
-  shouldComponentUpdateHooks: ShouldComponentUpdateHook[];
+  componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -92,11 +92,11 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const initialStateInjectors: MethodWithId<InitialStateInjector>[] = [];
   const imperativeMethodInjectors: MethodWithId<ImperativeMethodInjector>[] = [];
   const componentWillMountHooks: MethodWithId<ComponentWillMountHook>[] = [];
-  const componentDidMountHooks: MethodWithId<ComponentDidMountHook>[] = [];
+  const shouldComponentUpdateHooks: ShouldComponentUpdateHook[] = [];
   const componentWillUnmountHooks: MethodWithId<ComponentWillUnmountHook>[] = [];
   const componentWillUpdateHooks: MethodWithId<ComponentWillUpdateHook>[] = [];
   const componentDidUpdateHooks: MethodWithId<ComponentDidUpdateHook>[] = [];
-  const shouldComponentUpdateHooks: ShouldComponentUpdateHook[] = [];
+  const componentDidMountHooks: MethodWithId<ComponentDidMountHook>[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -131,8 +131,8 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       componentDidMountHooks.push({ id, method: injector.componentDidMountHook });
     }
 
-    if (injector.componentWillUnmountHook) {
-      componentWillUnmountHooks.push({ id, method: injector.componentWillUnmountHook });
+    if (injector.shouldComponentUpdateHook) {
+      shouldComponentUpdateHooks.push(injector.shouldComponentUpdateHook);
     }
 
     if (injector.componentWillUpdateHook) {
@@ -143,8 +143,8 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       componentDidUpdateHooks.push({ id, method: injector.componentDidUpdateHook });
     }
 
-    if (injector.shouldComponentUpdateHook) {
-      shouldComponentUpdateHooks.push(injector.shouldComponentUpdateHook);
+    if (injector.componentWillUnmountHook) {
+      componentWillUnmountHooks.push({ id, method: injector.componentWillUnmountHook });
     }
   });
 
@@ -157,9 +157,9 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     imperativeMethodInjectors,
     componentWillMountHooks,
     componentDidMountHooks,
-    componentWillUnmountHooks,
+    shouldComponentUpdateHooks,
     componentWillUpdateHooks,
     componentDidUpdateHooks,
-    shouldComponentUpdateHooks,
+    componentWillUnmountHooks,
   };
 }
