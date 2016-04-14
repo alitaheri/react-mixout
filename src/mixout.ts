@@ -64,6 +64,8 @@ export default (function mixout(...injectors: Injector[]) {
         super(props, context);
         const state: { [id: number]: any } = {};
 
+        const forceUpdater = (callback?: () => void) => this.forceUpdate(callback);
+
         ids.forEach(id => state[id] = ({}));
 
         initialStateInjectors.forEach(initialStateInjector => {
@@ -71,7 +73,7 @@ export default (function mixout(...injectors: Injector[]) {
             state[initialStateInjector.id][name] = value;
           };
 
-          initialStateInjector.method(setState, props, context);
+          initialStateInjector.method(setState, props, context, forceUpdater);
         });
         this.injectorStates = state;
       }

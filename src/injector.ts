@@ -21,7 +21,7 @@ export interface PropInjector {
 }
 
 export interface InitialStateInjector {
-  (setState: Setter, ownProps: any, ownContext: any): void;
+  (setState: Setter, ownProps: any, ownContext: any, forceUpdater: (callback?: () => void) => void): void;
 }
 
 export interface ImperativeMethodInjector {
