@@ -41,6 +41,11 @@ export interface ComponentDidMountHook {
   id?: number;
 }
 
+export interface ComponentWillUnmountHook {
+  (ownProps: any, ownContext: any, ownState: any): void;
+  id?: number;
+}
+
 export interface Injector {
   id?: number;
   combined?: Injector[];
@@ -51,6 +56,7 @@ export interface Injector {
   imperativeMethodInjector?: ImperativeMethodInjector;
   componentWillMountHook?: ComponentWillMountHook;
   componentDidMountHook?: ComponentDidMountHook;
+  componentWillUnmountHook?: ComponentWillUnmountHook;
 }
 
 export interface DecomposeResult {
@@ -61,6 +67,7 @@ export interface DecomposeResult {
   imperativeMethodInjectors: ImperativeMethodInjector[];
   componentWillMountHooks: ComponentWillMountHook[];
   componentDidMountHooks: ComponentDidMountHook[];
+  componentWillUnmountHooks: ComponentWillUnmountHook[];
 }
 
 export function decompose(injectors: Injector[]): DecomposeResult {
@@ -73,6 +80,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const imperativeMethodInjectors: ImperativeMethodInjector[] = [];
   const componentWillMountHooks: ComponentWillMountHook[] = [];
   const componentDidMountHooks: ComponentDidMountHook[] = [];
+  const componentWillUnmountHooks: ComponentWillUnmountHook[] = [];
 
   injectors.forEach(injector => {
     id += 1;
@@ -110,6 +118,11 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       injector.componentDidMountHook.id = id;
       componentDidMountHooks.push(injector.componentDidMountHook);
     }
+
+    if (injector.componentWillUnmountHook) {
+      injector.componentWillUnmountHook.id = id;
+      componentWillUnmountHooks.push(injector.componentWillUnmountHook);
+    }
   });
 
   return {
@@ -120,5 +133,6 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     imperativeMethodInjectors,
     componentWillMountHooks,
     componentDidMountHooks,
+    componentWillUnmountHooks,
   };
 }
