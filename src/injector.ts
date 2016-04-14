@@ -1,11 +1,7 @@
 import * as React from 'react';
 
-export interface Setter {
-  (name: string, value: any): void;
-}
-
 export interface ImperativeMethodImplementation {
-  (setState: Setter, args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
+  (args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
 }
 
 export interface ContextTypeInjector {
@@ -17,11 +13,11 @@ export interface PropTypeInjector {
 }
 
 export interface PropInjector {
-  (setProp: Setter, ownProps: any, ownContext: any, ownState: any): void;
+  (setProp: (name: string, value: any) => void, ownProps: any, ownContext: any, ownState: any): void;
 }
 
 export interface InitialStateInjector {
-  (setState: Setter, ownProps: any, ownContext: any, forceUpdater: (callback?: () => void) => void): void;
+  (ownProps: any, ownContext: any, ownState: any, forceUpdater: (callback?: () => void) => void): void;
 }
 
 export interface ImperativeMethodInjector {

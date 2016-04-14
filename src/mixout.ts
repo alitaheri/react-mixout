@@ -70,11 +70,7 @@ export default (function mixout(...injectors: Injector[]) {
         ids.forEach(id => state[id] = ({}));
 
         initialStateInjectors.forEach(initialStateInjector => {
-          function setState(name, value) {
-            state[initialStateInjector.id][name] = value;
-          };
-
-          initialStateInjector.method(setState, props, context, forceUpdater);
+          initialStateInjector.method(props, context, state[initialStateInjector.id], forceUpdater);
         });
         this.injectorStates = state;
       }
@@ -150,14 +146,14 @@ export default (function mixout(...injectors: Injector[]) {
           passDownProps.ref = this.setChild;
         }
 
-        function setProp(name: string, value: any) {
-          passDownProps[name] = value;
-        };
-
         // pass down own props.
         for (let prop in ownProps) {
           passDownProps[prop] = ownProps[prop];
         }
+
+        function setProp(name: string, value: any) {
+          passDownProps[name] = value;
+        };
 
         propInjectors.forEach(propInjector => {
           propInjector.method(setProp, ownProps, ownContext, states[propInjector.id]);
@@ -175,22 +171,10 @@ export default (function mixout(...injectors: Injector[]) {
         Mixout.prototype['name'] = function (...args: any[]) {
           const ownProps = this.props;
           const ownContext = this.context;
-          const states = this.injectorStates[id];
+          const ownState = this.injectorStates[id];
           const child = this.child;
 
-          let modified = false;
-          function setState(name: string, value: any) {
-            modified = true;
-            states[name] = value;
-          }
-
-          const results = implementation(setState, args, ownProps, ownContext, states, child);
-
-          if (modified) {
-            this.forceUpdate();
-          }
-
-          return results;
+          return implementation(args, ownProps, ownContext, ownState, child);
         }
       }
 
