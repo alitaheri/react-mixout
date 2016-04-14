@@ -71,7 +71,7 @@ export default (function mixout(...injectors: Injector[]) {
             state[initialStateInjector.id][name] = value;
           };
 
-          initialStateInjector(setState, props, context);
+          initialStateInjector.method(setState, props, context);
         });
         this.injectorStates = state;
       }
@@ -84,7 +84,7 @@ export default (function mixout(...injectors: Injector[]) {
 
         componentWillMountHooks.forEach(componentWillMountHook => {
           const ownState = states[componentWillMountHook.id];
-          componentWillMountHook(ownProps, ownContext, ownState, child);
+          componentWillMountHook.method(ownProps, ownContext, ownState, child);
         });
       }
 
@@ -96,7 +96,7 @@ export default (function mixout(...injectors: Injector[]) {
 
         componentDidMountHooks.forEach(componentDidMountHook => {
           const ownState = states[componentDidMountHook.id];
-          componentDidMountHook(ownProps, ownContext, ownState, child);
+          componentDidMountHook.method(ownProps, ownContext, ownState, child);
         });
       }
 
@@ -107,7 +107,7 @@ export default (function mixout(...injectors: Injector[]) {
 
         componentWillUnmountHooks.forEach(componentWillUnmountHook => {
           const ownState = states[componentWillUnmountHook.id];
-          componentWillUnmountHook(ownProps, ownContext, ownState);
+          componentWillUnmountHook.method(ownProps, ownContext, ownState);
         });
       }
 
@@ -119,7 +119,7 @@ export default (function mixout(...injectors: Injector[]) {
 
         componentWillUpdateHooks.forEach(componentWillUpdateHook => {
           const ownState = states[componentWillUpdateHook.id];
-          componentWillUpdateHook(nextProps, nextContext, ownProps, ownContext, ownState, child);
+          componentWillUpdateHook.method(nextProps, nextContext, ownProps, ownContext, ownState, child);
         });
       }
 
@@ -145,7 +145,7 @@ export default (function mixout(...injectors: Injector[]) {
         }
 
         propInjectors.forEach(propInjector => {
-          propInjector(setProp, ownProps, ownContext, states[propInjector.id]);
+          propInjector.method(setProp, ownProps, ownContext, states[propInjector.id]);
         });
 
         return React.createElement(Component, passDownProps);
@@ -179,7 +179,7 @@ export default (function mixout(...injectors: Injector[]) {
         }
       }
 
-      imperativeMethodInjector(setImperativeMethod);
+      imperativeMethodInjector.method(setImperativeMethod);
     });
 
     return Mixout;
