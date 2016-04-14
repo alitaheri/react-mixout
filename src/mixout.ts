@@ -17,6 +17,7 @@ function isClassComponent(Component) {
 
 export default (function mixout(...injectors: Injector[]) {
   const {
+    ids,
     propTypeInjectors,
     contextTypeInjectors,
     propInjectors,
@@ -62,11 +63,10 @@ export default (function mixout(...injectors: Injector[]) {
       constructor(props, context) {
         super(props, context);
         const state: { [id: number]: any } = {};
-        initialStateInjectors.forEach(initialStateInjector => {
-          if (!state[initialStateInjector.id]) {
-            state[initialStateInjector.id] = {};
-          };
 
+        ids.forEach(id => state[id] = ({}));
+
+        initialStateInjectors.forEach(initialStateInjector => {
           function setState(name, value) {
             state[initialStateInjector.id][name] = value;
           };

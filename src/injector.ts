@@ -52,7 +52,6 @@ export interface ComponentWillUpdateHook {
 }
 
 export interface Injector {
-  id?: number;
   combined?: Injector[];
   propTypeInjector?: PropTypeInjector;
   contextTypeInjector?: ContextTypeInjector;
@@ -66,6 +65,7 @@ export interface Injector {
 }
 
 export interface DecomposeResult {
+  ids: number[];
   propTypeInjectors: PropTypeInjector[];
   contextTypeInjectors: ContextTypeInjector[];
   propInjectors: PropInjector[];
@@ -80,6 +80,7 @@ export interface DecomposeResult {
 export function decompose(injectors: Injector[]): DecomposeResult {
   let id = 0;
 
+  const ids: number[] = [];
   const propTypeInjectors: PropTypeInjector[] = [];
   const contextTypeInjectors: ContextTypeInjector[] = [];
   const propInjectors: PropInjector[] = [];
@@ -92,7 +93,8 @@ export function decompose(injectors: Injector[]): DecomposeResult {
 
   injectors.forEach(injector => {
     id += 1;
-    injector.id = id;
+
+    ids.push(id);
 
     if (injector.propTypeInjector) {
       propTypeInjectors.push(injector.propTypeInjector);
@@ -139,6 +141,7 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   });
 
   return {
+    ids,
     propTypeInjectors,
     contextTypeInjectors,
     propInjectors,
