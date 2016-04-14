@@ -104,21 +104,22 @@ export default (function mixout(...injectors: Injector[]) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
 
-        let injectorsSaySomething = false;
-        let injectorsSayUpdate = false;
+        if (shouldComponentUpdateHooks.length === 0) {
+          return true;
+        }
+
+        let shouldUpdate = false;
 
         shouldComponentUpdateHooks.forEach(shouldComponentUpdateHook => {
           const result = shouldComponentUpdateHook(nextProps, nextContext, ownProps, ownContext);
           if (typeof result === 'boolean') {
-            injectorsSaySomething = true;
-            injectorsSayUpdate = injectorsSayUpdate || result;
+            shouldUpdate = shouldUpdate || result;
+          } else {
+            shouldUpdate = true;
           }
         });
 
-        if (!injectorsSaySomething) {
-          return true;
-        }
-        return injectorsSayUpdate;
+        return shouldUpdate;
       }
 
       componentWillUpdate(nextProps: any, nextState: any, nextContext: any) {
