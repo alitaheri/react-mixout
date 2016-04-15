@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import {Injector, decompose, ImperativeMethodImplementation} from './injector';
 
-export interface MixoutWrapper {
-  (Component: React.ComponentClass<any> | React.StatelessComponent<any>): React.ComponentClass<any>;
+export interface MixoutWrapper<P> {
+  (Component: React.ComponentClass<any> | React.StatelessComponent<any>): React.ComponentClass<P>;
 }
 
 export interface Mixout {
-  (...injectors: Injector[]): MixoutWrapper;
+  <P>(...injectors: Injector[]): MixoutWrapper<P>;
 }
 
 // copied from https://github.com/acdlite/recompose
