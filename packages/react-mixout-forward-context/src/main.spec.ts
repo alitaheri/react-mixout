@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {expect} from 'chai';
 
-import {forwardContext} from './forwardContext';
+import forwardContext from './main';
 
 describe('forwardContext', () => {
 
@@ -28,7 +28,7 @@ describe('forwardContext', () => {
   });
 
   it('should forward mapped value from context to props if mapper is provided', () => {
-    const injector = forwardContext<number>('myProp', { mapToPropValue: v => v * 10 });
+    const injector = forwardContext<number>('myProp', { mapToProp: v => v * 10 });
     const passedDownProps = {};
     injector.propInjector((name, value) => passedDownProps[name] = value, {}, { myProp: 2 }, null);
     expect(passedDownProps['myProp']).to.be.equals(20);

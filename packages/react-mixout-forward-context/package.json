@@ -1,8 +1,9 @@
 {
-  "name": "react-mixout",
-  "version": "0.0.2",
-  "description": "Higher order... mixin!",
+  "name": "react-mixout-forward-context",
+  "version": "0.1.0",
+  "description": "Context to prop forwarding mixout",
   "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
   "files": [
     "lib",
     "typings.json"
@@ -10,7 +11,6 @@
   "scripts": {
     "build": "tsc -d typings/main.d.ts src/main.ts  --outDir lib --module commonjs --removeComments",
     "prepublish": "typings install && npm run build",
-    "ci-test": "npm run test",
     "pretest": "tsc",
     "test": "mocha src/**/*.spec.js"
   },
@@ -30,9 +30,6 @@
     "url": "https://github.com/alitaheri/react-mixout/issues"
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
-  "peerDependencies": {
-    "react": ">=0.14.0"
-  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
@@ -40,5 +37,11 @@
     "react-addons-test-utils": "^15.0.1",
     "typescript": "^1.8.10",
     "typings": "^0.7.12"
+  },
+  "peerDependencies": {
+    "react": ">=0.14.0"
+  },
+  "dependencies": {
+    "react-mixout": "0.1.0"
   }
 }

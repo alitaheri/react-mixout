@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {Injector} from '../injector';
+import {Injector} from 'react-mixout';
 
 export interface ForwardContextOptions<T> {
   alias?: string;
   validator?: React.Validator<T>;
   defaultValue?: T;
   defaultGenerator?: (ownProps: any) => T;
-  mapToPropValue?: (value: T) => any;
+  mapToProp?: (value: T) => any;
 }
 
-export function forwardContext<T>(name: string, options: ForwardContextOptions<T> = {}): Injector {
+export default function forwardContext<T>(name: string, options: ForwardContextOptions<T> = {}): Injector {
   let validator = options.validator;
 
   if (typeof validator !== 'function') {
@@ -28,7 +28,7 @@ export function forwardContext<T>(name: string, options: ForwardContextOptions<T
       : () => defaultValue;
   }
 
-  const mapToPropValue = typeof options.mapToPropValue === 'function' ? options.mapToPropValue : v => v;
+  const mapToPropValue = typeof options.mapToProp === 'function' ? options.mapToProp : v => v;
 
   const contextTypeInjector = setContextType => setContextType(name, validator);
 

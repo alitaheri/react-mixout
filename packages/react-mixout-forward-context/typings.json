@@ -1,0 +1,14 @@
+{
+  "name": "react-mixout",
+  "version": false,
+  "dependencies": {},
+  "ambientDevDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20160317120654",
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654",
+    "node": "registry:dt/node#4.0.0+20160412142033",
+    "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160316155526"
+  },
+  "ambientDependencies": {
+    "react": "registry:dt/react#0.14.0+20160412154040"
+  }
+}
