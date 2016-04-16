@@ -9,10 +9,9 @@
     "typings.json"
   ],
   "scripts": {
-    "build": "tsc -d typings/main.d.ts src/main.ts  --outDir lib --module commonjs --removeComments",
-    "prepublish": "typings install && npm run build",
-    "pretest": "tsc",
-    "test": "mocha src/**/*.spec.js"
+    "tsc": "tsc",
+    "build": "tsc -d typings/main.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
+    "prepublish": "typings install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -31,10 +30,6 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "react": "^15.0.1",
-    "react-addons-test-utils": "^15.0.1",
     "typescript": "^1.8.10",
     "typings": "^0.7.12"
   },

@@ -14,5 +14,6 @@ const packagesFolder = path.resolve(__dirname, './packages');
 const packages = fs.readdirSync(packagesFolder);
 
 packages.map(p => path.resolve(packagesFolder, p)).forEach(package => {
-  exec(`cd "${package}" && npm install && npm test`, { stdio: 'inherit' });
+  exec(`cd "${package}" && npm install && npm run tsc`, { stdio: 'inherit' });
+  exec(`npm run mocha -- "${package}"/src/**/*.spec.js`, { stdio: 'inherit' });
 });
