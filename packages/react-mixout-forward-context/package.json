@@ -9,7 +9,6 @@
     "typings.json"
   ],
   "scripts": {
-    "tsc": "tsc",
     "build": "tsc -d typings/main.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
     "prepublish": "typings install && npm run build"
   },
@@ -20,6 +19,7 @@
   "keywords": [
     "mixin",
     "react",
+    "context",
     "hoc",
     "mixout"
   ],

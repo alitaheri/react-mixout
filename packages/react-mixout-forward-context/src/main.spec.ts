@@ -1,9 +1,11 @@
+/// <reference path="../../../typings/main.d.ts" />
+
 import * as React from 'react';
 import {expect} from 'chai';
 
 import forwardContext from './main';
 
-describe('forwardContext', () => {
+describe('react-mixout-forward-context', () => {
 
   it('should forward value from context to props', () => {
     const injector = forwardContext('myProp');

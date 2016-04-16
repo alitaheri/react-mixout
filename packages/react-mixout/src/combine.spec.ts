@@ -1,8 +1,10 @@
+/// <reference path="../typings/main.d.ts" />
+
 import {expect} from 'chai';
 
 import {combine, flatten} from './combine';
 
-describe('combine + flatten', () => {
+describe('react-mixout: combine + flatten', () => {
 
   it('should return empty array if input is not array', () => {
     expect(flatten({} as any)).to.deep.equal([]);

@@ -1,6 +1,7 @@
 node_modules/
 typings/
+tmp/
 **/*.js
-!*.js
+!/*.js
 **/*.d.ts
 *.log
