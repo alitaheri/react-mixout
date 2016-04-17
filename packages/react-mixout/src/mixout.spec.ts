@@ -82,4 +82,42 @@ describe('react-mixout: mixout', () => {
 
   });
 
+  describe('propInjector', () => {
+
+    it('should properly add or override passed props', () => {
+      const Component = () => null;
+      const Mixout = mixout(
+        {
+          propInjector: (setProp) => {
+            setProp('a', true);
+            setProp('b', 4);
+          },
+        },
+        {
+          propInjector: (setProp) => {
+            setProp('c', 10);
+            setProp('a', 1);
+          },
+        }
+      )(Component);
+
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(wrapper.find(Component).at(0).prop('a')).to.be.equals(1);
+      expect(wrapper.find(Component).at(0).prop('b')).to.be.equals(4);
+      expect(wrapper.find(Component).at(0).prop('c')).to.be.equals(10);
+    });
+
+    it('should properly pass ownProps to injectors', () => {
+      const Component = () => null;
+      const Mixout = mixout(
+        { propInjector: (setProp, ownProps) => setProp('a', ownProps.hello) },
+        { propInjector: (setProp, ownProps) => setProp('b', ownProps.world) }
+      )(Component);
+
+      const wrapper = shallow(React.createElement(Mixout, { hello: 'hello', world: 'world' }));
+      expect(wrapper.find(Component).at(0).prop('a')).to.be.equals('hello');
+      expect(wrapper.find(Component).at(0).prop('b')).to.be.equals('world');
+    });
+
+  });
 });
