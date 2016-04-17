@@ -6,5 +6,8 @@
     "node": "registry:dt/node#4.0.0+20160412142033",
     "react": "registry:dt/react#0.14.0+20160412154040",
     "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160316155526"
+  },
+  "devDependencies": {
+    "enzyme": "registry:npm/enzyme#2.2.0+20160322031343"
   }
 }
