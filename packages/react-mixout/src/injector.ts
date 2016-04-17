@@ -54,11 +54,6 @@ export interface ComponentWillUnmountHook {
   (ownProps: any, ownContext: any, ownState: any): void;
 }
 
-export interface MethodWithId<T> {
-  method: T;
-  id: number;
-}
-
 export interface Injector {
   propTypeInjector?: PropTypeInjector;
   contextTypeInjector?: ContextTypeInjector;
@@ -72,6 +67,11 @@ export interface Injector {
   componentWillUpdateHook?: ComponentWillUpdateHook;
   componentDidUpdateHook?: ComponentDidUpdateHook;
   componentWillUnmountHook?: ComponentWillUnmountHook;
+}
+
+export interface MethodWithId<T> {
+  method: T;
+  id: number;
 }
 
 export interface DecomposeResult {

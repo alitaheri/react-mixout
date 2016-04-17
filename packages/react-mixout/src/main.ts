@@ -1,3 +1,17 @@
 export { default as mixout, Mixout, MixoutWrapper} from './mixout';
-export {Injector} from './injector';
 export {combine} from './combine';
+export {
+ImperativeMethodImplementation,
+ContextTypeInjector,
+PropTypeInjector,
+PropInjector,
+InitialStateInjector,
+ImperativeMethodInjector,
+ComponentWillMountHook,
+ComponentDidMountHook,
+ComponentWillReceivePropsHook,
+ShouldComponentUpdateHook,
+ComponentWillUpdateHook,
+ComponentDidUpdateHook,
+ComponentWillUnmountHook,
+} from './injector';
