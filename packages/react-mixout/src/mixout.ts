@@ -42,6 +42,8 @@ export default (function mixout(...injectors: Injector[]) {
       propTypes[name] = validator;
       if (typeof defaultValue !== 'undefined') {
         defaultProps[name] = defaultValue;
+      } else {
+        delete defaultProps[name];
       }
     };
     propTypeInjectors.forEach(propTypeInjector => propTypeInjector(setPropType));
