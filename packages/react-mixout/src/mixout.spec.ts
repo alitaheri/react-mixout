@@ -119,5 +119,77 @@ describe('react-mixout: mixout', () => {
       expect(wrapper.find(Component).at(0).prop('b')).to.be.equals('world');
     });
 
+    it('should properly pass ownContext to injectors', () => {
+      const obj = {};
+      const Component = () => null;
+      const Mixout = mixout(
+        {
+          contextTypeInjector: ((setContextType => setContextType('color', React.PropTypes.string))),
+          propInjector: (setProp, ownProps, ownContext) => setProp('a', ownContext.color),
+        },
+        {
+          contextTypeInjector: ((setContextType => setContextType('theme', React.PropTypes.object))),
+          propInjector: (setProp, ownProps, ownContext) => setProp('b', ownContext.theme),
+        }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout), { context: { color: '#FFF', theme: obj } });
+      expect(wrapper.find(Component).at(0).prop('a')).to.be.equals('#FFF');
+      expect(wrapper.find(Component).at(0).prop('b')).to.be.equals(obj);
+    });
+
+    it('should properly pass ownState to injectors', () => {
+      const Component = () => null;
+      const Mixout = mixout(
+        {
+          initialStateInjector: (p, c, s) => s['foo'] = 'bar',
+          propInjector: (setProp, ownProps, ownContext, ownState) => setProp('a', ownState.foo),
+        },
+        {
+          initialStateInjector: (p, c, s) => s['baz'] = 'foobar',
+          propInjector: (setProp, ownProps, ownContext, ownState) => setProp('b', ownState.baz),
+        }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(wrapper.find(Component).at(0).prop('a')).to.be.equals('bar');
+      expect(wrapper.find(Component).at(0).prop('b')).to.be.equals('foobar');
+    });
+
   });
+
+  describe('initialStateInjector', () => {
+
+    it('should properly pass props as argument', () => {
+      const Component = () => null;
+      let foo;
+      let foobar;
+      const Mixout = mixout(
+        { initialStateInjector: ownProps => foo = ownProps['foo'] },
+        { initialStateInjector: ownProps => foobar = ownProps['foobar'] }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout, { foo: '1', foobar: '2' }));
+      expect(foo).to.be.equals('1');
+      expect(foobar).to.be.equals('2');
+    });
+
+    it('should properly pass context as argument', () => {
+      const Component = () => null;
+      let foo;
+      let foobar;
+      const Mixout = mixout(
+        {
+          contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
+          initialStateInjector: (ownProps, ownContext) => foo = ownContext['foo'],
+        },
+        {
+          contextTypeInjector: ((setContextType => setContextType('foobar', React.PropTypes.string))),
+          initialStateInjector: (ownProps, ownContext) => foobar = ownContext['foobar'],
+        }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout), { context: { foo: '1', foobar: '2' } });
+      expect(foo).to.be.equals('1');
+      expect(foobar).to.be.equals('2');
+    });
+
+  });
+
 });
