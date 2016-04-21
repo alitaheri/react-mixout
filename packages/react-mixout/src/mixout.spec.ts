@@ -6,7 +6,18 @@ import * as React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
 import {shallow} from 'enzyme';
 
-import mixout from './mixout';
+import mixout, {isClassComponent} from './mixout';
+
+describe('react-mixout: isClassComponent', () => {
+
+  it('should correctly determine if passed component is class based', () => {
+    const FunctionComponent = () => null;
+    const ClassComponent = class extends React.Component<any, any>{ render() { return null; } };
+    expect(isClassComponent(FunctionComponent)).to.be.false;
+    expect(isClassComponent(ClassComponent)).to.be.true;
+  });
+
+});
 
 describe('react-mixout: mixout', () => {
 
