@@ -190,6 +190,87 @@ describe('react-mixout: mixout', () => {
       expect(foobar).to.be.equals('2');
     });
 
+    it('should properly pass own isolated state that is unique per injector', () => {
+      const Component = () => null;
+      let s1;
+      let s2;
+      let s3;
+      const Mixout = mixout(
+        { initialStateInjector: (ownProps, ownContext, ownState) => s1 = ownState },
+        { initialStateInjector: (ownProps, ownContext, ownState) => s2 = ownState },
+        { initialStateInjector: (ownProps, ownContext, ownState) => s3 = ownState }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(s1).to.be.an('object');
+      expect(s2).to.be.an('object');
+      expect(s3).to.be.an('object');
+      expect(s1).not.to.be.equals(s2);
+      expect(s2).not.to.be.equals(s3);
+    });
+
+    it('should properly pass down a functional forceUpdater', () => {
+      const Component = () => null;
+      let updater1;
+      let updater2;
+      let renders = 0;
+      const Mixout = mixout(
+        { initialStateInjector: (ownProps, ownContext, ownState, forceUpdater) => updater1 = forceUpdater },
+        { initialStateInjector: (ownProps, ownContext, ownState, forceUpdater) => updater2 = forceUpdater },
+        { propInjector: () => renders++ }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(renders).to.be.equals(1);
+      expect(updater1).to.be.equals(updater2);
+      let called = false;
+      const callback = () => called = true;
+      updater1(callback);
+      expect(called).to.be.true;
+      expect(renders).to.be.equals(2);
+      updater2();
+      expect(renders).to.be.equals(3);
+    });
+
+  });
+
+  describe('imperativeMethodInjector', () => {
+
+    it('should properly set imprative method on the mixout', () => {
+      const Component = () => null;
+      let focusCalled = false;
+      let blurCalled = false;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', () => focusCalled = true) },
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('blue', () => blurCalled = true) }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      wrapper.instance()['focus']();
+      expect(focusCalled).to.be.true;
+      expect(blurCalled).to.be.false;
+      wrapper.instance()['blue']();
+      expect(focusCalled).to.be.true;
+      expect(blurCalled).to.be.true;
+    });
+
+    it('should properly return the result of imperative method call', () => {
+      const Component = () => null;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', () => 'focused') }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(wrapper.instance()['focus']()).to.be.equals('focused');
+    });
+
+    it('should properly pass all invokation arguments as first argument to implementation', () => {
+      const Component = () => null;
+      let invokeArgs;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', args => invokeArgs = args) }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      wrapper.instance()['focus'](1, null, 'hello');
+      expect(invokeArgs).to.deep.equal([1, null, 'hello']);
+    });
+
   });
 
 });

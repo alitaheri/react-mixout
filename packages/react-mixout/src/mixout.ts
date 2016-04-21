@@ -11,7 +11,7 @@ export interface Mixout {
 }
 
 // copied from https://github.com/acdlite/recompose
-function isClassComponent(Component) {
+export function isClassComponent(Component) {
   return Boolean(Component && Component.prototype && typeof Component.prototype.isReactComponent === 'object');
 }
 
@@ -206,7 +206,7 @@ export default (function mixout(...injectors: Injector[]) {
       const id = imperativeMethodInjector.id;
 
       function setImperativeMethod(name: string, implementation: ImperativeMethodImplementation) {
-        Mixout.prototype['name'] = function (...args: any[]) {
+        Mixout.prototype[name] = function (...args: any[]) {
           const ownProps = this.props;
           const ownContext = this.context;
           const ownState = this.injectorStates[id];

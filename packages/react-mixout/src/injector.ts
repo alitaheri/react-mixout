@@ -23,7 +23,7 @@ export interface InitialStateInjector {
 }
 
 export interface ImperativeMethodInjector {
-  (setImperativeMethod: (name: string, implementation: ImperativeMethodImplementation) => any): void;
+  (setImperativeMethod: (name: string, implementation: ImperativeMethodImplementation) => void): void;
 }
 
 export interface ComponentWillMountHook {
