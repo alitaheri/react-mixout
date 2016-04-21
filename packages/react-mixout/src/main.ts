@@ -1,4 +1,4 @@
-export { default as mixout, Mixout, MixoutWrapper} from './mixout';
+export { default as default, Mixout, MixoutWrapper} from './mixout';
 export {combine} from './combine';
 export {
 ImperativeMethodImplementation,
