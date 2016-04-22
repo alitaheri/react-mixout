@@ -83,11 +83,10 @@ export default (function mixout(...injectors: Injector[]) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
-        const child = this.child;
 
         componentWillMountHooks.forEach(componentWillMountHook => {
           const ownState = states[componentWillMountHook.id];
-          componentWillMountHook.method(ownProps, ownContext, ownState, child);
+          componentWillMountHook.method(ownProps, ownContext, ownState);
         });
       }
 
