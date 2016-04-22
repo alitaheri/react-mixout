@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-forward-context",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Context to prop forwarding mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -37,6 +37,6 @@
     "react": ">=0.14.0"
   },
   "dependencies": {
-    "react-mixout": "0.1.0"
+    "react-mixout": "^0.2.1"
   }
 }

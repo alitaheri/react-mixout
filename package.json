@@ -1,6 +1,6 @@
 {
   "name": "react-mixout",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "test": "mocha --compilers ts:typescript-require -r ./testSetup.js packages/*/src/**/*.spec.ts",
@@ -14,7 +14,6 @@
     "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "react-dom": "^15.0.1",
-    "react-mixout": "0.1.0",
     "typescript": "^1.8.10",
     "typescript-require": "^0.2.9-1",
     "typings": "^0.7.12"
