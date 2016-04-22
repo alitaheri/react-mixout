@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "mocha --compilers ts:typescript-require packages/*/src/**/*.spec.ts",
+    "test": "mocha --compilers ts:typescript-require -r ./testSetup.js packages/*/src/**/*.spec.ts",
     "postinstall": "typings install"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "enzyme": "^2.2.0",
+    "jsdom": "^8.4.0",
     "mocha": "^2.4.5",
     "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
