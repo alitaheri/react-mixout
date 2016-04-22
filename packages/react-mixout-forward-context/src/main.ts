@@ -33,7 +33,7 @@ export default function forwardContext<T>(name: string, options: ForwardContextO
   const contextTypeInjector = setContextType => setContextType(name, validator);
 
   const propInjector = (setProp, ownProp, ownContext, ownState) => {
-    if (ownContext && name in ownContext) {
+    if (ownContext && name in ownContext && typeof ownContext[name] !== 'undefined') {
       setProp(alias, mapToPropValue(ownContext[name]));
     } else if (hasDefault) {
       setProp(alias, mapToPropValue(getDefault(ownProp)));

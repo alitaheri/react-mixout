@@ -14,4 +14,5 @@ ShouldComponentUpdateHook,
 ComponentWillUpdateHook,
 ComponentDidUpdateHook,
 ComponentWillUnmountHook,
+Injector,
 } from './injector';
