@@ -395,7 +395,7 @@ describe('react-mixout: mixout', () => {
       expect(bar).to.be.equals('bar');
     });
 
-    it('should properly pass child if child is class and undefined if not to componentDidMountHook', () => {
+    it('should properly pass child if child is class and undefined if not to componentDidMount hooks', () => {
       const FunctionComponent = () => null;
       const ClassComponent = class extends React.Component<any, any> {
         foo() { return 1; }
@@ -411,6 +411,166 @@ describe('react-mixout: mixout', () => {
       expect(theChild).to.be.undefined;
       mount(React.createElement(mountTester(ClassComponent)));
       expect(theChild.foo()).to.be.equals(1);
+    });
+
+  });
+
+  describe('componentWillReceivePropsHook', () => {
+
+    it('should properly pass nextProps and nextContext to hooks', () => {
+      const Component = () => null;
+      let foo, bar;
+      const Mixout = mixout(
+        { componentWillReceivePropsHook: (nextProps, nextContext) => foo = nextProps.foo },
+        { componentWillReceivePropsHook: (nextProps, nextContext) => bar = nextContext.bar }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout), {
+        context: { bar: '' },
+        childContextTypes: { bar: React.PropTypes.string },
+      });
+      expect(foo).to.be.undefined;
+      expect(bar).to.be.undefined;
+      wrapper.setContext({ bar: 'bar' });
+      wrapper.setProps({ foo: 'foo' });
+      expect(foo).to.be.equals('foo');
+      expect(bar).to.be.equals('bar');
+    });
+
+    it('should properly pass ownProps and ownContext to hooks', () => {
+      const Component = () => null;
+      let foo, bar;
+      const Mixout = mixout(
+        { componentWillReceivePropsHook: (np, nc, ownProps, ownContext) => foo = ownProps.foo },
+        { componentWillReceivePropsHook: (np, nc, ownProps, ownContext) => bar = ownContext.bar }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
+        context: { bar: 'bar' },
+        childContextTypes: { bar: React.PropTypes.string },
+      });
+      expect(foo).to.be.undefined;
+      expect(bar).to.be.undefined;
+      wrapper.setProps({ foo: 'fo1' });
+      expect(foo).to.be.equals('foo');
+      expect(bar).to.be.equals('bar');
+    });
+
+    it('should properly pass own isolated state to hooks', () => {
+      const Component = () => null;
+      let foo, bar;
+      const Mixout = mixout(
+        {
+          initialStateInjector: (p, c, ownState) => ownState.foo = 'foo',
+          componentWillReceivePropsHook: (np, nc, p, C, ownState) => foo = ownState.foo,
+        },
+        {
+          initialStateInjector: (p, c, ownState) => ownState.bar = 'bar',
+          componentWillReceivePropsHook: (np, nc, p, C, ownState) => bar = ownState.bar,
+        }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout));
+      expect(foo).to.be.undefined;
+      expect(bar).to.be.undefined;
+      wrapper.setProps({ blah: 'blah' });
+      expect(foo).to.be.equals('foo');
+      expect(bar).to.be.equals('bar');
+    });
+
+    it('should properly pass child if child is class and undefined if not to hooks', () => {
+      const FunctionComponent = () => null;
+      const ClassComponent = class extends React.Component<any, any> {
+        foo() { return 1; }
+        render() { return null; }
+      };
+      let theChild;
+      const mountTester = mixout(
+        { componentWillReceivePropsHook: (np, nc, p, c, s, child) => theChild = child }
+      );
+      const wrapper1 = mount(React.createElement(mountTester(FunctionComponent)));
+      wrapper1.setProps({ blah: 'blah' });
+      expect(theChild).to.be.undefined;
+      const wrapper2 = mount(React.createElement(mountTester(ClassComponent)));
+      wrapper2.setProps({ blah: 'blah' });
+      expect(theChild.foo()).to.be.equals(1);
+    });
+
+  });
+
+  describe('shouldComponentUpdateHook', () => {
+
+    it('should properly pass nextProps and nextContext to hooks', () => {
+      const Component = () => null;
+      let foo, bar;
+      const Mixout = mixout(
+        { shouldComponentUpdateHook: (nextProps, nextContext) => foo = nextProps.foo },
+        { shouldComponentUpdateHook: (nextProps, nextContext) => bar = nextContext.bar }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout), {
+        context: { bar: '' },
+        childContextTypes: { bar: React.PropTypes.string },
+      });
+      expect(foo).to.be.undefined;
+      expect(bar).to.be.undefined;
+      wrapper.setContext({ bar: 'bar' });
+      wrapper.setProps({ foo: 'foo' });
+      expect(foo).to.be.equals('foo');
+      expect(bar).to.be.equals('bar');
+    });
+
+    it('should properly pass ownProps and ownContext to hooks', () => {
+      const Component = () => null;
+      let foo, bar;
+      const Mixout = mixout(
+        { shouldComponentUpdateHook: (np, nc, ownProps, ownContext) => foo = ownProps.foo },
+        { shouldComponentUpdateHook: (np, nc, ownProps, ownContext) => bar = ownContext.bar }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
+        context: { bar: 'bar' },
+        childContextTypes: { bar: React.PropTypes.string },
+      });
+      expect(foo).to.be.undefined;
+      expect(bar).to.be.undefined;
+      wrapper.setProps({ foo: 'fo1' });
+      expect(foo).to.be.equals('foo');
+      expect(bar).to.be.equals('bar');
+    });
+
+    it('should stop rendering only if all hooks explicitly return false', () => {
+      let renders = 0;
+      const Component = () => { renders++; return null; };
+      let hook1 = true;
+      let hook2 = true;
+      let hook3 = true;
+      const Mixout = mixout(
+        { shouldComponentUpdateHook: () => hook1 },
+        { shouldComponentUpdateHook: () => hook2 },
+        { shouldComponentUpdateHook: () => hook3 }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout));
+      expect(renders).to.be.equals(1);
+      wrapper.setProps({ foo: 'foo' });
+      expect(renders).to.be.equals(2);
+      hook1 = false;
+      hook2 = true;
+      hook3 = false;
+      wrapper.setProps({ foo: 'foo' });
+      expect(renders).to.be.equals(3);
+      hook1 = false;
+      hook2 = undefined;
+      hook3 = false;
+      wrapper.setProps({ foo: 'foo' });
+      expect(renders).to.be.equals(4);
+      hook1 = false;
+      hook2 = {} as any;
+      hook3 = false;
+      wrapper.setProps({ foo: 'foo' });
+      expect(renders).to.be.equals(5);
+      hook1 = false;
+      hook2 = false;
+      hook3 = false;
+      wrapper.setProps({ foo: 'foo1' });
+      wrapper.setProps({ foo1: 'foo1' });
+      wrapper.setProps({ foo2: 'foo2' });
+      expect(renders).to.be.equals(5);
     });
 
   });
