@@ -4,7 +4,7 @@ import {expect} from 'chai';
 
 import * as React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 
 import mixout, {isClassComponent} from './mixout';
 
@@ -271,7 +271,7 @@ describe('react-mixout: mixout', () => {
       expect(wrapper.instance()['focus']()).to.be.equals('focused');
     });
 
-    it('should properly pass all invokation arguments as first argument to implementation', () => {
+    it('should properly pass all invocation arguments as first argument to implementation', () => {
       const Component = () => null;
       let invokeArgs;
       const Mixout = mixout(
@@ -280,6 +280,71 @@ describe('react-mixout: mixout', () => {
       const wrapper = shallow(React.createElement(Mixout));
       wrapper.instance()['focus'](1, null, 'hello');
       expect(invokeArgs).to.deep.equal([1, null, 'hello']);
+    });
+
+    it('should properly pass ownProps to implementation', () => {
+      const Component = () => null;
+      let invokeProps;
+      const implementation = (args, ownProps) => invokeProps = ownProps;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout, { foo: 'bar' }));
+      wrapper.instance()['focus']();
+      expect(invokeProps.foo).to.be.equals('bar');
+    });
+
+    it('should properly pass ownContext to implementation', () => {
+      const Component = () => null;
+      let foo;
+      const implementation = (args, ownProps, ownContext) => foo = ownContext.foo;
+      const Mixout = mixout(
+        {
+          contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
+          imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation),
+        }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout), { context: { foo: 'bar' } });
+      wrapper.instance()['focus']();
+      expect(foo).to.be.equals('bar');
+    });
+
+    it('should properly pass own isolated state to implementation', () => {
+      const Component = () => null;
+      let foo;
+      const implementation = (args, ownProps, ownContext, ownState) => ownState['foo'];
+      const Mixout = mixout(
+        {
+          initialStateInjector: (p, c, s) => s['foo'] = 1,
+          imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation),
+        }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(wrapper.instance()['focus']()).to.be.equals(1);
+    });
+
+    it('should properly pass undefined as child if child is function component', () => {
+      const Component = () => null;
+      let foo;
+      const implementation = (args, ownProps, ownContext, ownState, child) => child;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
+      )(Component);
+      const wrapper = shallow(React.createElement(Mixout));
+      expect(wrapper.instance()['focus']()).to.be.undefined;
+    });
+
+    it('should properly pass instance as child if child is class component', () => {
+      const Component = class extends React.Component<any, any> {
+        foo() { return 1; }
+        render() { return null; }
+      };
+      const implementation = (args, ownProps, ownContext, ownState, child) => child;
+      const Mixout = mixout(
+        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
+      )(Component);
+      const wrapper = mount(React.createElement(Mixout));
+      expect(wrapper.instance()['focus']().foo()).to.be.equals(1);
     });
 
   });
