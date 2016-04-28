@@ -34,9 +34,7 @@
     "typings": "^0.7.12"
   },
   "peerDependencies": {
+    "react-mixout": "^0.2.1",
     "react": ">=0.14.0"
-  },
-  "dependencies": {
-    "react-mixout": "^0.2.1"
   }
 }
