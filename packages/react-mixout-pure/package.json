@@ -1,0 +1,40 @@
+{
+  "name": "react-mixout-pure",
+  "version": "0.2.1",
+  "description": "Pure render implementation for react-mixout",
+  "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
+  "files": [
+    "lib",
+    "typings.json"
+  ],
+  "scripts": {
+    "build": "tsc -d typings/main.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
+    "prepublish": "typings install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alitaheri/react-mixout.git"
+  },
+  "keywords": [
+    "mixin",
+    "react",
+    "context",
+    "hoc",
+    "mixout"
+  ],
+  "author": "Ali Taheri Moghaddar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alitaheri/react-mixout/issues"
+  },
+  "homepage": "https://github.com/alitaheri/react-mixout#readme",
+  "devDependencies": {
+    "typescript": "^1.8.10",
+    "typings": "^0.7.12"
+  },
+  "peerDependencies": {
+    "react-mixout": "^0.2.1",
+    "react": ">=0.14.0"
+  }
+}
