@@ -25,6 +25,9 @@ we realized, the best approach would be this:
 Well, that's like a mixin. Except that it doesn't pollute the component's logic. they reside
 inside a single wrapper outside the component's life cycle methods.
 
+This repository is a monorepo consisting of the main package [react-mixout](packages/react-mixout)
+and some [included features](packages) that you can use out of box.
+
 ### TL;DR
 
 Mixout _n._ Mixin that lives outside the component to keep the component's logic simple.
