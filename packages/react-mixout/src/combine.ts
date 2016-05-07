@@ -7,8 +7,8 @@ export function flatten(injectors: Injector[], flatInjectors: Injector[] = []): 
 
   injectors.forEach(injector => {
     if (injector) {
-      if (Array.isArray(injector['__combination'])) {
-        flatten(injector['__combination'], flatInjectors);
+      if (Array.isArray((<any>injector).__combination)) {
+        flatten((<any>injector).__combination, flatInjectors);
       } else if (typeof injector === 'object') {
         flatInjectors.push(injector);
       }
