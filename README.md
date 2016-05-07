@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
 Using React's mixins is known to be an anti pattern. But they do provide more performance
-over higher-order-component chain. This library tends to bring the two approaches closer.
+over higher order component (HOC) chain. This library tends to bring the two approaches closer.
 
 Mixout is a higher order component which can have an arbitrary number of features.
 
@@ -37,10 +37,94 @@ You can install this package with the following command:
 npm install react-mixout
 ```
 
-## Example
+## How does it work?
 
+It works by providing hooks, injectors and an isolated state to each feature. Those
+features can then use the API provided by mixout to implement their logic. The API
+is very strick and tries to make sure plugins play nicely with each other. When these
+plugins are bundled with a call to `mixout(plugin1, plugin2, ...)` they will all reside
+inside a single component to avoid performance issues with HOC chains. It will then
+invoke appropiate hooks like `componentDidMountHook` and call injectors throughout it's lifecycle.
+
+## Word of caution 
+
+This library does not enforce class components to be wrapped, function components can be wrapped
+too. But if there is a mixout that relies on `ref` you might need to turn your function component
+into a class one.
+
+## Examples
+
+These examples will give you a brief overview of how this library is used:
+
+## Simple Usage
+
+This example uses 2 of the mixouts included in this repository.
+
+```js
+import mixout from 'react-mixout';
+import pure from 'react-mixout-pure';
+import forwardContext from 'react-mixout-forward-context';
+
+const MyComponent = ({themeFromContext}) => <input /*...*/ />;
+
+// This will result in a HOC that implements shouldComponentUpdate that checks context
+// and props and also gets theme from context and passes it down as themeFromContext.
+// All done within a sigle component, no HOC chain overhead :D
+export default mixout(pure, forwardContext('theme', { alias: 'themeFromContext' }))(MyComponent);
+```
+
+## Common features
+
+If you have features in your application and need to put them in all of your components
+without having to import and call mixout for every one of them like:
+
+```js
+import feature1 from 'react-mixout-feature1';
+import feature2 from 'react-mixout-feature2';
+import feature3 from 'react-mixout-feature3';
+import feature4 from 'react-mixout-feature4';
+
+// Component ...
+
+export default mixout(feature1, feature2, feature3, feature4)(Component);
+```
+
+You can `combine` features and make a feature combination. Feature combinations
+can be used alongside other features and will all be flatten with a `mixout` call:
+
+`myPackedFeatures`:
+```js
+import {combine} from 'react-mixout';
+import feature1 from 'react-mixout-feature1';
+import feature2 from 'react-mixout-feature2';
+import feature3 from 'react-mixout-feature3';
+import feature4 from 'react-mixout-feature4';
+
+export default combine(feature1, feature2, feature3, feature4);
+```
+
+`Component`:
+```js
+import mixout from 'react-mixout';
+import myPackedFeatures from './myPackedFeatures';
+import {forwardReactTransitionGroupMethods} from 'react-mixout-forward-method';
+
+// AnimatedComponent
+
+export default mixout(forwardReactTransitionGroupMethods, myPackedFeatures)(AnimatedComponent);
+```
+
+## Write your own mixout
+
+The included features only use the public API of react-mixout. You can implement your own
+set of features and publish to npm so others can use too. You can read more about how you
+can implement your own mixout [here](packages/react-mixout/INJECTOR.md).
 
 ## API Reference
+
+[react-mixout](packages/react-mixout/README.md)
+
+##### included features
 
 ## Typings
 
