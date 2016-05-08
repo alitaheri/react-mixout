@@ -19,7 +19,8 @@
   "keywords": [
     "mixin",
     "react",
-    "context",
+    "pure",
+    "render",
     "hoc",
     "mixout"
   ],

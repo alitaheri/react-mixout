@@ -19,7 +19,10 @@
   "keywords": [
     "mixin",
     "react",
-    "context",
+    "imperative",
+    "method",
+    "forward",
+    "proxy",
     "hoc",
     "mixout"
   ],

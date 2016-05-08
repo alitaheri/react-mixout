@@ -40,6 +40,26 @@ You can install this package with the following command:
 npm install react-mixout
 ```
 
+Also some included features:
+
+```sh
+# Forwards context properties as props
+npm install react-mixout-forward-context
+
+# Forwards imperative method calls to it's wrapped 
+# child, useful for ReactTransitionGroup and focus.
+npm install react-mixout-forward-method
+
+# Shallow compares context and props implementing shouldComponentUpdate
+npm install react-mixout-pure
+
+# Helps provide both controlled and uncontrolled behaviors for a component.
+# You will only need to implement the controlled behavior using this mixout.
+npm install react-mixout-uncontrol
+```
+
+You may find more mixouts in the wild [here](https://www.npmjs.com/browse/keyword/mixout).
+
 ## How does it work?
 
 It works by providing hooks, injectors and an isolated state to each feature. Those
@@ -59,7 +79,7 @@ into a class one.
 
 These examples will give you a brief overview of how this library is used:
 
-## Simple Usage
+### Simple Usage
 
 This example uses 2 of the mixouts included in this repository.
 
@@ -76,7 +96,7 @@ const MyComponent = ({themeFromContext}) => <input /*...*/ />;
 export default mixout(pure, forwardContext('theme', { alias: 'themeFromContext' }))(MyComponent);
 ```
 
-## Common features
+### Common features
 
 If you have features in your application and need to put them in all of your components
 without having to import and call mixout for every one of them like:
