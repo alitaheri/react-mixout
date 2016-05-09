@@ -1,6 +1,6 @@
 # [React Mixout - Pure](https://github.com/alitaheri/react-mixout-pure)
 [![npm](https://badge.fury.io/js/react-mixout-pure.svg)](https://badge.fury.io/js/react-mixout-pure)
-[![Build Status](https://travis-ci.org/alitaheri/react-mixout-pure.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout-pure)
+[![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
 For a full description of what this is please refer to 
 the main [README](https://github.com/alitaheri/react-mixout) file of this project.
