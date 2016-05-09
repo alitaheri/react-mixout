@@ -149,6 +149,11 @@ can implement your own mixout [here](packages/react-mixout/INJECTOR.md).
 
 ##### included features
 
+* [react-mixout-forward-context](packages/react-mixout-forward-context/README.md)
+* [react-mixout-forward-method](packages/react-mixout-forward-method/README.md)
+* [react-mixout-pure](packages/react-mixout-pure/README.md)
+* [react-mixout-uncontrol](packages/react-mixout-uncontrol/README.md)
+
 ## Typings
 
 The typescript type definitions are also available and are installed via npm.
