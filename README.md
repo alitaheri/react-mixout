@@ -60,16 +60,16 @@ npm install react-mixout-uncontrol
 
 You may find more mixouts in the wild [here](https://www.npmjs.com/browse/keyword/mixout).
 
-## How does it work?
+## How Does it Work?
 
 It works by providing hooks, injectors and an isolated state to each feature. Those
 features can then use the API provided by mixout to implement their logic. The API
-is very strick and tries to make sure plugins play nicely with each other. When these
+is very strict and tries to make sure plugins play nicely with each other. When these
 plugins are bundled with a call to `mixout(plugin1, plugin2, ...)` they will all reside
 inside a single component to avoid performance issues with HOC chains. It will then
-invoke appropiate hooks like `componentDidMountHook` and call injectors throughout it's lifecycle.
+invoke appropriate hooks like `componentDidMountHook` and call injectors throughout it's lifecycle.
 
-## Word of caution 
+## Word of Caution 
 
 This library does not enforce class components to be wrapped, function components can be wrapped
 too. But if there is a mixout that relies on `ref` you might need to turn your function component
@@ -92,11 +92,11 @@ const MyComponent = ({themeFromContext}) => <input /*...*/ />;
 
 // This will result in a HOC that implements shouldComponentUpdate that checks context
 // and props and also gets theme from context and passes it down as themeFromContext.
-// All done within a sigle component, no HOC chain overhead :D
+// All done within a single component, no HOC chain overhead :D
 export default mixout(pure, forwardContext('theme', { alias: 'themeFromContext' }))(MyComponent);
 ```
 
-### Common features
+### Common Features
 
 If you have features in your application and need to put them in all of your components
 without having to import and call mixout for every one of them like:
@@ -137,7 +137,7 @@ import {forwardReactTransitionGroupMethods} from 'react-mixout-forward-method';
 export default mixout(forwardReactTransitionGroupMethods, myPackedFeatures)(AnimatedComponent);
 ```
 
-## Write your own mixout
+## Write Your Own Mixout
 
 The included features only use the public API of react-mixout. You can implement your own
 set of features and publish to npm so others can use too. You can read more about how you
@@ -147,7 +147,7 @@ can implement your own mixout [here](packages/react-mixout/INJECTOR.md).
 
 [react-mixout](packages/react-mixout/README.md)
 
-##### included features
+##### Included Features
 
 * [react-mixout-forward-context](packages/react-mixout-forward-context/README.md)
 * [react-mixout-forward-method](packages/react-mixout-forward-method/README.md)
