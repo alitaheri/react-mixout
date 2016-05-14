@@ -17,7 +17,7 @@ npm install react-mixout-pure
 
 ### pure
 
-Provides an implenation of shouldComponentUpdate shallowly
+Provides an implantation of shouldComponentUpdate shallowly
 checking the equality of next and previous props and context for your mixout.
 
 This is only a tiny feature so, one example is enough.
