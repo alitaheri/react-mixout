@@ -2,8 +2,8 @@
 [![npm](https://badge.fury.io/js/react-mixout.svg)](https://badge.fury.io/js/react-mixout)
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
-Using React's mixins is known to be an anti pattern. But they do provide more performance
-over higher order component (HOC) chain. This library tends to bring the two approaches closer.
+Using React's mixins is known to be an anti-pattern. But they do provide better performance
+than a higher order component (HOC) chain. This library tends to bring the two approaches closer.
 
 Mixout is a higher order component which can have an arbitrary number of features.
 
@@ -22,7 +22,7 @@ we realized, the best approach would be this:
 
 > A single higher-order-component that can host specific features.
 
-Well, that's like a mixin. Except that it doesn't pollute the component's logic. they reside
+Well, that's like a mixin. Except that it doesn't pollute the component's logic. They reside
 inside a single wrapper outside the component's life cycle methods.
 
 This repository is a monorepo consisting of the main package [react-mixout](packages/react-mixout)
@@ -31,6 +31,8 @@ and some [included features](packages) that you can use out of box.
 ### TL;DR
 
 Mixout _n._ Mixin that lives outside the component to keep the component's logic simple.
+
+Simply put, it's not React's deperecated mixin, it's a plugin system inspired by mixins and HOCs.
 
 ## Installation
 
@@ -46,7 +48,7 @@ Also some included features:
 # Forwards context properties as props
 npm install react-mixout-forward-context
 
-# Forwards imperative method calls to it's wrapped 
+# Forwards imperative method calls to its wrapped 
 # child, useful for ReactTransitionGroup and focus.
 npm install react-mixout-forward-method
 
@@ -60,14 +62,14 @@ npm install react-mixout-uncontrol
 
 You may find more mixouts in the wild [here](https://www.npmjs.com/browse/keyword/mixout).
 
-## How Does it Work?
+## How does it Work?
 
 It works by providing hooks, injectors and an isolated state to each feature. Those
 features can then use the API provided by mixout to implement their logic. The API
 is very strict and tries to make sure plugins play nicely with each other. When these
 plugins are bundled with a call to `mixout(plugin1, plugin2, ...)` they will all reside
 inside a single component to avoid performance issues with HOC chains. It will then
-invoke appropriate hooks like `componentDidMountHook` and call injectors throughout it's lifecycle.
+invoke appropriate hooks like `componentDidMountHook` and call injectors throughout its lifecycle.
 
 ## Word of Caution 
 
