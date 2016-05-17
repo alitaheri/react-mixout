@@ -1,4 +1,4 @@
-# [React Mixout - Pure](https://github.com/alitaheri/react-mixout-forward-method)
+# [React Mixout - Forward Method](https://github.com/alitaheri/react-mixout-forward-method)
 [![npm](https://badge.fury.io/js/react-mixout-forward-method.svg)](https://badge.fury.io/js/react-mixout-forward-method)
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
