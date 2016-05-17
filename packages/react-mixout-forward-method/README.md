@@ -109,6 +109,18 @@ export default mixout(forwardReactTransitionGroupMethods)(Component);
 function forwardMethod(name: string, targetName?: string): Injector;
 ```
 
+* `name`: The name of the function that is put on the mixout.
+* `targetName`: The name of the target function on the wrapped component.
+`name` is used if omitted.
+
+### forwardReactTransitionGroupMethods:
+
+```js
+const forwardReactTransitionGroupMethods: Injector;
+```
+
+You can pass this directly to mixout out of box.
+
 ## Typings
 
 The typescript type definitions are also available and are installed via npm.
