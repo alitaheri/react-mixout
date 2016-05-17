@@ -9,7 +9,7 @@ export const forwardReactTransitionGroupMethods = combine(
   forwardMethod('componentDidLeave')
 );
 
-export default function forwardMethod<T>(name: string, targetName?: string): Injector {
+export default function forwardMethod(name: string, targetName?: string): Injector {
   const target = typeof targetName === 'string' ? targetName : name;
 
   const imperativeMethodInjector: ImperativeMethodInjector = setImperativeMethod => {
