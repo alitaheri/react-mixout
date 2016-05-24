@@ -1,9 +1,12 @@
 import * as React from 'react';
 
 import {Injector, decompose, ImperativeMethodImplementation} from './injector';
+import {Remix} from './remix';
+
+type ReactComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
 
 export interface MixoutWrapper<P> {
-  (Component: React.ComponentClass<any> | React.StatelessComponent<any>): React.ComponentClass<P>;
+  (Component: ReactComponent | Remix<any>): React.ComponentClass<P>;
 }
 
 export interface Mixout {
@@ -32,7 +35,7 @@ export default (function mixout(...injectors: Injector[]) {
     componentWillUnmountHooks,
   } = decompose(injectors);
 
-  return function mixoutWrapper(Component: React.ComponentClass<any> | React.StatelessComponent<any>) {
+  return function mixoutWrapper(Component: ReactComponent | Remix<any>) {
 
     const isClass = isClassComponent(Component);
 
@@ -55,6 +58,9 @@ export default (function mixout(...injectors: Injector[]) {
     contextTypeInjectors.forEach(contextTypeInjector => contextTypeInjector(setContextType));
 
     class Mixout extends React.Component<any, void> {
+      static displayName = Component instanceof Remix && Component.displayName
+        ? Component.displayName
+        : 'Mixout';
       static propTypes = propTypes;
       static contextTypes = contextTypes;
       static defaultProps = defaultProps;
@@ -196,7 +202,11 @@ export default (function mixout(...injectors: Injector[]) {
           propInjector.method(setProp, ownProps, ownContext, states[propInjector.id]);
         });
 
-        return React.createElement(Component, passDownProps);
+        if (Component instanceof Remix) {
+          return Component.renderer(passDownProps);
+        }
+
+        return React.createElement(<ReactComponent>Component, passDownProps);
       }
     }
 

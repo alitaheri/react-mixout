@@ -16,3 +16,4 @@ ComponentDidUpdateHook,
 ComponentWillUnmountHook,
 Injector,
 } from './injector';
+export {default as remix, RemixRenderer} from './remix';

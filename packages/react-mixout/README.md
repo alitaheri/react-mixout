@@ -21,10 +21,12 @@ Analyzes and applies features to your component as an HOC.
 
 ```js
 // Returns a wrapper that can wrap your component and apply the
-// desired features on it.
+// desired features on it. Or you can pass in a remix to enable
+// direct rendering.
 function mixout(...injectors: Injector[]): Wrapper;
 
-// Wrapper = Component => WrappedComponent;
+// Wrapper: Component => WrappedComponent;
+// Wrapper: Remix => Component;
 ```
 
 `injectors`: The features or combination of features to apply to this component.
@@ -75,6 +77,32 @@ import commonFeatures from './commonFeatures';
 const Component = props => /* Your everyday component*/ null;
 
 export default mixout(commonFeatures)(Component);
+```
+
+### remix
+
+Builds a representation of what the render function on mixout will
+return. Useful for small wrapped components.
+
+```js
+function remix<P>(renderer: RemixRenderer<P>): Remix<P>;
+function remix<P>(displayName: string, renderer: RemixRenderer<P>): Remix<P>;
+
+type RemixRenderer<P> = (props: P) => ReactElement;
+```
+
+`renderer`: The renderer function that takes the passed props and returns a react element.
+`displayName`: The display name to use to override Mixout's default `displayName`.
+
+##### Example:
+
+```js
+import mixout, {remix} from 'react-mixout';
+import pure from 'react-mixout-pure';
+
+const Component = remix(props => /* Your everyday tiny component*/ null);
+
+export default mixout(pure)(Component);
 ```
 
 ## Typings

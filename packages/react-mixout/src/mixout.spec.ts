@@ -6,6 +6,7 @@ import * as React from 'react';
 import {shallow, mount} from 'enzyme';
 
 import mixout, {isClassComponent} from './mixout';
+import remix from './remix';
 
 describe('react-mixout: isClassComponent', () => {
 
@@ -702,6 +703,31 @@ describe('react-mixout: mixout', () => {
       expect(foo).to.be.undefined;
       wrapper.unmount();
       expect(foo).to.be.equals('foo');
+    });
+
+  });
+
+  describe('remix integration', () => {
+
+    it('should properly set displayName', () => {
+      const Mixout = mixout()(remix('Button', () => null));
+      expect(Mixout.displayName).to.be.equals('Button');
+    });
+
+    it('should properly call renderer with passedProps', () => {
+      let passedProps;
+      const Mixout = mixout()(remix('Button', props => {
+        passedProps = props;
+        return null;
+      }));
+      shallow(React.createElement(Mixout, { foo: 'foo' }));
+      expect(passedProps.foo).to.be.equals('foo');
+    });
+
+    it('should properly return renderer\'s output as it\'s own', () => {
+      const Mixout = mixout()(remix('Button', props => React.createElement('span')));
+      const wrapper = shallow(React.createElement(Mixout, { foo: 'foo' }));
+      expect(wrapper.contains(React.createElement('span'))).to.be.equals(true);
     });
 
   });

@@ -139,6 +139,36 @@ import {forwardReactTransitionGroupMethods} from 'react-mixout-forward-method';
 export default mixout(forwardReactTransitionGroupMethods, myPackedFeatures)(AnimatedComponent);
 ```
 
+### Direct Render
+
+It's possible to provide a minimal render implementation to use instead
+of wrapping. It's useful for when your actual component is small and
+it isn't necessary to have another instance for react to track.
+
+```js
+import mixout, {remix} from 'react-mixout';
+import pure from 'react-mixout-pure';
+
+const ComponentRemix = remix(props => <span>Hello World!</span>);
+
+export default mixout(pure)(ComponentRemix);
+```
+
+You can also override the `displayName`;
+
+```js
+import mixout, {remix} from 'react-mixout';
+import pure from 'react-mixout-pure';
+
+const MyRemixedComponent = remix('HelloWorld', props => <span>Hello World!</span>);
+
+export default mixout(pure)(MyRemixedComponent);
+```
+
+You will be practically building components with this feature.
+Since you will only have access to the passed props, this is no more than
+an optimization.
+
 ## Write Your Own Mixout
 
 The included features only use the public API of react-mixout. You can implement your own
