@@ -9,7 +9,7 @@
     "typings.json"
   ],
   "scripts": {
-    "build": "tsc -d typings/main.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
+    "build": "tsc -d typings/index.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
     "prepublish": "typings install && npm run build"
   },
   "repository": {
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "devDependencies": {
     "typescript": "^1.8.10",
-    "typings": "^0.7.12"
+    "typings": "^1.0.4"
   },
   "peerDependencies": {
     "react-mixout": "^0.2.1",

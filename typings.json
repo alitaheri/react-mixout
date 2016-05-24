@@ -1,6 +1,6 @@
 {
   "name": "react-mixout",
-  "ambientDevDependencies": {
+  "globalDevDependencies": {
     "chai": "registry:dt/chai#3.4.0+20160317120654",
     "jquery": "registry:dt/jquery#1.10.0+20160316155526",
     "jsdom": "registry:dt/jsdom#2.0.0+20160316155526",

@@ -8,15 +8,15 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "enzyme": "^2.2.0",
-    "jsdom": "^8.4.0",
-    "mocha": "^2.4.5",
-    "react": "^15.0.1",
-    "react-addons-test-utils": "^15.0.1",
-    "react-dom": "^15.0.1",
+    "enzyme": "^2.3.0",
+    "jsdom": "^9.1.0",
+    "mocha": "^2.5.1",
+    "react": "^15.1.0",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-mixout": "^0.2.1",
     "typescript": "^1.8.10",
     "typescript-require": "^0.2.9-1",
-    "typings": "^0.7.12"
+    "typings": "^1.0.4"
   }
 }
