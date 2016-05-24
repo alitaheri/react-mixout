@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "private": true,
   "scripts": {
-    "test": "mocha --compilers ts:typescript-require -r ./testSetup.js packages/*/src/**/*.spec.ts",
+    "test": "tsc && mocha -r ./testSetup.js build/*/src/**/*.spec.js",
     "postinstall": "typings install"
   },
   "devDependencies": {
@@ -15,8 +15,8 @@
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-mixout": "^0.2.1",
+    "source-map-support": "^0.4.0",
     "typescript": "^1.8.10",
-    "typescript-require": "^0.2.9-1",
     "typings": "^1.0.4"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "rootDir": "packages",
+    "outDir": "build",
+    "module": "commonjs",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules",
+    "packages/react-mixout/typings",
+    "packages/react-mixout-forward-context/typings",
+    "packages/react-mixout-forward-method/typings",
+    "packages/react-mixout-pure/typings",
+    "packages/react-mixout-uncontrol/typings"
+  ]
+}

@@ -1,6 +1,6 @@
 node_modules/
 typings/
-tmp/
+/build/
 **/*.js
 !/*.js
 **/*.d.ts
