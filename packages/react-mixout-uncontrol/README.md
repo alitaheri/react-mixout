@@ -1,4 +1,4 @@
-# [React Mixout - Forward Method](https://github.com/alitaheri/react-mixout-uncontrol)
+# [React Mixout - Uncontrol](https://github.com/alitaheri/react-mixout-uncontrol)
 [![npm](https://badge.fury.io/js/react-mixout-uncontrol.svg)](https://badge.fury.io/js/react-mixout-uncontrol)
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
 
