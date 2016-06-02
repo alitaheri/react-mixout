@@ -2,16 +2,12 @@ import * as React from 'react';
 
 import {flatten} from './combine';
 
-export interface ImperativeMethodImplementation {
-  (args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
+export interface PropTypeInjector {
+  (setPropType: (name: string, validator: React.Validator<any>, defaultValue?: any) => void): void;
 }
 
 export interface ContextTypeInjector {
   (setContextType: (name: string, validator: React.Validator<any>) => void): void;
-}
-
-export interface PropTypeInjector {
-  (setPropType: (name: string, validator: React.Validator<any>, defaultValue?: any) => void): void;
 }
 
 export interface PropInjector {
@@ -20,6 +16,10 @@ export interface PropInjector {
 
 export interface InitialStateInjector {
   (ownProps: any, ownContext: any, ownState: any, forceUpdater: (callback?: () => void) => void): void;
+}
+
+export interface ImperativeMethodImplementation {
+  (args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
 }
 
 export interface ImperativeMethodInjector {
