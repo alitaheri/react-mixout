@@ -21,7 +21,7 @@ There are 2 general ways you can build an injector.
 1. Single purpose plain object.
 1. Injector factory function.
 
-Before introducing the API take a look at a few examples of the 3 methods:
+Before introducing the API take a look at a few examples:
 
 **Single purpose plain object:** `pure` implementation
 
@@ -139,7 +139,7 @@ interface Injector {
 }
 ```
 
-### propTypeInjector:
+### propTypeInjector
 
 You can use this injector to set validators and default props on the Mixout component class.
 
@@ -171,7 +171,7 @@ const Component = () => null;
 export default mixout(withDefault('name', 'anonymous'))(Component);
 ```
 
-### contextTypeInjector:
+### contextTypeInjector
 
 You can use this injector to set context validators. The context validators are needed
 to get values from the context.
@@ -190,3 +190,26 @@ const requiredContext = (context: string) => ({
   contextTypeInjector: setContextType => setContextType(context, React.PropTypes.any.isRequired),
 });
 ```
+
+### propInjector
+
+To add/override the props that are passed down to the wrapped component you should call the
+`setProp` method provided by this injector. This method is called within the render method
+of Mixout, be careful not to trigger an update here :sweat_smile:.
+
+```js
+interface PropInjector {
+  (setProp: (name: string, value: any) => void, ownProps: any, ownContext: any, ownState: any): void;
+}
+```
+
+#### Examples
+
+Transform prop:
+```js
+const transformProp = (name, transformer) => ({
+  propInjector: (setProp, ownProps) => setProp(name, transformer(ownProps[name])),
+});
+```
+
+### initialStateInjector
