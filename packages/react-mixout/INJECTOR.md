@@ -68,18 +68,18 @@ All these constraints ensure compatibility between various features used in a si
 
 ## Quick Guide
 
-Some use-cases require state, triggerring updates or accessing the wrapped component.
+Some use-cases require state, triggering updates or accessing the wrapped component.
 
 ### State
 
-Each feature gets it's own isolated state. The state object is passed into each hook and injector
-where it makes sense. Please note that modifiying the isolated state **will not trigger an update**
+Each feature gets its own isolated state. The state object is passed into each hook and injector
+where it makes sense. Please note that modifying the isolated state **will not trigger an update**
 if it must be done you need to manually trigger an update.
 
 ### Trigger an Update
 
 The `initialStateInjector` will pass a `forceUpdater` function, if you need to use it, hold a reference
-in you isolated state. Keep in mind, every function you see below is pure!
+in your isolated state. Keep in mind, every function you see below is pure!
 
 ```js
 const counter = (interval: number) => ({
