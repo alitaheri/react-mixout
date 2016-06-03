@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-uncontrol",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Stateful mixout to uncontrol controlled properties",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -35,7 +35,7 @@
     "typings": "^1.0.4"
   },
   "peerDependencies": {
-    "react-mixout": "^0.2.1",
+    "react-mixout": "^0.3.0",
     "react": ">=0.14.0"
   }
 }

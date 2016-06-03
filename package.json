@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-monorepo",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "test": "tsc && mocha -r ./testSetup.js build/*/src/**/*.spec.js",
@@ -14,7 +14,7 @@
     "react": "^15.1.0",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
-    "react-mixout": "^0.2.1",
+    "react-mixout": "^0.3.0",
     "source-map-support": "^0.4.0",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"

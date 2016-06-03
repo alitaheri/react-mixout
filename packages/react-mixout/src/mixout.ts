@@ -6,7 +6,7 @@ import {Remix} from './remix';
 type ReactComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
 
 export interface MixoutWrapper<P> {
-  (Component: ReactComponent | Remix<any>): React.ComponentClass<P>;
+  (Component: React.ComponentClass<any> | React.StatelessComponent<any> | Remix<any>): React.ComponentClass<P>;
 }
 
 export interface Mixout {
