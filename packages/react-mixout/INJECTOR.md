@@ -207,9 +207,70 @@ interface PropInjector {
 
 Transform prop:
 ```js
-const transformProp = (name, transformer) => ({
+const transformProp = (name: string, transformer: (prop: any) => any) => ({
   propInjector: (setProp, ownProps) => setProp(name, transformer(ownProps[name])),
 });
 ```
 
 ### initialStateInjector
+
+This injector can be used to add initial values to the isolated state of the feature.
+It's also used provide access to the updater, for more information see the "Trigger an Update" section.
+
+```js
+interface InitialStateInjector {
+  (ownProps: any, ownContext: any, ownState: any, forceUpdater: (callback?: () => void) => void): void;
+}
+```
+
+#### Examples
+
+Initial prop value:
+```js
+const initialPropValue = (propName: string, alias: string) => ({
+  initialStateInjector: (props, context, state) => state.initialPropValue = props[name],
+  propInjector: (setProp, props, context, state) => setProp(alias, state.initialPropValue),
+});
+```
+
+### imperativeMethodInjector
+
+You can use this injector to add imperative methods to the `prototype` of the resulting Mixout
+component. These methods will be added on the `prototype` **not** on each instance as class members!
+
+```js
+interface ImperativeMethodInjector {
+  (setImperativeMethod: (name: string, implementation: ImperativeMethodImplementation) => void): void;
+}
+```
+
+The implementation will get the following arguments passed down to it.
+
+```js
+interface ImperativeMethodImplementation {
+  (args: any[], ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): any;
+}
+```
+
+* `args`: The arguments passed into the proxy function on invocation.
+* `ownProps`: Value of `this.props`.
+* `ownContext`: Value of `this.context`.
+* `ownState`: The feature's own isolated state object.
+* `child`: A reference to the wrapped component. Please note that `child`
+is only available when the wrapped component is a class component.
+
+Anything returned from the invocation of the implementation function will be forwarded to the
+caller of the proxy function.
+
+#### Examples
+
+Forward input methods:
+```js
+const initialPropValue = (propName: string, alias: string) => ({
+  imperativeMethodInjector: setImperativeMethod => {
+    setImperativeMethod('focus', (args, props, context, state, child) => child.focus(...args));
+    setImperativeMethod('select', (args, props, context, state, child) => child.select(...args));
+    setImperativeMethod('blur', (args, props, context, state, child) => child.blur(...args));
+  },
+});
+```
