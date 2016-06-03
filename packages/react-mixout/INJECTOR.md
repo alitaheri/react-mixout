@@ -274,3 +274,105 @@ const initialPropValue = (propName: string, alias: string) => ({
   },
 });
 ```
+
+### componentWillMountHook
+
+This hook is called when the lifecycle method `componentWillMount` is called on the Mixout
+by React.
+
+```js
+interface ComponentWillMountHook {
+  (ownProps: any, ownContext: any, ownState: any): void;
+}
+```
+
+### componentDidMountHook
+
+This hook is called when the lifecycle method `componentDidMount` is called on the Mixout
+by React.
+
+```js
+interface ComponentDidMountHook {
+  (ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+}
+```
+
+#### Examples
+
+Focus on mount.
+```js
+const focusOnMount = {
+  componentDidMountHook: (props, context, state, child) => {
+    if (child && typeof child.focus === 'function') {
+      child.focus();
+    }
+  },
+};
+```
+
+### componentWillReceivePropsHook
+
+This hook is called when the lifecycle method `componentWillReceiveProps` is called on the Mixout
+by React passing in the `nextProps` and `nextContext` to each hook provided by the features.
+
+```js
+interface ComponentWillReceivePropsHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+}
+```
+
+### shouldComponentUpdateHook
+
+This hook is called when the lifecycle method `shouldComponentUpdateHook` is called on the Mixout
+by React. Please note, the update won't be stopped unless each feature's implementation (if any) returns `false`.
+`undefined`, `null`, `0`, etc. will be treated as `true`.
+
+```js
+interface ShouldComponentUpdateHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any): boolean;
+}
+```
+
+#### Examples
+
+Pure:
+```js
+const pure = {
+  shouldComponentUpdateHook(nextProps, nextContext, ownProps, ownContext) {
+    return !shallowEqual(nextProps, ownProps) || !shallowEqual(nextContext, ownContext);
+  },
+};
+```
+
+### componentWillUpdateHook
+
+This hook is called when the lifecycle method `componentWillUpdate` is called on the Mixout
+by React.
+
+```js
+interface ComponentWillUpdateHook {
+  (nextProps: any, nextContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+}
+```
+
+### componentDidUpdateHook
+
+This hook is called when the lifecycle method `componentDidUpdate` is called on the Mixout
+by React.
+
+```js
+interface ComponentDidUpdateHook {
+  (prevProps: any, prevContext: any, ownProps: any, ownContext: any, ownState: any, child: React.ReactInstance): void;
+}
+```
+
+### componentWillUnmountHook
+
+This hook is called when the lifecycle method `componentWillUnmount` is called on the Mixout
+by React.
+
+```js
+interface ComponentWillUnmountHook {
+  (ownProps: any, ownContext: any, ownState: any): void;
+}
+```
