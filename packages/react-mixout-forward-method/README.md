@@ -20,7 +20,7 @@ npm install react-mixout-forward-method
 
 ## Examples
 
-### Simple:
+### Simple
 
 You can simply forward a method using `forwardMethod`.
 
@@ -44,7 +44,7 @@ class MyComponent extends React.Component {
 export default mixout(forwardMethod('foo'))(Component);
 ```
 
-### Rename:
+### Rename
 
 You can also rename the method.
 
@@ -68,7 +68,7 @@ class MyComponent extends React.Component {
 export default mixout(forwardMethod('bar', 'foo'))(Component);
 ```
 
-### Multiple functions:
+### Multiple functions
 
 Just use mixout's `combine` or pass in another forwardMethod:
 
@@ -86,7 +86,7 @@ export default mixout(
 )(Component);
 ```
 
-### ReactTransitionGroup:
+### ReactTransitionGroup
 
 Import `forwardReactTransitionGroupMethods` and add it to the mix.
 
@@ -113,7 +113,7 @@ function forwardMethod(name: string, targetName?: string): Injector;
 * `targetName`: The name of the target function on the wrapped component.
 `name` is used if omitted.
 
-### forwardReactTransitionGroupMethods:
+### forwardReactTransitionGroupMethods
 
 ```js
 const forwardReactTransitionGroupMethods: Injector;

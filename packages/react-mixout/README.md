@@ -35,7 +35,7 @@ function mixout(...injectors: Injector[]): Wrapper;
 [INJECTOR.md](https://github.com/alitaheri/react-mixout/blob/master/packages/react-mixout/INJECTOR.md)
 file.
 
-##### Example:
+##### Example
 
 ```js
 import mixout from 'react-mixout';
@@ -61,7 +61,7 @@ function combine(...injectors: Injector[]): Injector;
 
 `injectors`: The features to pack as one.
 
-##### Example:
+##### Example
 
 ```js
 // commonFeatures.js
@@ -94,7 +94,7 @@ type RemixRenderer<P> = (props: P) => ReactElement;
 `renderer`: The renderer function that takes the passed props and returns a react element.
 `displayName`: The display name to use to override Mixout's default `displayName`.
 
-##### Example:
+##### Example
 
 ```js
 import mixout, {remix} from 'react-mixout';

@@ -29,7 +29,7 @@ You can install this package with the following command:
 npm install react-mixout-uncontrol
 ```
 
-## Usage: 
+## Usage
 
 ```js
 import mixout from 'react-mixout';
@@ -57,7 +57,7 @@ With the following imperative methods on it:
 
 ## Examples
 
-### Simple:
+### Simple
 
 You can very easily uncontrol a property if your component
 follows the convention.
@@ -107,7 +107,7 @@ class MyOtherComponent extends React.Component {
 
 ```
 
-### Name Overrides:
+### Name Overrides
 
 If your component can't follow the defaults or you simply just
 don't want it to you can override all public namings.
@@ -169,7 +169,7 @@ class MyOtherComponent extends React.Component {
 
 ```
 
-### Property Defaults and Validation:
+### Property Defaults and Validation
 
 If you wish, you can also provide default value and validation for
 the API props.
@@ -197,7 +197,7 @@ export default mixout(uncontrol('foo', {
 }))(Component);
 ```
 
-### Eccentric Callback Function:
+### Eccentric Callback Function
 
 Since uncontrol needs to be informed of the value changes through
 the callback it passes down, it needs a way to get the new value
@@ -228,7 +228,7 @@ export default mixout(uncontrol('foo', {
 }))(Component);
 ```
 
-### Common Patterns:
+### Common Patterns
 
 It is very common to use this library to forward standard funtionalities of
 `input`, `select` and other elements. `uncontrolValue` provides some common
@@ -319,7 +319,7 @@ function uncontrol<T>(name: string, options?: Options<T>): Injector;
   * `getValueFromPassedDownCallback`: The method that gets the value from the invocation of the
 passed down change callback.
 
-### uncontrolValue:
+### uncontrolValue
 
 ```js
 const uncontrolValue: Injector;

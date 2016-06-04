@@ -18,7 +18,7 @@ npm install react-mixout-forward-context
 
 ## Examples
 
-### Simple:
+### Simple
 
 For most cases only a name is enough, it will handle all implementation details
 necessary to make it happen.
@@ -33,7 +33,7 @@ const Component = props => <span style={{color: props.theme.textColor}}>Hello</s
 export default mixout(forwardContext('theme'))(Component);
 ```
 
-### Validator:
+### Validator
 
 You can provide custom validator. `forwardContext` uses `React.PropTypes.any` by default
 for the provided name.
@@ -48,7 +48,7 @@ const Component = props => <span style={{color: props.theme.textColor}}>Hello</s
 export default mixout(forwardContext('theme', { validator: React.PropTypes.object }))(Component);
 ```
 
-### Rename:
+### Rename
 
 If there are name conflicts with other props passed down from parent components
 you can rename the key on the props passed down to the wrapped component.
@@ -63,7 +63,7 @@ const Component = props => <span style={{color: props.globalTheme.textColor}}>He
 export default mixout(forwardContext('theme', { alias: 'globalTheme' }))(Component);
 ```
 
-### Default Value:
+### Default Value
 
 It's also possible to choose a default value if the context doesn't provide the
 required value.
@@ -98,7 +98,7 @@ const defaultThemeGenerator = props => ({ textColor: props.color || '#212121' })
 export default mixout(forwardContext('theme', { defaultGenerator: defaultThemeGenerator }))(Component);
 ```
 
-### Transformation:
+### Transformation
 
 In some cases you might need to transform the context before passing it down.
 It's best used to provide backward compatibility by library authors.

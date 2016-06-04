@@ -22,7 +22,7 @@ checking the equality of next and previous props and context for your mixout.
 
 This is only a tiny feature so, one example is enough.
 
-##### Example:
+##### Example
 
 ```js
 import mixout from 'react-mixout';
