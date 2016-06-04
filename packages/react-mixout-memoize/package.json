@@ -1,0 +1,43 @@
+{
+  "name": "react-mixout-memoize",
+  "version": "0.3.0",
+  "description": "Property memoization for react-mixout",
+  "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
+  "files": [
+    "lib",
+    "typings.json"
+  ],
+  "scripts": {
+    "build": "tsc -d typings/index.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
+    "prepublish": "typings install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alitaheri/react-mixout.git"
+  },
+  "keywords": [
+    "mixin",
+    "react",
+    "memoize",
+    "memoization",
+    "optimize",
+    "render",
+    "hoc",
+    "mixout"
+  ],
+  "author": "Ali Taheri Moghaddar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alitaheri/react-mixout/issues"
+  },
+  "homepage": "https://github.com/alitaheri/react-mixout#readme",
+  "devDependencies": {
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
+  },
+  "peerDependencies": {
+    "react-mixout": "^0.3.0",
+    "react": ">=0.14.0"
+  }
+}

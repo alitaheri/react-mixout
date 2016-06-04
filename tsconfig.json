@@ -10,6 +10,7 @@
     "packages/react-mixout/typings",
     "packages/react-mixout-forward-context/typings",
     "packages/react-mixout-forward-method/typings",
+    "packages/react-mixout-memoize/typings",
     "packages/react-mixout-pure/typings",
     "packages/react-mixout-uncontrol/typings"
   ]

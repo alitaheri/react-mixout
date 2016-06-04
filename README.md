@@ -52,6 +52,9 @@ npm install react-mixout-forward-context
 # child, useful for ReactTransitionGroup and focus.
 npm install react-mixout-forward-method
 
+# Memoize drived data and recalculate only when inputs change
+npm install react-mixout-memoize
+
 # Shallow compares context and props implementing shouldComponentUpdate
 npm install react-mixout-pure
 
@@ -183,6 +186,7 @@ can implement your own mixout [here](packages/react-mixout/INJECTOR.md).
 
 * [react-mixout-forward-context](packages/react-mixout-forward-context/README.md)
 * [react-mixout-forward-method](packages/react-mixout-forward-method/README.md)
+* [react-mixout-memoize](packages/react-mixout-memoize/README.md)
 * [react-mixout-pure](packages/react-mixout-pure/README.md)
 * [react-mixout-uncontrol](packages/react-mixout-uncontrol/README.md)
 
