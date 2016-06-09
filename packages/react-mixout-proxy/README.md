@@ -79,7 +79,7 @@ There are many cases when an alias is needed.
 2 elements. So you rename them: `focusName` -> `nameRef.focus` and `focusFamily` -> `familyRef.focus`.
 1. You already have some methods on your API and want to provide backward compatibility.
 1. You need multiple methods to point to one method on your target.
-1. You **just** don't like the name of the DOM method name... who name you `setRangeText`?! ewww.
+1. You **just** don't like the name of the DOM method name... who named you `setRangeText`? ewww!
 
 ```js
 import React from 'react';
