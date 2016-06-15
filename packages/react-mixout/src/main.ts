@@ -1,4 +1,6 @@
-export { default as default, Mixout, MixoutWrapper} from './mixout';
+import mixout from './mixout';
+
+export {Mixout, MixoutWrapper} from './mixout';
 export {combine} from './combine';
 export {
 ImperativeMethodImplementation,
@@ -17,3 +19,5 @@ ComponentWillUnmountHook,
 Injector,
 } from './injector';
 export {default as remix, RemixRenderer} from './remix';
+
+export default mixout;
