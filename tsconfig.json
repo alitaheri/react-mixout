@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "rootDir": "packages",
-    "outDir": "build",
+    "target": "es5",
     "module": "commonjs",
-    "sourceMap": true
+    "jsx": "react",
+    "strictNullChecks": true,
+    "pretty": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": false,
+    "newLine": "LF",
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true
   },
   "exclude": [
-    "node_modules",
-    "packages/react-mixout/typings",
-    "packages/react-mixout-forward-context/typings",
-    "packages/react-mixout-forward-method/typings",
-    "packages/react-mixout-listen/typings",
-    "packages/react-mixout-memoize/typings",
-    "packages/react-mixout-proxy/typings",
-    "packages/react-mixout-pure/typings",
-    "packages/react-mixout-uncontrol/typings"
+    "node_modules"
   ]
 }

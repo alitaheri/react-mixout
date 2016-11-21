@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {Injector} from 'react-mixout';
+import { Injector } from 'react-mixout';
 
 // taken from https://github.com/facebook/fbjs/blob/master/src/core/shallowEqual.js
 

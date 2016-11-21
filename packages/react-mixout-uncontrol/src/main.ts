@@ -48,7 +48,7 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
     if (defaultValuePropValidator || defaultValuePropDefault) {
       setPropType(
         defaultValuePropName,
-        defaultValuePropValidator,
+        defaultValuePropValidator!,
         defaultValuePropDefault
       );
     }
@@ -56,13 +56,13 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
     if (callbackPropValidator || callbackPropDefault) {
       setPropType(
         callbackPropName,
-        callbackPropValidator,
+        callbackPropValidator!,
         callbackPropDefault
       );
     }
   }
 
-  const initialStateInjector: InitialStateInjector = (props, context, state, forceUpdater) => {
+  const initialStateInjector: InitialStateInjector = (props, _c, state, forceUpdater) => {
     state.forceUpdate = forceUpdater;
 
     state.value = props[defaultValuePropName];
@@ -79,20 +79,20 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
   };
 
   const imperativeMethodInjector: ImperativeMethodInjector = setMethod => {
-    setMethod(getValueMethodName, (a, p, c, state) => state.value);
+    setMethod(getValueMethodName, (_a, _p, _c, state) => state.value);
 
-    setMethod(setValueMethodName, (a, p, c, state) => {
+    setMethod(setValueMethodName, (a, _p, _c, state) => {
       state.value = a[0];
       state.forceUpdate();
     });
 
-    setMethod(clearValueMethodName, (a, props, c, state) => {
+    setMethod(clearValueMethodName, (_a, props, _c, state) => {
       state.value = props[defaultValuePropName];
       state.forceUpdate();
     });
   };
 
-  const propInjector: PropInjector = (setProp, p, c, state) => {
+  const propInjector: PropInjector = (setProp, _p, _c, state) => {
     setProp(passedDownValuePropName, state.value);
     setProp(passedDownCallbackPropName, state.callback);
   };
@@ -105,7 +105,7 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
   };
 }
 
-function defaultGetValue(event: React.SyntheticEvent) {
+function defaultGetValue(event: React.SyntheticEvent<any>) {
   return event && event.target && (<any>event.target).value || null;
 }
 

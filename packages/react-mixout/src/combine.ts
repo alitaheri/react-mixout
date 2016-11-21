@@ -1,4 +1,4 @@
-import {Injector} from './injector';
+import { Injector } from './injector';
 
 export function flatten(injectors: Injector[], flatInjectors: Injector[] = []): Injector[] {
   if (!Array.isArray(injectors)) {

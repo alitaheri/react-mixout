@@ -1,11 +1,8 @@
-/// <reference path="../../../typings/index.d.ts" />
-
 import * as React from 'react';
-import {expect} from 'chai';
-import {shallow, mount} from 'enzyme';
-
+import { expect } from 'chai';
+import { mount } from 'enzyme';
 import mixout from 'react-mixout';
-import uncontrol, {uncontrolValue} from './main';
+import uncontrol, { uncontrolValue } from './main';
 
 class Test extends React.Component<any, any> {
   render() {
@@ -71,11 +68,11 @@ describe('react-mixout-uncontrol', () => {
       callbackPropValidator: React.PropTypes.func,
     }))(FlexibleTest);
 
-    expect(Mixout.propTypes['defaultVal']).to.be.equals(React.PropTypes.number);
-    expect(Mixout.propTypes['onValChange']).to.be.equals(React.PropTypes.func);
+    expect((<any>Mixout.propTypes)['defaultVal']).to.be.equals(React.PropTypes.number);
+    expect((<any>Mixout.propTypes)['onValChange']).to.be.equals(React.PropTypes.func);
 
-    expect(Mixout.defaultProps['defaultVal']).to.be.equals(1);
-    expect(Mixout.defaultProps['onValChange']).to.be.equals(callback);
+    expect((<any>Mixout.defaultProps)['defaultVal']).to.be.equals(1);
+    expect((<any>Mixout.defaultProps)['onValChange']).to.be.equals(callback);
   });
 
   it('should work with custom stated props', (done) => {
@@ -90,9 +87,9 @@ describe('react-mixout-uncontrol', () => {
       getValueFromPassedDownCallback: () => 'overriden',
     }))(Test);
 
-    let val;
+    let val: any;
     const wrapper = mount(React.createElement(Mixout, {
-      change: e => val = e.target.value,
+      change: (e: any) => val = e.target.value,
       def: 'bar',
     }));
 
@@ -123,9 +120,9 @@ describe('react-mixout-uncontrol', () => {
       defaultValuePropName: 'def',
     }))(Test);
 
-    let val;
+    let val: any;
     const wrapper = mount(React.createElement(Mixout, {
-      change: e => val = e.target.value,
+      change: (e: any) => val = e.target.value,
       def: 'bar',
     }));
 
@@ -150,11 +147,11 @@ describe('react-mixout-uncontrol', () => {
   });
 
   it('should uncontrol value with expected behavior', (done) => {
-    let val;
+    let val: any;
     let Mixout = mixout(uncontrolValue)(Test);
 
     const wrapper = mount(React.createElement(Mixout, {
-      onChange: e => val = e.target.value,
+      onChange: (e: any) => val = e.target.value,
       defaultValue: 'bar',
     }));
 

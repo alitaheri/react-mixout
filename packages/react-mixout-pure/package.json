@@ -1,16 +1,15 @@
 {
   "name": "react-mixout-pure",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Pure render implementation for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
   "files": [
-    "lib",
-    "typings.json"
+    "lib"
   ],
   "scripts": {
-    "build": "tsc -d typings/index.d.ts src/main.ts --outDir lib --module commonjs --removeComments",
-    "prepublish": "typings install && npm run build"
+    "build": "tsc -d src/main.ts --outDir lib --module commonjs --removeComments",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -31,11 +30,10 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "devDependencies": {
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4"
+    "typescript": "^2.0.10"
   },
   "peerDependencies": {
-    "react-mixout": "^0.3.0",
+    "react-mixout": "^0.4.0",
     "react": ">=0.14.0"
   }
 }

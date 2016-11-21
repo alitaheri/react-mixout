@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Injector} from 'react-mixout';
+import { Injector } from 'react-mixout';
 
 export interface ForwardContextOptions<T> {
   alias?: string;
@@ -20,7 +20,7 @@ export default function forwardContext<T>(name: string, options: ForwardContextO
 
   const hasDefault = 'defaultValue' in options || 'defaultGenerator' in options;
 
-  let getDefault;
+  let getDefault: (ownProps: any) => any;
   if (hasDefault) {
     const defaultValue = options.defaultValue;
     getDefault = typeof options.defaultGenerator === 'function'
@@ -28,11 +28,11 @@ export default function forwardContext<T>(name: string, options: ForwardContextO
       : () => defaultValue;
   }
 
-  const mapToPropValue = typeof options.mapToProp === 'function' ? options.mapToProp : v => v;
+  const mapToPropValue = typeof options.mapToProp === 'function' ? options.mapToProp : (v: any) => v;
 
-  const contextTypeInjector = setContextType => setContextType(name, validator);
+  const contextTypeInjector = (setContextType: any) => setContextType(name, validator);
 
-  const propInjector = (setProp, ownProp, ownContext, ownState) => {
+  const propInjector = (setProp: any, ownProp: any, ownContext: any) => {
     if (ownContext && name in ownContext && typeof ownContext[name] !== 'undefined') {
       setProp(alias, mapToPropValue(ownContext[name]));
     } else if (hasDefault) {

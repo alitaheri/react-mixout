@@ -1,17 +1,14 @@
-/// <reference path="../../../typings/index.d.ts" />
-
 import * as React from 'react';
-import {expect} from 'chai';
-import {mount, shallow} from 'enzyme';
-
+import { expect } from 'chai';
+import { mount } from 'enzyme';
 import mixout from 'react-mixout';
 import listen from './main';
 
-const FunctionComponent = () => null;
+const FunctionComponent = () => null!;
 
 function buildClass(onClick: () => void) {
   class Test extends React.Component<any, any> {
-    onClick(e) {
+    onClick() {
       onClick();
     }
 
@@ -33,7 +30,7 @@ describe('react-mixout-listen', () => {
     let clicks = 0;
     const Test = buildClass(() => clicks++);
     const Mixout = mixout(listen('click', 'onClick'))(Test);
-    const wrapper = mount(React.createElement(Mixout));
+    mount(React.createElement(Mixout));
 
     document.body.click();
     expect(clicks).to.be.equals(1);
@@ -63,7 +60,7 @@ describe('react-mixout-listen', () => {
     let clicks = 0;
     const Test = buildClass(() => clicks++);
     const Mixout = mixout(listen('click', 'onClick', { target: 'document' }))(Test);
-    const wrapper = mount(React.createElement(Mixout));
+    mount(React.createElement(Mixout));
 
     document.body.click();
     expect(clicks).to.be.equals(1);
@@ -76,7 +73,7 @@ describe('react-mixout-listen', () => {
     let clicks = 0;
     const Test = buildClass(() => clicks++);
     const Mixout = mixout(listen('click', 'onClick', { target: () => document.body }))(Test);
-    const wrapper = mount(React.createElement(Mixout));
+    mount(React.createElement(Mixout));
 
     document.body.click();
     expect(clicks).to.be.equals(1);
@@ -86,11 +83,11 @@ describe('react-mixout-listen', () => {
   });
 
   it('should properly pass down useCapture', () => {
-    const calls = [];
-    let b;
+    const calls: string[] = [];
+    let b: any;
 
     class Test extends React.Component<any, any> {
-      onClick(e) {
+      onClick() {
         calls.push('test');
       }
 
@@ -103,7 +100,7 @@ describe('react-mixout-listen', () => {
     document.body.appendChild(element);
 
     const Mixout = mixout(listen('click', 'onClick', { target: 'document', useCapture: true }))(Test);
-    const wrapper = mount(React.createElement(Mixout), { attachTo: element });
+    mount(React.createElement(Mixout), { attachTo: element });
 
     expect(calls).to.deep.equal([]);
     b.click();

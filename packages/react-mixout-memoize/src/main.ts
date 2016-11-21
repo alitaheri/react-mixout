@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Injector} from 'react-mixout';
+import { Injector } from 'react-mixout';
 
 export interface Selector<TResult> {
   (props: any, context: any): TResult;
@@ -118,7 +118,7 @@ export default function memoize(name: string, ...selectorsAndResolver: any[]): I
     }
   };
 
-  injector.propInjector = (setProp, props, context, state) => {
+  injector.propInjector = (setProp, _p, _c, state) => {
     setProp(name, state.value);
   };
 

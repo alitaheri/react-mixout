@@ -1,7 +1,6 @@
-import * as React from 'react';
-import {Injector} from 'react-mixout';
+import { Injector } from 'react-mixout';
 
-export type Target = string | (() => EventTarget);
+export type Target = undefined | string | (() => EventTarget);
 
 export interface ListenOptions {
   target?: Target;
@@ -15,7 +14,7 @@ function getTarget(target: Target): EventTarget {
   if (typeof target === 'function') {
     return target();
   }
-  return window[<string>target];
+  return (<any>window)[target];
 }
 
 export default function listen(event: string, method: string, options?: ListenOptions): Injector {
@@ -23,20 +22,20 @@ export default function listen(event: string, method: string, options?: ListenOp
   const useCapture = (options && !!options.useCapture) || false;
 
   return {
-    componentDidMountHook: (props, context, state, child) => {
+    componentDidMountHook: (_p, _c, state, child) => {
       if (!child) {
         throw new Error('react-mixout-listen must be used on a class component.');
       }
 
       function eventListener(e: Event) {
-        child[method](e);
+        (<any>child)[method](e);
       }
 
       state.listener = eventListener;
 
       getTarget(targetOption).addEventListener(event, eventListener, useCapture);
     },
-    componentWillUnmountHook: (props, context, state) => {
+    componentWillUnmountHook: (_p, _c, state) => {
       getTarget(targetOption).removeEventListener(event, state.listener, useCapture);
     },
   };

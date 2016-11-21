@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import {flatten} from './combine';
+import { flatten } from './combine';
 
 export interface PropTypeInjector {
   (setPropType: (name: string, validator: React.Validator<any>, defaultValue?: any) => void): void;

@@ -3,20 +3,33 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "test": "tsc && mocha -r ./testSetup.js build/*/src/**/*.spec.js",
-    "postinstall": "typings install"
+    "bump": "lerna publish --skip-git",
+    "lint": "tslint -e \"packages/*/node_modules/**\" -e \"packages/*/lib/**\" \"packages/**/*.ts\" \"packages/**/*.tsx\"",
+    "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register -r ./testSetup.ts \"packages/**/*.spec.ts\""
   },
   "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/enzyme": "^2.5.38",
+    "@types/jquery": "^2.0.34",
+    "@types/jsdom": "^2.0.29",
+    "@types/mocha": "^2.2.33",
+    "@types/node": "^6.0.48",
+    "@types/react": "^0.14.49",
+    "@types/react-addons-test-utils": "^0.14.15",
     "chai": "^3.5.0",
-    "enzyme": "^2.3.0",
-    "jsdom": "^9.1.0",
-    "mocha": "^2.5.1",
-    "react": "^15.1.0",
-    "react-addons-test-utils": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "react-mixout": "^0.3.0",
-    "source-map-support": "^0.4.0",
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4"
+    "enzyme": "^2.6.0",
+    "jsdom": "^9.8.3",
+    "lerna": "2.0.0-beta.26",
+    "mocha": "^3.1.2",
+    "react": "^15.4.0",
+    "react-addons-test-utils": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-mixout": "^0.3.1",
+    "source-map-support": "^0.4.6",
+    "ts-node": "^1.7.0",
+    "tslint": "^4.0.1",
+    "tslint-eslint-rules": "^2.2.1",
+    "tslint-microsoft-contrib": "^2.0.13",
+    "typescript": "^2.0.10"
   }
 }

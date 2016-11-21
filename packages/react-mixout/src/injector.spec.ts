@@ -1,14 +1,11 @@
-/// <reference path="../../../typings/index.d.ts" />
-
-import {expect} from 'chai';
-
-import {Injector, decompose} from './injector';
+import { expect } from 'chai';
+import { Injector, decompose } from './injector';
 
 describe('react-mixout: decompose', () => {
 
   it('should not mutate any of the injectors', () => {
-    const shouldComponentUpdateHook = () => null;
-    const propInjector = () => null;
+    const shouldComponentUpdateHook = () => null!;
+    const propInjector = () => null!;
     const componentWillReceivePropsHook = () => null;
     const propTypeInjector = () => null;
     const injector1: Injector = {

@@ -1,9 +1,6 @@
-/// <reference path="../../../typings/index.d.ts" />
-
 import * as React from 'react';
-import {expect} from 'chai';
-import {mount} from 'enzyme';
-
+import { expect } from 'chai';
+import { mount } from 'enzyme';
 import mixout from 'react-mixout';
 import pure from './main';
 
@@ -11,7 +8,7 @@ describe('react-mixout-pure', () => {
 
   it('should not re-render if previous and next props are shallowly equal', () => {
     let renders = 0;
-    const Component = () => { renders++; return null; };
+    const Component = () => { renders++; return null!; };
     const Mixout = mixout(pure)(Component);
 
     const wrapper = mount(React.createElement(Mixout, { prop: 'foo' }));
@@ -30,7 +27,7 @@ describe('react-mixout-pure', () => {
 
   it('should not re-render if previous and next context are shallowly equal', () => {
     let renders = 0;
-    const Component = () => { renders++; return null; };
+    const Component = () => { renders++; return null!; };
     const Mixout = mixout(pure)(Component);
 
     const wrapper = mount(React.createElement(Mixout), {

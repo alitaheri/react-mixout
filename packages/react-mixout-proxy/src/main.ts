@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {Injector} from 'react-mixout';
+import { Injector } from 'react-mixout';
 
 export interface Alias {
   name: string;
@@ -20,6 +19,7 @@ function normalize(method: string | Alias): Alias {
       return { name: method, as: method };
     }
   }
+  return null!;
 }
 
 export default function proxy(
@@ -27,10 +27,10 @@ export default function proxy(
   methods: Array<string | Alias> | string | Alias,
   failOnNullRef = true
 ): Injector {
-  let normalizedMethods: Array<Alias> = [];
+  let normalizedMethods: Alias[] = [];
 
   if (Array.isArray(methods)) {
-    normalizedMethods = methods.map(normalize).filter(m => !!m);
+    normalizedMethods = methods.map(normalize).filter(Boolean);
   } else {
     const normalizedMethod = normalize(methods);
     if (normalizedMethod) {
@@ -39,11 +39,11 @@ export default function proxy(
   }
 
   return {
-    initialStateInjector: (props, context, state) => state.refSetter = instance => state.ref = instance,
-    propInjector: (setProp, props, context, state) => setProp(refName, state.refSetter),
+    initialStateInjector: (_p, _c, state) => state.refSetter = (instance: any) => state.ref = instance,
+    propInjector: (setProp, _p, _c, state) => setProp(refName, state.refSetter),
     imperativeMethodInjector: setImperativeMethod => {
       normalizedMethods.forEach(method => {
-        setImperativeMethod(method.as, (args, props, context, state) => {
+        setImperativeMethod(method.as, (args, _p, _c, state) => {
           if (failOnNullRef && !state.ref) {
             throw new Error(`Failed to call ${method.as}. The targetted component might not be mounted`);
           }

@@ -3,10 +3,10 @@ export interface RemixRenderer<P> {
 }
 
 export class Remix<P> {
-  public displayName: string;
+  public displayName: string | null;
   public renderer: RemixRenderer<P>;
 
-  constructor(renderer: RemixRenderer<P>, displayName: string = null) {
+  constructor(renderer: RemixRenderer<P>, displayName: string | null = null) {
     this.displayName = displayName;
     this.renderer = renderer;
   }

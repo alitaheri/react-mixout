@@ -1,23 +1,20 @@
-/// <reference path="../../../typings/index.d.ts" />
-
-import {expect} from 'chai';
-
-import remix, {Remix} from './remix';
+import { expect } from 'chai';
+import remix, { Remix } from './remix';
 
 describe('react-mixout: remix', () => {
 
   it('should fail if no renderer is provided', () => {
-    expect(() => remix(null)).to.throw();
-    expect(() => remix(null, null)).to.throw();
-    expect(() => remix('Blah', null)).to.throw();
+    expect(() => remix(null!)).to.throw();
+    expect(() => remix(null!, null!)).to.throw();
+    expect(() => remix('Blah', null!)).to.throw();
   });
 
   it('should return an instance of Remix', () => {
-    expect(remix(() => null)).to.be.instanceOf(Remix);
+    expect(remix(() => null!)).to.be.instanceOf(Remix);
   });
 
   it('should return an instance of Remix with correct properties', () => {
-    const renderer = () => null;
+    const renderer = () => null!;
     const displayName = 'Component';
     const remixed = remix(displayName, renderer);
     expect(remixed.displayName).to.be.equals(displayName);

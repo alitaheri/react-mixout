@@ -1,13 +1,10 @@
-/// <reference path="../../../typings/index.d.ts" />
-
 import * as React from 'react';
-import {expect} from 'chai';
-import {shallow, mount} from 'enzyme';
-
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
 import mixout from 'react-mixout';
 import forwardContext from './main';
 
-const Component = () => null;
+const Component = () => null!;
 
 describe('react-mixout-forward-context', () => {
 
@@ -37,12 +34,12 @@ describe('react-mixout-forward-context', () => {
 
   it('should properly set validator on contextType even if none is provided', () => {
     const Mixout = mixout(forwardContext('myProp'))(Component);
-    expect(Mixout.contextTypes['myProp']).to.be.equals(React.PropTypes.any);
+    expect((<any>Mixout.contextTypes)['myProp']).to.be.equals(React.PropTypes.any);
   });
 
   it('should properly override the provided validator on contextType', () => {
     const Mixout = mixout(forwardContext('myProp', { validator: React.PropTypes.number }))(Component);
-    expect(Mixout.contextTypes['myProp']).to.be.equals(React.PropTypes.number);
+    expect((<any>Mixout.contextTypes)['myProp']).to.be.equals(React.PropTypes.number);
   });
 
   it('should properly pass down default if no context is available', () => {
@@ -65,7 +62,6 @@ describe('react-mixout-forward-context', () => {
 
   it('should properly generate default if no value is available on context', () => {
     const Mixout = mixout(forwardContext('myProp', { defaultGenerator: (p) => p.a ? p.a : 4 }))(Component);
-    const passedDownProps = {};
     const wrapper1 = shallow(React.createElement(Mixout, { a: 2 }));
     expect(wrapper1.find(Component).at(0).prop('myProp')).to.be.equals(2);
     const wrapper2 = shallow(React.createElement(Mixout));

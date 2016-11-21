@@ -1,11 +1,8 @@
-/// <reference path="../../../typings/index.d.ts" />
-
-import {expect} from 'chai';
-
+import { expect } from 'chai';
 import * as React from 'react';
-import {shallow, mount} from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import mixout, {isClassComponent} from './mixout';
+import mixout, { isClassComponent } from './mixout';
 import remix from './remix';
 
 describe('react-mixout: isClassComponent', () => {
@@ -41,14 +38,14 @@ describe('react-mixout: mixout', () => {
             setContextType('e', React.PropTypes.bool);
           },
         }
-      )(() => null);
+      )(() => null!);
 
-      expect(Mixout.contextTypes['a']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.contextTypes['b']).to.be.equals(React.PropTypes.string);
-      expect(Mixout.contextTypes['c']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.contextTypes['d']).to.be.equals(React.PropTypes.number);
-      expect(Mixout.contextTypes['e']).to.be.equals(React.PropTypes.bool);
-      expect(Mixout.contextTypes['f']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.contextTypes!['a']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.contextTypes!['b']).to.be.equals(React.PropTypes.string);
+      expect(Mixout.contextTypes!['c']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.contextTypes!['d']).to.be.equals(React.PropTypes.number);
+      expect(Mixout.contextTypes!['e']).to.be.equals(React.PropTypes.bool);
+      expect(Mixout.contextTypes!['f']).to.be.equals(React.PropTypes.any);
     });
 
   });
@@ -74,21 +71,21 @@ describe('react-mixout: mixout', () => {
             setPropType('e', React.PropTypes.bool, true);
           },
         }
-      )(() => null);
+      )(() => null!);
 
-      expect(Mixout.propTypes['a']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.propTypes['b']).to.be.equals(React.PropTypes.string);
-      expect(Mixout.propTypes['c']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.propTypes['d']).to.be.equals(React.PropTypes.number);
-      expect(Mixout.propTypes['e']).to.be.equals(React.PropTypes.bool);
-      expect(Mixout.propTypes['f']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.propTypes!['a']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.propTypes!['b']).to.be.equals(React.PropTypes.string);
+      expect(Mixout.propTypes!['c']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.propTypes!['d']).to.be.equals(React.PropTypes.number);
+      expect(Mixout.propTypes!['e']).to.be.equals(React.PropTypes.bool);
+      expect(Mixout.propTypes!['f']).to.be.equals(React.PropTypes.any);
 
       expect(Mixout.defaultProps).not.to.haveOwnProperty('a');
       expect(Mixout.defaultProps).not.to.haveOwnProperty('b');
-      expect(Mixout.defaultProps['c']).to.be.equals(obj);
-      expect(Mixout.defaultProps['d']).to.be.equals(5);
-      expect(Mixout.defaultProps['e']).to.be.true;
-      expect(Mixout.defaultProps['f']).to.be.equals(obj);
+      expect((<any>Mixout.defaultProps)['c']).to.be.equals(obj);
+      expect((<any>Mixout.defaultProps)['d']).to.be.equals(5);
+      expect((<any>Mixout.defaultProps)['e']).to.be.true;
+      expect((<any>Mixout.defaultProps)['f']).to.be.equals(obj);
     });
 
   });
@@ -96,7 +93,7 @@ describe('react-mixout: mixout', () => {
   describe('propInjector', () => {
 
     it('should properly add or override passed props', () => {
-      const Component = () => null;
+      const Component = () => null!;
       const Mixout = mixout(
         {
           propInjector: (setProp) => {
@@ -119,7 +116,7 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownProps to injectors', () => {
-      const Component = () => null;
+      const Component = () => null!;
       const Mixout = mixout(
         { propInjector: (setProp, ownProps) => setProp('a', ownProps.hello) },
         { propInjector: (setProp, ownProps) => setProp('b', ownProps.world) }
@@ -132,15 +129,15 @@ describe('react-mixout: mixout', () => {
 
     it('should properly pass ownContext to injectors', () => {
       const obj = {};
-      const Component = () => null;
+      const Component = () => null!;
       const Mixout = mixout(
         {
           contextTypeInjector: ((setContextType => setContextType('color', React.PropTypes.string))),
-          propInjector: (setProp, ownProps, ownContext) => setProp('a', ownContext.color),
+          propInjector: (setProp, _op, ownContext) => setProp('a', ownContext.color),
         },
         {
           contextTypeInjector: ((setContextType => setContextType('theme', React.PropTypes.object))),
-          propInjector: (setProp, ownProps, ownContext) => setProp('b', ownContext.theme),
+          propInjector: (setProp, _op, ownContext) => setProp('b', ownContext.theme),
         }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout), { context: { color: '#FFF', theme: obj } });
@@ -149,15 +146,15 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownState to injectors', () => {
-      const Component = () => null;
+      const Component = () => null!;
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, s) => s['foo'] = 'bar',
-          propInjector: (setProp, ownProps, ownContext, ownState) => setProp('a', ownState.foo),
+          initialStateInjector: (_p, _c, s) => s['foo'] = 'bar',
+          propInjector: (setProp, _op, _oc, ownState) => setProp('a', ownState.foo),
         },
         {
-          initialStateInjector: (p, c, s) => s['baz'] = 'foobar',
-          propInjector: (setProp, ownProps, ownContext, ownState) => setProp('b', ownState.baz),
+          initialStateInjector: (_p, _c, s) => s['baz'] = 'foobar',
+          propInjector: (setProp, _op, _oc, ownState) => setProp('b', ownState.baz),
         }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
@@ -170,48 +167,48 @@ describe('react-mixout: mixout', () => {
   describe('initialStateInjector', () => {
 
     it('should properly pass props as argument', () => {
-      const Component = () => null;
-      let foo;
-      let foobar;
+      const Component = () => null!;
+      let foo: any;
+      let foobar: any;
       const Mixout = mixout(
         { initialStateInjector: ownProps => foo = ownProps['foo'] },
         { initialStateInjector: ownProps => foobar = ownProps['foobar'] }
       )(Component);
-      const wrapper = shallow(React.createElement(Mixout, { foo: '1', foobar: '2' }));
+      shallow(React.createElement(Mixout, { foo: '1', foobar: '2' }));
       expect(foo).to.be.equals('1');
       expect(foobar).to.be.equals('2');
     });
 
     it('should properly pass context as argument', () => {
-      const Component = () => null;
-      let foo;
-      let foobar;
+      const Component = () => null!;
+      let foo: any;
+      let foobar: any;
       const Mixout = mixout(
         {
           contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
-          initialStateInjector: (ownProps, ownContext) => foo = ownContext['foo'],
+          initialStateInjector: (_op, ownContext) => foo = ownContext['foo'],
         },
         {
           contextTypeInjector: ((setContextType => setContextType('foobar', React.PropTypes.string))),
-          initialStateInjector: (ownProps, ownContext) => foobar = ownContext['foobar'],
+          initialStateInjector: (_op, ownContext) => foobar = ownContext['foobar'],
         }
       )(Component);
-      const wrapper = shallow(React.createElement(Mixout), { context: { foo: '1', foobar: '2' } });
+      shallow(React.createElement(Mixout), { context: { foo: '1', foobar: '2' } });
       expect(foo).to.be.equals('1');
       expect(foobar).to.be.equals('2');
     });
 
     it('should properly pass own isolated state that is unique per injector', () => {
-      const Component = () => null;
-      let s1;
-      let s2;
-      let s3;
+      const Component = () => null!;
+      let s1: any;
+      let s2: any;
+      let s3: any;
       const Mixout = mixout(
-        { initialStateInjector: (ownProps, ownContext, ownState) => s1 = ownState },
-        { initialStateInjector: (ownProps, ownContext, ownState) => s2 = ownState },
-        { initialStateInjector: (ownProps, ownContext, ownState) => s3 = ownState }
+        { initialStateInjector: (_op, _oc, ownState) => s1 = ownState },
+        { initialStateInjector: (_op, _oc, ownState) => s2 = ownState },
+        { initialStateInjector: (_op, _oc, ownState) => s3 = ownState }
       )(Component);
-      const wrapper = shallow(React.createElement(Mixout));
+      shallow(React.createElement(Mixout));
       expect(s1).to.be.an('object');
       expect(s2).to.be.an('object');
       expect(s3).to.be.an('object');
@@ -220,16 +217,16 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass down a functional forceUpdater', () => {
-      const Component = () => null;
-      let updater1;
-      let updater2;
+      const Component = () => null!;
+      let updater1: any;
+      let updater2: any;
       let renders = 0;
       const Mixout = mixout(
-        { initialStateInjector: (ownProps, ownContext, ownState, forceUpdater) => updater1 = forceUpdater },
-        { initialStateInjector: (ownProps, ownContext, ownState, forceUpdater) => updater2 = forceUpdater },
+        { initialStateInjector: (_op, _oc, _os, forceUpdater) => updater1 = forceUpdater },
+        { initialStateInjector: (_op, _oc, _os, forceUpdater) => updater2 = forceUpdater },
         { propInjector: () => renders++ }
       )(Component);
-      const wrapper = shallow(React.createElement(Mixout));
+      shallow(React.createElement(Mixout));
       expect(renders).to.be.equals(1);
       expect(updater1).to.be.equals(updater2);
       let called = false;
@@ -246,7 +243,7 @@ describe('react-mixout: mixout', () => {
   describe('imperativeMethodInjector', () => {
 
     it('should properly set imprative method on the mixout', () => {
-      const Component = () => null;
+      const Component = () => null!;
       let focusCalled = false;
       let blurCalled = false;
       const Mixout = mixout(
@@ -254,50 +251,56 @@ describe('react-mixout: mixout', () => {
         { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('blue', () => blurCalled = true) }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
-      wrapper.instance()['focus']();
+      (<any>wrapper.instance())['focus']();
       expect(focusCalled).to.be.true;
       expect(blurCalled).to.be.false;
-      wrapper.instance()['blue']();
+      (<any>wrapper.instance())['blue']();
       expect(focusCalled).to.be.true;
       expect(blurCalled).to.be.true;
     });
 
     it('should properly return the result of imperative method call', () => {
-      const Component = () => null;
+      const Component = () => null!;
       const Mixout = mixout(
-        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', () => 'focused') }
+        {
+          imperativeMethodInjector: setImperativeMethod =>
+            setImperativeMethod('focus', () => 'focused'),
+        }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
-      expect(wrapper.instance()['focus']()).to.be.equals('focused');
+      expect((<any>wrapper.instance())['focus']()).to.be.equals('focused');
     });
 
     it('should properly pass all invocation arguments as first argument to implementation', () => {
-      const Component = () => null;
-      let invokeArgs;
+      const Component = () => null!;
+      let invokeArgs: any;
       const Mixout = mixout(
-        { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', args => invokeArgs = args) }
+        {
+          imperativeMethodInjector: setImperativeMethod =>
+            setImperativeMethod('focus', args => invokeArgs = args),
+        }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
-      wrapper.instance()['focus'](1, null, 'hello');
+      (<any>wrapper.instance())['focus'](1, null, 'hello');
       expect(invokeArgs).to.deep.equal([1, null, 'hello']);
     });
 
     it('should properly pass ownProps to implementation', () => {
-      const Component = () => null;
-      let invokeProps;
-      const implementation = (args, ownProps) => invokeProps = ownProps;
+      const Component = () => null!;
+      let invokeProps: any;
+      const implementation = (_: any, ownProps: any) => invokeProps = ownProps;
       const Mixout = mixout(
         { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout, { foo: 'bar' }));
-      wrapper.instance()['focus']();
+      (<any>wrapper.instance())['focus']();
       expect(invokeProps.foo).to.be.equals('bar');
     });
 
     it('should properly pass ownContext to implementation', () => {
-      const Component = () => null;
-      let foo;
-      const implementation = (args, ownProps, ownContext) => foo = ownContext.foo;
+      const Component = () => null!;
+      let foo: any;
+      const implementation = (_args: any, _op: any, ownContext: any) => foo = ownContext.foo;
       const Mixout = mixout(
         {
           contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
@@ -305,31 +308,31 @@ describe('react-mixout: mixout', () => {
         }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout), { context: { foo: 'bar' } });
-      wrapper.instance()['focus']();
+      (<any>wrapper.instance())['focus']();
       expect(foo).to.be.equals('bar');
     });
 
     it('should properly pass own isolated state to implementation', () => {
-      const Component = () => null;
-      const implementation = (args, ownProps, ownContext, ownState) => ownState['foo'];
+      const Component = () => null!;
+      const implementation = (_args: any, _op: any, _oc: any, ownState: any) => ownState['foo'];
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, s) => s['foo'] = 1,
+          initialStateInjector: (_p, _c, s) => s['foo'] = 1,
           imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation),
         }
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
-      expect(wrapper.instance()['focus']()).to.be.equals(1);
+      expect((<any>wrapper.instance())['focus']()).to.be.equals(1);
     });
 
     it('should properly pass undefined as child if child is function component', () => {
-      const Component = () => null;
-      const implementation = (args, ownProps, ownContext, ownState, child) => child;
+      const Component = () => null!;
+      const implementation = (_args: any, _op: any, _oc: any, _os: any, child: any) => child;
       const Mixout = mixout(
         { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect(wrapper.instance()['focus']()).to.be.undefined;
+      expect((<any>wrapper.instance())['focus']()).to.be.undefined;
     });
 
     it('should properly pass instance as child if child is class component', () => {
@@ -337,12 +340,12 @@ describe('react-mixout: mixout', () => {
         foo() { return 1; }
         render() { return null; }
       };
-      const implementation = (args, ownProps, ownContext, ownState, child) => child;
+      const implementation = (_args: any, _op: any, _oc: any, _os: any, child: any) => child;
       const Mixout = mixout(
         { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) }
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect(wrapper.instance()['focus']().foo()).to.be.equals(1);
+      expect((<any>wrapper.instance())['focus']().foo()).to.be.equals(1);
     });
 
   });
@@ -350,29 +353,31 @@ describe('react-mixout: mixout', () => {
   describe('componentWillMountHook/componentDidMountHook', () => {
 
     it('should properly pass ownProps to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
         {
           componentWillMountHook: ownProps => foo = ownProps.foo,
           componentDidMountHook: ownProps => bar = ownProps.bar,
         }
       )(Component);
-      const wrapper = mount(React.createElement(Mixout, { foo: 'foo', bar: 'bar' }));
+      mount(React.createElement(Mixout, { foo: 'foo', bar: 'bar' }));
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
     });
 
     it('should properly pass ownContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
         {
-          componentWillMountHook: (ownProps, ownContext) => foo = ownContext.foo,
-          componentDidMountHook: (ownProps, ownContext) => bar = ownContext.bar,
+          componentWillMountHook: (_op, ownContext) => foo = ownContext.foo,
+          componentDidMountHook: (_op, ownContext) => bar = ownContext.bar,
         }
       )(Component);
-      const wrapper = mount(React.createElement(Mixout), {
+      mount(React.createElement(Mixout), {
         context: { foo: 'foo', bar: 'bar' },
         childContextTypes: { foo: React.PropTypes.string, bar: React.PropTypes.string },
       });
@@ -381,30 +386,31 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownState to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, ownState) => { ownState.foo = 'foo'; ownState.bar = 'bar'; },
-          componentWillMountHook: (ownProps, ownContext, ownState) => foo = ownState.foo,
-          componentDidMountHook: (ownProps, ownContext, ownState) => bar = ownState.bar,
+          initialStateInjector: (_p, _c, ownState) => { ownState.foo = 'foo'; ownState.bar = 'bar'; },
+          componentWillMountHook: (_op, _oc, ownState) => foo = ownState.foo,
+          componentDidMountHook: (_op, _oc, ownState) => bar = ownState.bar,
         }
       )(Component);
-      const wrapper = mount(React.createElement(Mixout));
+      mount(React.createElement(Mixout));
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
     });
 
     it('should properly pass child if child is class and undefined if not to componentDidMount hooks', () => {
-      const FunctionComponent = () => null;
+      const FunctionComponent = () => null!;
       const ClassComponent = class extends React.Component<any, any> {
         foo() { return 1; }
         render() { return null; }
       };
-      let theChild;
+      let theChild: any;
       const mountTester = mixout(
         {
-          componentDidMountHook: (p, c, s, child) => theChild = child,
+          componentDidMountHook: (_p, _c, _s, child) => theChild = child,
         }
       );
       mount(React.createElement(mountTester(FunctionComponent)));
@@ -418,11 +424,12 @@ describe('react-mixout: mixout', () => {
   describe('componentWillReceivePropsHook', () => {
 
     it('should properly pass nextProps and nextContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { componentWillReceivePropsHook: (nextProps, nextContext) => foo = nextProps.foo },
-        { componentWillReceivePropsHook: (nextProps, nextContext) => bar = nextContext.bar }
+        { componentWillReceivePropsHook: nextProps => foo = nextProps.foo },
+        { componentWillReceivePropsHook: (_np, nextContext) => bar = nextContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
         context: { bar: '' },
@@ -437,11 +444,12 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownProps and ownContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { componentWillReceivePropsHook: (np, nc, ownProps, ownContext) => foo = ownProps.foo },
-        { componentWillReceivePropsHook: (np, nc, ownProps, ownContext) => bar = ownContext.bar }
+        { componentWillReceivePropsHook: (_np, _nc, ownProps) => foo = ownProps.foo },
+        { componentWillReceivePropsHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
         context: { bar: 'bar' },
@@ -455,16 +463,17 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass own isolated state to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, ownState) => ownState.foo = 'foo',
-          componentWillReceivePropsHook: (np, nc, p, C, ownState) => foo = ownState.foo,
+          initialStateInjector: (_p, _c, ownState) => ownState.foo = 'foo',
+          componentWillReceivePropsHook: (_np, _nc, _p, _c, ownState) => foo = ownState.foo,
         },
         {
-          initialStateInjector: (p, c, ownState) => ownState.bar = 'bar',
-          componentWillReceivePropsHook: (np, nc, p, C, ownState) => bar = ownState.bar,
+          initialStateInjector: (_p, _c, ownState) => ownState.bar = 'bar',
+          componentWillReceivePropsHook: (_np, _nc, _p, _c, ownState) => bar = ownState.bar,
         }
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
@@ -476,14 +485,14 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass child if child is class and undefined if not to hooks', () => {
-      const FunctionComponent = () => null;
+      const FunctionComponent = () => null!;
       const ClassComponent = class extends React.Component<any, any> {
         foo() { return 1; }
         render() { return null; }
       };
-      let theChild;
+      let theChild: any;
       const mountTester = mixout(
-        { componentWillReceivePropsHook: (np, nc, p, c, s, child) => theChild = child }
+        { componentWillReceivePropsHook: (_np, _nc, _p, _c, _s, child) => theChild = child }
       );
       const wrapper1 = mount(React.createElement(mountTester(FunctionComponent)));
       wrapper1.setProps({ blah: 'blah' });
@@ -498,11 +507,12 @@ describe('react-mixout: mixout', () => {
   describe('shouldComponentUpdateHook', () => {
 
     it('should properly pass nextProps and nextContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { shouldComponentUpdateHook: (nextProps, nextContext) => foo = nextProps.foo },
-        { shouldComponentUpdateHook: (nextProps, nextContext) => bar = nextContext.bar }
+        { shouldComponentUpdateHook: nextProps => foo = nextProps.foo },
+        { shouldComponentUpdateHook: (_np, nextContext) => bar = nextContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
         context: { bar: '' },
@@ -517,11 +527,12 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownProps and ownContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { shouldComponentUpdateHook: (np, nc, ownProps, ownContext) => foo = ownProps.foo },
-        { shouldComponentUpdateHook: (np, nc, ownProps, ownContext) => bar = ownContext.bar }
+        { shouldComponentUpdateHook: (_np, _nc, ownProps) => foo = ownProps.foo },
+        { shouldComponentUpdateHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
         context: { bar: 'bar' },
@@ -536,7 +547,7 @@ describe('react-mixout: mixout', () => {
 
     it('should stop rendering only if all hooks explicitly return false', () => {
       let renders = 0;
-      const Component = () => { renders++; return null; };
+      const Component = () => { renders++; return null!; };
       let hook1 = true;
       let hook2 = true;
       let hook3 = true;
@@ -555,7 +566,7 @@ describe('react-mixout: mixout', () => {
       wrapper.setProps({ foo: 'foo' });
       expect(renders).to.be.equals(3);
       hook1 = false;
-      hook2 = undefined;
+      hook2 = undefined!;
       hook3 = false;
       wrapper.setProps({ foo: 'foo' });
       expect(renders).to.be.equals(4);
@@ -578,11 +589,12 @@ describe('react-mixout: mixout', () => {
   describe('componentWillUpdateHook/componentDidUpdateHook', () => {
 
     it('should properly pass nextProps and nextContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { componentWillUpdateHook: (nextProps, nextContext) => foo = nextProps.foo },
-        { componentDidUpdateHook: (nextProps, nextContext) => bar = nextContext.bar }
+        { componentWillUpdateHook: (nextProps) => foo = nextProps.foo },
+        { componentDidUpdateHook: (_np, nextContext) => bar = nextContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
         context: { bar: '' },
@@ -597,11 +609,12 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownProps and ownContext to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
-        { componentWillUpdateHook: (np, nc, ownProps, ownContext) => foo = ownProps.foo },
-        { componentDidUpdateHook: (np, nc, ownProps, ownContext) => bar = ownContext.bar }
+        { componentWillUpdateHook: (_np, _nc, ownProps) => foo = ownProps.foo },
+        { componentDidUpdateHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar }
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
         context: { bar: 'bar' },
@@ -615,16 +628,17 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass own isolated state to hooks', () => {
-      const Component = () => null;
-      let foo, bar;
+      const Component = () => null!;
+      let foo: any;
+      let bar: any;
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, ownState) => ownState.foo = 'foo',
-          componentWillUpdateHook: (np, nc, p, C, ownState) => foo = ownState.foo,
+          initialStateInjector: (_p, _c, ownState) => ownState.foo = 'foo',
+          componentWillUpdateHook: (_np, _nc, _p, _c, ownState) => foo = ownState.foo,
         },
         {
-          initialStateInjector: (p, c, ownState) => ownState.bar = 'bar',
-          componentDidUpdateHook: (np, nc, p, C, ownState) => bar = ownState.bar,
+          initialStateInjector: (_p, _c, ownState) => ownState.bar = 'bar',
+          componentDidUpdateHook: (_np, _nc, _p, _c, ownState) => bar = ownState.bar,
         }
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
@@ -636,17 +650,17 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass child if child is class and undefined if not to hooks', () => {
-      const FunctionComponent = () => null;
+      const FunctionComponent = () => null!;
       const ClassComponent = class extends React.Component<any, any> {
         foo() { return 1; }
         render() { return null; }
       };
-      let child1;
-      let child2;
+      let child1: any;
+      let child2: any;
       const mountTester = mixout(
         {
-          componentWillUpdateHook: (np, nc, p, c, s, child) => child1 = child,
-          componentDidUpdateHook: (np, nc, p, c, s, child) => child2 = child,
+          componentWillUpdateHook: (_np, _nc, _p, _c, _s, child) => child1 = child,
+          componentDidUpdateHook: (_np, _nc, _p, _c, _s, child) => child2 = child,
         }
       );
       const wrapper1 = mount(React.createElement(mountTester(FunctionComponent)));
@@ -664,8 +678,8 @@ describe('react-mixout: mixout', () => {
   describe('componentWillUnmountHook', () => {
 
     it('should properly pass ownProps to hooks', () => {
-      const Component = () => null;
-      let foo;
+      const Component = () => null!;
+      let foo: any;
       const Mixout = mixout(
         { componentWillUnmountHook: ownProps => foo = ownProps.foo }
       )(Component);
@@ -676,10 +690,10 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownContext to hooks', () => {
-      const Component = () => null;
-      let foo;
+      const Component = () => null!;
+      let foo: any;
       const Mixout = mixout(
-        { componentWillUnmountHook: (ownProps, ownContext) => foo = ownContext.foo }
+        { componentWillUnmountHook: (_op, ownContext) => foo = ownContext.foo }
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
         context: { foo: 'foo' },
@@ -691,12 +705,12 @@ describe('react-mixout: mixout', () => {
     });
 
     it('should properly pass ownState to hooks', () => {
-      const Component = () => null;
-      let foo;
+      const Component = () => null!;
+      let foo: any;
       const Mixout = mixout(
         {
-          initialStateInjector: (p, c, ownState) => ownState.foo = 'foo',
-          componentWillUnmountHook: (ownProps, ownContext, ownState) => foo = ownState.foo,
+          initialStateInjector: (_p, _c, ownState) => ownState.foo = 'foo',
+          componentWillUnmountHook: (_op, _oc, ownState) => foo = ownState.foo,
         }
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
@@ -710,22 +724,22 @@ describe('react-mixout: mixout', () => {
   describe('remix integration', () => {
 
     it('should properly set displayName', () => {
-      const Mixout = mixout()(remix('Button', () => null));
+      const Mixout = mixout()(remix('Button', () => null!));
       expect(Mixout.displayName).to.be.equals('Button');
     });
 
     it('should properly call renderer with passedProps', () => {
-      let passedProps;
+      let passedProps: any;
       const Mixout = mixout()(remix('Button', props => {
         passedProps = props;
-        return null;
+        return null!;
       }));
       shallow(React.createElement(Mixout, { foo: 'foo' }));
       expect(passedProps.foo).to.be.equals('foo');
     });
 
     it('should properly return renderer\'s output as it\'s own', () => {
-      const Mixout = mixout()(remix('Button', props => React.createElement('span')));
+      const Mixout = mixout()(remix('Button', () => React.createElement('span')));
       const wrapper = shallow(React.createElement(Mixout, { foo: 'foo' }));
       expect(wrapper.contains(React.createElement('span'))).to.be.equals(true);
     });

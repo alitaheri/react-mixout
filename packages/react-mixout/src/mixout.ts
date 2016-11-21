@@ -1,7 +1,6 @@
 import * as React from 'react';
-
-import {Injector, decompose, ImperativeMethodImplementation} from './injector';
-import {Remix} from './remix';
+import { Injector, decompose, ImperativeMethodImplementation } from './injector';
+import { Remix } from './remix';
 
 type ReactComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
 
@@ -14,7 +13,7 @@ export interface Mixout {
 }
 
 // copied from https://github.com/acdlite/recompose
-export function isClassComponent(Component) {
+export function isClassComponent(Component: any) {
   return Boolean(Component && Component.prototype && typeof Component.prototype.isReactComponent === 'object');
 }
 
@@ -65,13 +64,13 @@ export default (function mixout(...injectors: Injector[]) {
       static contextTypes = contextTypes;
       static defaultProps = defaultProps;
 
-      private injectorStates;
-      private child: React.ReactInstance;
-      private setChild = (instance) => {
+      public injectorStates: { [id: number]: any };
+      public child: React.ReactInstance;
+      private setChild = (instance: React.ReactInstance) => {
         this.child = instance;
       };
 
-      constructor(props, context) {
+      constructor(props: any, context: any) {
         super(props, context);
         const state: { [id: number]: any } = {};
 
@@ -120,7 +119,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any): boolean {
+      shouldComponentUpdate(nextProps: any, _ns: any, nextContext: any): boolean {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
 
@@ -142,7 +141,7 @@ export default (function mixout(...injectors: Injector[]) {
         return shouldUpdate;
       }
 
-      componentWillUpdate(nextProps: any, nextState: any, nextContext: any) {
+      componentWillUpdate(nextProps: any, _ns: any, nextContext: any) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -154,7 +153,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentDidUpdate(prevProps: any, prevState: any, prevContext: any) {
+      componentDidUpdate(prevProps: any, _ps: any, prevContext: any) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -215,7 +214,7 @@ export default (function mixout(...injectors: Injector[]) {
       const id = imperativeMethodInjector.id;
 
       function setImperativeMethod(name: string, implementation: ImperativeMethodImplementation) {
-        Mixout.prototype[name] = function (...args: any[]) {
+        (<any>Mixout.prototype)[name] = function (this: Mixout, ...args: any[]) {
           const ownProps = this.props;
           const ownContext = this.context;
           const ownState = this.injectorStates[id];

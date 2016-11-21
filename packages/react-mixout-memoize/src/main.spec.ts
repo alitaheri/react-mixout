@@ -1,11 +1,8 @@
-/// <reference path="../../../typings/index.d.ts" />
-
 import * as React from 'react';
-import {expect} from 'chai';
-import {mount, shallow} from 'enzyme';
-
+import { expect } from 'chai';
+import { mount, shallow } from 'enzyme';
 import mixout from 'react-mixout';
-import memoize, {context} from './main';
+import memoize, { context } from './main';
 
 class Test extends React.Component<any, any> {
   render() {
@@ -16,7 +13,7 @@ class Test extends React.Component<any, any> {
 describe('react-mixout-memoize', () => {
 
   it('should fail when name is not valid', () => {
-    expect(() => memoize(null, () => 1, () => 1)).to.throw();
+    expect(() => memoize(null!, () => 1, () => 1)).to.throw();
   });
 
   it('should fail when there are no selectors', () => {
@@ -41,8 +38,8 @@ describe('react-mixout-memoize', () => {
 
   it('should properly call selectors with context and pass the results to resolver', () => {
     const memo = memoize('result',
-      (props, context) => context.cash,
-      (props, context) => context.credit,
+      (_p, context) => context.cash,
+      (_p, context) => context.credit,
       (cash, credit) => cash + credit
     );
 
@@ -54,10 +51,10 @@ describe('react-mixout-memoize', () => {
   it('should call resolver only when selectors return a different value', () => {
     let called = 0;
     const memo = memoize('result',
-      (props, context) => context.pocket.cash,
-      (props, context) => context.pocket.coins,
-      (props, context) => props.accounting.credit,
-      (props, context) => props.accounting.debt,
+      (_p, context) => context.pocket.cash,
+      (_p, context) => context.pocket.coins,
+      props => props.accounting.credit,
+      props => props.accounting.debt,
       (cash, coins, credit, debt) => { called++; return cash + coins + credit - debt; }
     );
 

@@ -1,8 +1,5 @@
-/// <reference path="../../../typings/index.d.ts" />
-
-import {expect} from 'chai';
-
-import {combine, flatten} from './combine';
+import { expect } from 'chai';
+import { combine, flatten } from './combine';
 
 describe('react-mixout: combine + flatten', () => {
 
@@ -22,7 +19,10 @@ describe('react-mixout: combine + flatten', () => {
     const i4 = { i: 4 };
     const i5 = { i: 5 };
     const i6 = { i: 6 };
-    const tree = [combine(i1, null, combine(i2, false, i3, combine(i4, combine(i5)), i6)), undefined];
+    const tree = [
+      combine(i1, null!, combine(i2, false, i3, combine(i4, combine(i5)), i6)),
+      undefined!,
+    ];
     expect(flatten(tree)).to.deep.equal([i1, i2, i3, i4, i5, i6]);
   });
 
