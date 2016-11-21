@@ -1,6 +1,6 @@
 {
   "name": "react-mixout",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Higher order... mixin!",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
