@@ -34,8 +34,10 @@ class Test extends React.Component<any, any> {
   }
 }
 
-const TestHOC
-  = (props: any) => React.createElement(Test, Object['assign']({}, props, { ref: props.testRef }));
+const TestHOC = (props: any) => React.createElement(
+  Test,
+  (<any>Object)['assign']({}, props, { ref: props.testRef }),
+);
 
 describe('react-mixout-proxy', () => {
 
