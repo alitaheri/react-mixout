@@ -126,7 +126,9 @@ You can provide these hooks and injectors to hook into lifecycle methods and tra
 interface Injector {
   propTypeInjector?: PropTypeInjector;
   contextTypeInjector?: ContextTypeInjector;
+  childContextTypeInjector?: ChildContextTypeInjector;
   propInjector?: PropInjector;
+  contextInjector?: ContextInjector;
   initialStateInjector?: InitialStateInjector;
   imperativeMethodInjector?: ImperativeMethodInjector;
   componentWillMountHook?: ComponentWillMountHook;
@@ -191,6 +193,30 @@ const requiredContext = (context: string) => ({
 });
 ```
 
+### childContextTypeInjector
+
+You can use this injector to set child context validators. The child context validators are needed
+if you wish to pass context.
+
+```js
+interface ChildContextTypeInjector {
+  (setChildContextType: (name: string, validator: React.Validator<any>) => void): void;
+}
+```
+
+#### Examples
+
+Default locale context:
+```js
+const defaultLocale = (locale: string) => ({
+  childContextTypeInjector: setChildContextType => setChildContextType(
+    'defaultLocale',
+    React.PropTypes.any,
+  ),
+  contextInjector: setContext => setContext('defaultLocale', locale),
+});
+```
+
 ### propInjector
 
 To add/override the props that are passed down to the wrapped component you should call the
@@ -210,6 +236,28 @@ Transform prop:
 const transformProp = (name: string, transformer: (prop: any) => any) => ({
   propInjector: (setProp, ownProps) => setProp(name, transformer(ownProps[name])),
 });
+```
+
+### contextInjector
+
+To add/override the child context that are passed down to the wrapped component you should call the
+`setContext` method provided by this injector. This method is called within the `getChildContext` method
+of Mixout to build the final context object.
+
+```js
+interface ContextInjector {
+  (setContext: (name: string, value: any) => void, ownProps: any, ownContext: any, ownState: any): void;
+}
+```
+
+#### Examples
+
+Subtree Color From Prop:
+```js
+const subtreeColor = {
+  childContextTypeInjector: setChildContextType => setChildContextType('color', React.PropTypes.string),
+  contextInjector: (setContext, ownProps) => setContext('color', ownProps.color),
+};
 ```
 
 ### initialStateInjector
