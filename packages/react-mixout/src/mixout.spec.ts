@@ -50,6 +50,38 @@ describe('react-mixout: mixout', () => {
 
   });
 
+  describe('childContextTypeInjector', () => {
+
+    it('should properly add or override child context validators', () => {
+      const Mixout = mixout(
+        {
+          childContextTypeInjector: (setChildContextType) => {
+            setChildContextType('a', React.PropTypes.number);
+            setChildContextType('b', React.PropTypes.string);
+            setChildContextType('c', React.PropTypes.any);
+            setChildContextType('a', React.PropTypes.any);
+          },
+        },
+        {
+          childContextTypeInjector: (setChildContextType) => {
+            setChildContextType('d', React.PropTypes.number);
+            setChildContextType('e', React.PropTypes.string);
+            setChildContextType('f', React.PropTypes.any);
+            setChildContextType('e', React.PropTypes.bool);
+          },
+        }
+      )(() => null!);
+
+      expect(Mixout.childContextTypes!['a']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.childContextTypes!['b']).to.be.equals(React.PropTypes.string);
+      expect(Mixout.childContextTypes!['c']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.childContextTypes!['d']).to.be.equals(React.PropTypes.number);
+      expect(Mixout.childContextTypes!['e']).to.be.equals(React.PropTypes.bool);
+      expect(Mixout.childContextTypes!['f']).to.be.equals(React.PropTypes.any);
+    });
+
+  });
+
   describe('propTypeInjector', () => {
 
     it('should properly add or override default props and validators', () => {
@@ -132,11 +164,11 @@ describe('react-mixout: mixout', () => {
       const Component = () => null!;
       const Mixout = mixout(
         {
-          contextTypeInjector: ((setContextType => setContextType('color', React.PropTypes.string))),
+          contextTypeInjector: setContextType => setContextType('color', React.PropTypes.string),
           propInjector: (setProp, _op, ownContext) => setProp('a', ownContext.color),
         },
         {
-          contextTypeInjector: ((setContextType => setContextType('theme', React.PropTypes.object))),
+          contextTypeInjector: setContextType => setContextType('theme', React.PropTypes.object),
           propInjector: (setProp, _op, ownContext) => setProp('b', ownContext.theme),
         }
       )(Component);
@@ -160,6 +192,138 @@ describe('react-mixout: mixout', () => {
       const wrapper = shallow(React.createElement(Mixout));
       expect(wrapper.find(Component).at(0).prop('a')).to.be.equals('bar');
       expect(wrapper.find(Component).at(0).prop('b')).to.be.equals('foobar');
+    });
+
+  });
+
+  describe('contextInjector', () => {
+
+    it('should properly add or override passed context', () => {
+      let passedContext: any = {};
+      const Component = (_p: any, context: any) => {
+        passedContext = context;
+        return null!;
+      };
+
+      (<any>Component).contextTypes = {
+        a: React.PropTypes.number,
+        b: React.PropTypes.number,
+        c: React.PropTypes.number,
+      };
+
+      const Mixout = mixout(
+        {
+          childContextTypeInjector: (setChildContextType) => {
+            setChildContextType('a', React.PropTypes.bool);
+            setChildContextType('b', React.PropTypes.number);
+          },
+          contextInjector: (setContext) => {
+            setContext('a', true);
+            setContext('b', 4);
+          },
+        },
+        {
+          childContextTypeInjector: (setChildContextType) => {
+            setChildContextType('c', React.PropTypes.number);
+            setChildContextType('a', React.PropTypes.number);
+          },
+          contextInjector: (setContext) => {
+            setContext('c', 10);
+            setContext('a', 1);
+          },
+        }
+      )(Component);
+
+      mount(React.createElement(Mixout));
+      expect(passedContext['a']).to.be.equals(1);
+      expect(passedContext['b']).to.be.equals(4);
+      expect(passedContext['c']).to.be.equals(10);
+    });
+
+    it('should properly pass ownProps to injectors', () => {
+      let passedContext: any = {};
+      const Component = (_p: any, context: any) => {
+        passedContext = context;
+        return null!;
+      };
+
+      (<any>Component).contextTypes = {
+        a: React.PropTypes.string,
+        b: React.PropTypes.string,
+      };
+
+      const Mixout = mixout(
+        { childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string) },
+        { childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string) },
+        { contextInjector: (setContext, ownProps) => setContext('a', ownProps.hello) },
+        { contextInjector: (setContext, ownProps) => setContext('b', ownProps.world) }
+      )(Component);
+
+      mount(React.createElement(Mixout, { hello: 'hello', world: 'world' }));
+      expect(passedContext['a']).to.be.equals('hello');
+      expect(passedContext['b']).to.be.equals('world');
+    });
+
+    it('should properly pass ownContext to injectors', () => {
+      const obj = {};
+      let passedContext: any = {};
+      const Component = (_p: any, context: any) => {
+        passedContext = context;
+        return null!;
+      };
+
+      (<any>Component).contextTypes = {
+        a: React.PropTypes.string,
+        b: React.PropTypes.object,
+      };
+
+      const Mixout = mixout(
+        {
+          contextTypeInjector: setContextType => setContextType('color', React.PropTypes.string),
+          childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string),
+          contextInjector: (setContext, _op, ownContext) => setContext('a', ownContext.color),
+        },
+        {
+          contextTypeInjector: setContextType => setContextType('theme', React.PropTypes.object),
+          childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string),
+          contextInjector: (setContext, _op, ownContext) => setContext('b', ownContext.theme),
+        }
+      )(Component);
+      mount(React.createElement(Mixout), {
+        context: { color: '#FFF', theme: obj },
+        childContextTypes: { color: React.PropTypes.string, theme: React.PropTypes.object },
+      });
+      expect(passedContext['a']).to.be.equals('#FFF');
+      expect(passedContext['b']).to.be.equals(obj);
+    });
+
+    it('should properly pass ownState to injectors', () => {
+      let passedContext: any = {};
+      const Component = (_p: any, context: any) => {
+        passedContext = context;
+        return null!;
+      };
+
+      (<any>Component).contextTypes = {
+        a: React.PropTypes.string,
+        b: React.PropTypes.string,
+      };
+
+      const Mixout = mixout(
+        {
+          initialStateInjector: (_p, _c, s) => s['foo'] = 'bar',
+          childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string),
+          contextInjector: (setContext, _op, _oc, ownState) => setContext('a', ownState.foo),
+        },
+        {
+          initialStateInjector: (_p, _c, s) => s['baz'] = 'foobar',
+          childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string),
+          contextInjector: (setContext, _op, _oc, ownState) => setContext('b', ownState.baz),
+        }
+      )(Component);
+      mount(React.createElement(Mixout));
+      expect(passedContext['a']).to.be.equals('bar');
+      expect(passedContext['b']).to.be.equals('foobar');
     });
 
   });

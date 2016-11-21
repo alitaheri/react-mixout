@@ -9,8 +9,16 @@ export interface ContextTypeInjector {
   (setContextType: (name: string, validator: React.Validator<any>) => void): void;
 }
 
+export interface ChildContextTypeInjector {
+  (setChildContextType: (name: string, validator: React.Validator<any>) => void): void;
+}
+
 export interface PropInjector {
   (setProp: (name: string, value: any) => void, ownProps: any, ownContext: any, ownState: any): void;
+}
+
+export interface ContextInjector {
+  (setContext: (name: string, value: any) => void, ownProps: any, ownContext: any, ownState: any): void;
 }
 
 export interface InitialStateInjector {
@@ -56,7 +64,9 @@ export interface ComponentWillUnmountHook {
 export interface Injector {
   propTypeInjector?: PropTypeInjector;
   contextTypeInjector?: ContextTypeInjector;
+  childContextTypeInjector?: ChildContextTypeInjector;
   propInjector?: PropInjector;
+  contextInjector?: ContextInjector;
   initialStateInjector?: InitialStateInjector;
   imperativeMethodInjector?: ImperativeMethodInjector;
   componentWillMountHook?: ComponentWillMountHook;
@@ -77,7 +87,9 @@ export interface DecomposeResult {
   ids: number[];
   propTypeInjectors: PropTypeInjector[];
   contextTypeInjectors: ContextTypeInjector[];
+  childContextTypeInjectors: ChildContextTypeInjector[];
   propInjectors: MethodWithId<PropInjector>[];
+  contextInjectors: MethodWithId<ContextInjector>[];
   initialStateInjectors: MethodWithId<InitialStateInjector>[];
   imperativeMethodInjectors: MethodWithId<ImperativeMethodInjector>[];
   componentWillMountHooks: MethodWithId<ComponentWillMountHook>[];
@@ -97,7 +109,9 @@ export function decompose(injectors: Injector[]): DecomposeResult {
   const ids: number[] = [];
   const propTypeInjectors: PropTypeInjector[] = [];
   const contextTypeInjectors: ContextTypeInjector[] = [];
+  const childContextTypeInjectors: ChildContextTypeInjector[] = [];
   const propInjectors: MethodWithId<PropInjector>[] = [];
+  const contextInjectors: MethodWithId<ContextInjector>[] = [];
   const initialStateInjectors: MethodWithId<InitialStateInjector>[] = [];
   const imperativeMethodInjectors: MethodWithId<ImperativeMethodInjector>[] = [];
   const componentWillMountHooks: MethodWithId<ComponentWillMountHook>[] = [];
@@ -121,8 +135,16 @@ export function decompose(injectors: Injector[]): DecomposeResult {
       contextTypeInjectors.push(injector.contextTypeInjector);
     }
 
+    if (injector.childContextTypeInjector) {
+      childContextTypeInjectors.push(injector.childContextTypeInjector);
+    }
+
     if (injector.propInjector) {
       propInjectors.push({ id, method: injector.propInjector });
+    }
+
+    if (injector.contextInjector) {
+      contextInjectors.push({ id, method: injector.contextInjector });
     }
 
     if (injector.initialStateInjector) {
@@ -166,7 +188,9 @@ export function decompose(injectors: Injector[]): DecomposeResult {
     ids,
     propTypeInjectors,
     contextTypeInjectors,
+    childContextTypeInjectors,
     propInjectors,
+    contextInjectors,
     initialStateInjectors,
     imperativeMethodInjectors,
     componentWillMountHooks,

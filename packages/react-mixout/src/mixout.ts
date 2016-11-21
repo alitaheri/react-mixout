@@ -22,7 +22,9 @@ export default (function mixout(...injectors: Injector[]) {
     ids,
     propTypeInjectors,
     contextTypeInjectors,
+    childContextTypeInjectors,
     propInjectors,
+    contextInjectors,
     initialStateInjectors,
     imperativeMethodInjectors,
     componentWillMountHooks,
@@ -62,6 +64,7 @@ export default (function mixout(...injectors: Injector[]) {
         : 'Mixout';
       static propTypes = propTypes;
       static contextTypes = contextTypes;
+      static childContextTypes: any;
       static defaultProps = defaultProps;
 
       public injectorStates: { [id: number]: any };
@@ -226,6 +229,39 @@ export default (function mixout(...injectors: Injector[]) {
 
       imperativeMethodInjector.method(setImperativeMethod);
     });
+
+    if (childContextTypeInjectors.length > 0) {
+      Mixout.childContextTypes = {};
+
+      const setChildContextType
+        = function setChildContextType(name: string, validator: React.Validator<any>) {
+          Mixout.childContextTypes[name] = validator;
+        };
+
+      childContextTypeInjectors.forEach(
+        childContextTypeInjector => childContextTypeInjector(setChildContextType),
+      );
+    }
+
+    if (contextInjectors.length > 0) {
+      (<any>Mixout.prototype).getChildContext = function getChildContext(this: Mixout) {
+        const ownProps = this.props;
+        const ownContext = this.context;
+        const states = this.injectorStates;
+        const context: any = {};
+
+        function setContext(name: string, value: any): void {
+          context[name] = value
+        }
+
+        contextInjectors.forEach(contextInjector => {
+          const ownState = states[contextInjector.id];
+          contextInjector.method(setContext, ownProps, ownContext, ownState);
+        });
+
+        return context;
+      }
+    }
 
     return Mixout;
   }

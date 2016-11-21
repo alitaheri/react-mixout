@@ -30,6 +30,7 @@ describe('react-mixout: decompose', () => {
   it('should add ids to hooks and injectors that work with state', () => {
     const injector1: Injector = {
       propInjector: () => null,
+      contextInjector: () => null,
       componentDidUpdateHook: () => null,
     };
     const injector2: Injector = {
@@ -48,6 +49,7 @@ describe('react-mixout: decompose', () => {
 
     const {
       propInjectors,
+      contextInjectors,
       initialStateInjectors,
       imperativeMethodInjectors,
       componentWillMountHooks,
@@ -59,6 +61,7 @@ describe('react-mixout: decompose', () => {
     } = decompose([injector1, injector2, injector3, injector4]);
 
     expect(propInjectors[0].id).to.be.equals(1);
+    expect(contextInjectors[0].id).to.be.equals(1);
     expect(initialStateInjectors[0].id).to.be.equals(3);
     expect(imperativeMethodInjectors[0].id).to.be.equals(2);
     expect(componentWillMountHooks[0].id).to.be.equals(3);
