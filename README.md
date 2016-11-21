@@ -197,7 +197,7 @@ can implement your own mixout [here](packages/react-mixout/INJECTOR.md).
 * [react-mixout-forward-method](packages/react-mixout-forward-method/README.md)
 * [react-mixout-listen](packages/react-mixout-listen/README.md)
 * [react-mixout-memoize](packages/react-mixout-memoize/README.md)
-* [react-mixout-pass-context](packages/react-mixout-forward-context/README.md)
+* [react-mixout-pass-context](packages/react-mixout-pass-context/README.md)
 * [react-mixout-proxy](packages/react-mixout-proxy/README.md)
 * [react-mixout-pure](packages/react-mixout-pure/README.md)
 * [react-mixout-uncontrol](packages/react-mixout-uncontrol/README.md)
