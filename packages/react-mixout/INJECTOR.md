@@ -211,7 +211,7 @@ Default locale context:
 const defaultLocale = (locale: string) => ({
   childContextTypeInjector: setChildContextType => setChildContextType(
     'defaultLocale',
-    React.PropTypes.any,
+    React.PropTypes.string,
   ),
   contextInjector: setContext => setContext('defaultLocale', locale),
 });
