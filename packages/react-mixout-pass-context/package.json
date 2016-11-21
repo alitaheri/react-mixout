@@ -1,0 +1,44 @@
+{
+  "name": "react-mixout-pass-context",
+  "version": "0.4.1",
+  "description": "Pass context down the tree in various ways",
+  "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc -d src/main.ts --outDir lib --module commonjs --removeComments",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alitaheri/react-mixout.git"
+  },
+  "keywords": [
+    "mixin",
+    "react",
+    "context",
+    "child",
+    "pass",
+    "forward",
+    "hoc",
+    "mixout"
+  ],
+  "author": "Ali Taheri Moghaddar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alitaheri/react-mixout/issues"
+  },
+  "homepage": "https://github.com/alitaheri/react-mixout#readme",
+  "devDependencies": {
+    "typescript": "^2.0.10"
+  },
+  "peerDependencies": {
+    "react-mixout": "^0.4.1",
+    "react": ">=0.14.0"
+  },
+  "dependencies": {
+    "@types/react": "^0.14.49"
+  }
+}
