@@ -33,7 +33,7 @@
     "typescript": "^2.1.5"
   },
   "peerDependencies": {
-    "react-mixout": "^0.4.1",
+    "react-mixout": "^0.5.0",
     "react": ">=0.14.0"
   },
   "dependencies": {
