@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-forward-method",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A mixout that forwards imperative method calls to it's wrapped child",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",

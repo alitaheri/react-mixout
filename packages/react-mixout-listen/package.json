@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-listen",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Global event listeners for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",

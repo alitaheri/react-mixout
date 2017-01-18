@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-memoize",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Property memoization for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",

@@ -24,7 +24,7 @@
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-mixout": "^0.5.0",
+    "react-mixout": "^0.5.1",
     "source-map-support": "^0.4.10",
     "ts-node": "^2.0.0",
     "tslint": "^4.3.1",
