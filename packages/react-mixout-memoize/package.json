@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-memoize",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Property memoization for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -d src/main.ts --outDir lib --module commonjs --removeComments",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "devDependencies": {
-    "typescript": "^2.0.10"
+    "typescript": "^2.1.5"
   },
   "peerDependencies": {
     "react-mixout": "^0.4.1",
