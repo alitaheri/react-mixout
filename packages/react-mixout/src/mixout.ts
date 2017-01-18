@@ -1,23 +1,44 @@
 import * as React from 'react';
 import { Injector, decompose, ImperativeMethodImplementation } from './injector';
-import { Remix } from './remix';
+import { Remix, RemixRenderer } from './remix';
 
 type ReactComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
 
-export interface MixoutWrapper<P> {
-  (Component: React.ComponentClass<any> | React.StatelessComponent<any> | Remix<any>): React.ComponentClass<P>;
+export interface MixoutWrapper {
+  <R extends RemixRenderer>(remix: Remix<R>): R & React.ComponentClass<void>;
+  <T extends React.ComponentClass<any>>(classComponent: T): T;
+  <T extends React.StatelessComponent<any>>(statelessComponent: T): T & React.ComponentClass<void>;
+}
+
+export interface MixoutWrapperWithClassTypeOverride<T> {
+  (remix: Remix<any>): T;
+  (classComponent: React.ComponentClass<any>): T;
+  (statelessComponent: React.StatelessComponent<any>): T;
+}
+
+export interface MixoutWrapperWithPropOverride<P> {
+  (remix: Remix<any>): React.ComponentClass<P>;
+  (classComponent: React.ComponentClass<any>): React.ComponentClass<P>;
+  (statelessComponent: React.StatelessComponent<any>): React.ComponentClass<P>;
 }
 
 export interface Mixout {
-  <P>(...injectors: Injector[]): MixoutWrapper<P>;
+  (...injectors: Injector[]): MixoutWrapper;
+  <T extends React.ComponentClass<any>>(...injectors: Injector[]): MixoutWrapperWithClassTypeOverride<T>;
+  <T extends React.StatelessComponent<any>>(...injectors: Injector[]): MixoutWrapperWithClassTypeOverride<T>;
+  <P>(...injectors: Injector[]): MixoutWrapperWithPropOverride<P>;
 }
 
 // copied from https://github.com/acdlite/recompose
 export function isClassComponent(Component: any) {
-  return Boolean(Component && Component.prototype && typeof Component.prototype.isReactComponent === 'object');
+  return Boolean(
+    Component &&
+    Component.prototype &&
+    typeof Component.prototype.isReactComponent === 'object',
+  );
 }
 
-export default (function mixout(...injectors: Injector[]) {
+function mixout(...injectors: Injector[]) {
   const {
     ids,
     propTypeInjectors,
@@ -44,34 +65,34 @@ export default (function mixout(...injectors: Injector[]) {
     const propTypes: React.ValidationMap<any> = {};
     function setPropType(name: string, validator: React.Validator<any>, defaultValue: any) {
       propTypes[name] = validator;
-      if (typeof defaultValue !== 'undefined') {
+      if (defaultValue !== undefined) {
         defaultProps[name] = defaultValue;
       } else {
         delete defaultProps[name];
       }
-    };
+    }
     propTypeInjectors.forEach(propTypeInjector => propTypeInjector(setPropType));
 
     const contextTypes: React.ValidationMap<any> = {};
     function setContextType(name: string, validator: React.Validator<any>) {
       contextTypes[name] = validator;
-    };
+    }
     contextTypeInjectors.forEach(contextTypeInjector => contextTypeInjector(setContextType));
 
     class Mixout extends React.Component<any, void> {
-      static displayName = Component instanceof Remix && Component.displayName
+      public static displayName = Component instanceof Remix && Component.displayName
         ? Component.displayName
         : 'Mixout';
-      static propTypes = propTypes;
-      static contextTypes = contextTypes;
-      static childContextTypes: any;
-      static defaultProps = defaultProps;
+      public static propTypes = propTypes;
+      public static contextTypes = contextTypes;
+      public static childContextTypes: any;
+      public static defaultProps = defaultProps;
 
       public injectorStates: { [id: number]: any };
       public child: React.ReactInstance;
       private setChild = (instance: React.ReactInstance) => {
         this.child = instance;
-      };
+      }
 
       constructor(props: any, context: any) {
         super(props, context);
@@ -87,7 +108,7 @@ export default (function mixout(...injectors: Injector[]) {
         this.injectorStates = state;
       }
 
-      componentWillMount() {
+      public componentWillMount() {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -98,7 +119,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentDidMount() {
+      public componentDidMount() {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -110,7 +131,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentWillReceiveProps(nextProps: any, nextContext: any) {
+      public componentWillReceiveProps(nextProps: any, nextContext: any) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -122,7 +143,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      shouldComponentUpdate(nextProps: any, _ns: any, nextContext: any): boolean {
+      public shouldComponentUpdate(nextProps: any, _ns: any, nextContext: any): boolean {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
 
@@ -144,7 +165,7 @@ export default (function mixout(...injectors: Injector[]) {
         return shouldUpdate;
       }
 
-      componentWillUpdate(nextProps: any, _ns: any, nextContext: any) {
+      public componentWillUpdate(nextProps: any, _ns: any, nextContext: any) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -156,7 +177,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentDidUpdate(prevProps: any, _ps: any, prevContext: any) {
+      public componentDidUpdate(prevProps: any, _ps: any, prevContext: any) {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -168,7 +189,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      componentWillUnmount() {
+      public componentWillUnmount() {
         const ownProps: any = this.props;
         const ownContext: any = this.context;
         const states: any = this.injectorStates;
@@ -179,7 +200,7 @@ export default (function mixout(...injectors: Injector[]) {
         });
       }
 
-      render() {
+      public render() {
         // do not let "this" be captured in a closure.
         const ownProps: any = this.props;
         const ownContext: any = this.context;
@@ -192,13 +213,13 @@ export default (function mixout(...injectors: Injector[]) {
         }
 
         // pass down own props.
-        for (let prop in ownProps) {
+        Object.keys(ownProps).map(prop => {
           passDownProps[prop] = ownProps[prop];
-        }
+        });
 
         function setProp(name: string, value: any) {
           passDownProps[name] = value;
-        };
+        }
 
         propInjectors.forEach(propInjector => {
           propInjector.method(setProp, ownProps, ownContext, states[propInjector.id]);
@@ -208,7 +229,7 @@ export default (function mixout(...injectors: Injector[]) {
           return Component.renderer(passDownProps);
         }
 
-        return React.createElement(<ReactComponent>Component, passDownProps);
+        return React.createElement(<any>Component, passDownProps);
       }
     }
 
@@ -218,13 +239,15 @@ export default (function mixout(...injectors: Injector[]) {
 
       function setImperativeMethod(name: string, implementation: ImperativeMethodImplementation) {
         (<any>Mixout.prototype)[name] = function (this: Mixout, ...args: any[]) {
+          // tslint:disable:no-invalid-this
           const ownProps = this.props;
           const ownContext = this.context;
           const ownState = this.injectorStates[id];
           const child = this.child;
+          // tslint:enable:no-invalid-this
 
           return implementation(args, ownProps, ownContext, ownState, child);
-        }
+        };
       }
 
       imperativeMethodInjector.method(setImperativeMethod);
@@ -245,13 +268,15 @@ export default (function mixout(...injectors: Injector[]) {
 
     if (contextInjectors.length > 0) {
       (<any>Mixout.prototype).getChildContext = function getChildContext(this: Mixout) {
+        // tslint:disable:no-invalid-this
         const ownProps = this.props;
         const ownContext = this.context;
         const states = this.injectorStates;
+        // tslint:enable:no-invalid-this
         const context: any = {};
 
         function setContext(name: string, value: any): void {
-          context[name] = value
+          context[name] = value;
         }
 
         contextInjectors.forEach(contextInjector => {
@@ -260,9 +285,11 @@ export default (function mixout(...injectors: Injector[]) {
         });
 
         return context;
-      }
+      };
     }
 
     return Mixout;
-  }
-}) as Mixout;
+  };
+}
+
+export default <Mixout>mixout;
