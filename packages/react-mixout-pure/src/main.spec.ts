@@ -31,8 +31,8 @@ describe('react-mixout-pure', () => {
     const Mixout = mixout(pure)(Component);
 
     const wrapper = mount(React.createElement(Mixout), {
-      context: { prop: 'foo' },
       childContextTypes: { prop: React.PropTypes.string },
+      context: { prop: 'foo' },
     });
 
     expect(renders).to.be.equals(1);

@@ -6,7 +6,7 @@ export const forwardReactTransitionGroupMethods = combine(
   forwardMethod('componentWillEnter'),
   forwardMethod('componentDidEnter'),
   forwardMethod('componentWillLeave'),
-  forwardMethod('componentDidLeave')
+  forwardMethod('componentDidLeave'),
 );
 
 export default function forwardMethod(name: string, targetName?: string): Injector {

@@ -5,19 +5,19 @@ import mixout from 'react-mixout';
 import uncontrol, { uncontrolValue } from './main';
 
 class Test extends React.Component<any, any> {
-  render() {
+  public render() {
     setTimeout(() => this.props.onChange({ target: { value: 'foo' } }));
     return React.createElement('input', {
       id: 'input',
       type: 'text',
-      onChange: () => { },
+      onChange() { return; },
       value: this.props.value,
     });
   }
 }
 
 class FlexibleTest extends React.Component<any, any> {
-  render() {
+  public render() {
     const name: string = this.props.propName;
     setTimeout(() => {
       this.props['on' + name[0].toUpperCase() + name.substring(1) + 'Change']({ target: { value: 'foo' } });
@@ -25,7 +25,7 @@ class FlexibleTest extends React.Component<any, any> {
     return React.createElement('input', {
       id: 'input',
       type: 'text',
-      onChange: () => { },
+      onChange() { return; },
       value: this.props[this.props.propName],
     });
   }
@@ -37,8 +37,8 @@ describe('react-mixout-uncontrol', () => {
     const Mixout = mixout(uncontrol('val'))(FlexibleTest);
 
     const wrapper = mount(React.createElement(Mixout, {
-      propName: 'val',
       defaultVal: 'bar',
+      propName: 'val',
     }));
 
     const testWrapper = wrapper.find(FlexibleTest).at(0);
@@ -53,19 +53,22 @@ describe('react-mixout-uncontrol', () => {
     expect(testWrapper.prop('val')).to.be.equal('bar');
     expect((<any>wrapper.instance()).getVal()).to.be.equals('bar');
 
-    setTimeout(() => {
-      expect(testWrapper.prop('val')).to.be.equal('foo');
-      done();
-    }, 10);
+    setTimeout(
+      () => {
+        expect(testWrapper.prop('val')).to.be.equal('foo');
+        done();
+      },
+      10,
+    );
   });
 
   it('should properly set propTypes and defaults', () => {
-    const callback = () => { };
+    const callback = () => { return; };
     const Mixout = mixout(uncontrol('val', {
-      defaultValuePropDefault: 1,
-      defaultValuePropValidator: React.PropTypes.number,
       callbackPropDefault: callback,
       callbackPropValidator: React.PropTypes.func,
+      defaultValuePropDefault: 1,
+      defaultValuePropValidator: React.PropTypes.number,
     }))(FlexibleTest);
 
     expect((<any>Mixout.propTypes)['defaultVal']).to.be.equals(React.PropTypes.number);
@@ -78,13 +81,13 @@ describe('react-mixout-uncontrol', () => {
   it('should work with custom stated props', (done) => {
     const Mixout = mixout(uncontrol('v', {
       callbackPropName: 'change',
-      setValueMethodName: 'set',
-      getValueMethodName: 'get',
       clearValueMethodName: 'clear',
-      passedDownCallbackPropName: 'onChange',
-      passedDownValuePropName: 'value',
       defaultValuePropName: 'def',
       getValueFromPassedDownCallback: () => 'overriden',
+      getValueMethodName: 'get',
+      passedDownCallbackPropName: 'onChange',
+      passedDownValuePropName: 'value',
+      setValueMethodName: 'set',
     }))(Test);
 
     let val: any;
@@ -105,19 +108,22 @@ describe('react-mixout-uncontrol', () => {
     expect(testWrapper.prop('value')).to.be.equal('bar');
     expect((<any>wrapper.instance()).get()).to.be.equals('bar');
 
-    setTimeout(() => {
-      expect(testWrapper.prop('value')).to.be.equal('overriden');
-      expect(val).to.be.equals('foo');
-      done();
-    }, 10);
+    setTimeout(
+      () => {
+        expect(testWrapper.prop('value')).to.be.equal('overriden');
+        expect(val).to.be.equals('foo');
+        done();
+      },
+      10,
+    );
   });
 
   it('should work with partially custom stated props', (done) => {
     const Mixout = mixout(uncontrol('value', {
       callbackPropName: 'change',
-      setValueMethodName: 'set',
-      passedDownCallbackPropName: 'onChange',
       defaultValuePropName: 'def',
+      passedDownCallbackPropName: 'onChange',
+      setValueMethodName: 'set',
     }))(Test);
 
     let val: any;
@@ -125,7 +131,6 @@ describe('react-mixout-uncontrol', () => {
       change: (e: any) => val = e.target.value,
       def: 'bar',
     }));
-
 
     const testWrapper = wrapper.find(Test).at(0);
     expect(testWrapper.prop('value')).to.be.equal('bar');
@@ -139,20 +144,23 @@ describe('react-mixout-uncontrol', () => {
     expect(testWrapper.prop('value')).to.be.equal('bar');
     expect((<any>wrapper.instance()).getValue()).to.be.equals('bar');
 
-    setTimeout(() => {
-      expect(testWrapper.prop('value')).to.be.equal('foo');
-      expect(val).to.be.equals('foo');
-      done();
-    }, 10);
+    setTimeout(
+      () => {
+        expect(testWrapper.prop('value')).to.be.equal('foo');
+        expect(val).to.be.equals('foo');
+        done();
+      },
+      10,
+    );
   });
 
   it('should uncontrol value with expected behavior', (done) => {
     let val: any;
-    let Mixout = mixout(uncontrolValue)(Test);
+    const Mixout = mixout(uncontrolValue)(Test);
 
     const wrapper = mount(React.createElement(Mixout, {
-      onChange: (e: any) => val = e.target.value,
       defaultValue: 'bar',
+      onChange: (e: any) => val = e.target.value,
     }));
 
     const testWrapper = wrapper.find(Test).at(0);
@@ -167,11 +175,14 @@ describe('react-mixout-uncontrol', () => {
     expect(testWrapper.prop('value')).to.be.equal('bar');
     expect((<any>wrapper.instance()).getValue()).to.be.equals('bar');
 
-    setTimeout(() => {
-      expect(testWrapper.prop('value')).to.be.equal('foo');
-      expect(val).to.be.equals('foo');
-      done();
-    }, 10);
+    setTimeout(
+      () => {
+        expect(testWrapper.prop('value')).to.be.equal('foo');
+        expect(val).to.be.equals('foo');
+        done();
+      },
+      10,
+    );
   });
 
 });

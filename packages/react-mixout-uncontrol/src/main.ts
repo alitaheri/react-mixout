@@ -24,9 +24,9 @@ export interface UncontrolOptions<T> {
 
 export const uncontrolValue = uncontrol('value', {
   callbackPropName: 'onChange',
-  passedDownCallbackPropName: 'onChange',
   callbackPropValidator: React.PropTypes.func,
   defaultValuePropValidator: React.PropTypes.any,
+  passedDownCallbackPropName: 'onChange',
 });
 
 export default function uncontrol<T>(name: string, options: UncontrolOptions<T> = {}): Injector {
@@ -49,7 +49,7 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
       setPropType(
         defaultValuePropName,
         defaultValuePropValidator!,
-        defaultValuePropDefault
+        defaultValuePropDefault,
       );
     }
 
@@ -57,10 +57,10 @@ export default function uncontrol<T>(name: string, options: UncontrolOptions<T> 
       setPropType(
         callbackPropName,
         callbackPropValidator!,
-        callbackPropDefault
+        callbackPropDefault,
       );
     }
-  }
+  };
 
   const initialStateInjector: InitialStateInjector = (props, _c, state, forceUpdater) => {
     state.forceUpdate = forceUpdater;

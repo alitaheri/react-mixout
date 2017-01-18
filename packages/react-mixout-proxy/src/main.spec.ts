@@ -11,25 +11,25 @@ class Test extends React.Component<any, any> {
     this.state = { val: props.val || 1 };
   }
 
-  return2() {
+  public return2() {
     return 2;
   }
 
-  returnFirstPlusSecond(first: any, second: any) {
+  public returnFirstPlusSecond(first: any, second: any) {
     return first + second;
   }
 
-  returnValIncrement() {
+  public returnValIncrement() {
     const val = this.state.val;
     this.setState({ val: val + 1 });
     return val;
   }
 
-  render() {
+  public render() {
     return React.createElement('input', {
+      defaultValue: 'Hello',
       ref: this.props.inputRef,
       type: 'text',
-      defaultValue: 'Hello',
     });
   }
 }

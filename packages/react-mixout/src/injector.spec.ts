@@ -29,22 +29,22 @@ describe('react-mixout: decompose', () => {
 
   it('should add ids to hooks and injectors that work with state', () => {
     const injector1: Injector = {
-      propInjector: () => null,
-      contextInjector: () => null,
       componentDidUpdateHook: () => null,
+      contextInjector: () => null,
+      propInjector: () => null,
     };
     const injector2: Injector = {
       componentWillReceivePropsHook: () => null,
       imperativeMethodInjector: () => null,
     };
     const injector3: Injector = {
-      initialStateInjector: () => null,
       componentWillMountHook: () => null,
+      initialStateInjector: () => null,
     };
     const injector4: Injector = {
-      componentWillUpdateHook: () => null,
       componentDidMountHook: () => null,
       componentWillUnmountHook: () => null,
+      componentWillUpdateHook: () => null,
     };
 
     const {

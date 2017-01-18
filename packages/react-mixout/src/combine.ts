@@ -19,5 +19,5 @@ export function flatten(injectors: Injector[], flatInjectors: Injector[] = []): 
 }
 
 export function combine(...injectors: Injector[]): Injector {
-  return { __combination: injectors } as any;
+  return <any>{ __combination: injectors };
 }

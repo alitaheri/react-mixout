@@ -4,7 +4,7 @@ import { combine, flatten } from './combine';
 describe('react-mixout: combine + flatten', () => {
 
   it('should return empty array if input is not array', () => {
-    expect(flatten({} as any)).to.deep.equal([]);
+    expect(flatten(<any>{})).to.deep.equal([]);
   });
 
   it('should act as identity when directly flattening combined array', () => {

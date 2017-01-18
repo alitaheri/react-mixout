@@ -7,18 +7,18 @@ import forwardMethod, { forwardReactTransitionGroupMethods } from './main';
 const FunctionComponent = () => null!;
 
 const ClassComponent = class extends React.Component<any, any> {
-  foo(a: any, b: any) {
+  public foo(a: any, b: any) {
     return a + b;
   }
 
-  componentWillAppear() { }
-  componentDidAppear() { }
-  componentWillEnter() { }
-  componentDidEnter() { }
-  componentWillLeave() { }
-  componentDidLeave() { }
+  public componentWillAppear() { return; }
+  public componentDidAppear() { return; }
+  public componentWillEnter() { return; }
+  public componentDidEnter() { return; }
+  public componentWillLeave() { return; }
+  public componentDidLeave() { return; }
 
-  render() {
+  public render() {
     return null!;
   }
 };

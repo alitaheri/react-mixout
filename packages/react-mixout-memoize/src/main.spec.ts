@@ -5,7 +5,7 @@ import mixout from 'react-mixout';
 import memoize, { context } from './main';
 
 class Test extends React.Component<any, any> {
-  render() {
+  public render() {
     return React.createElement('div', {}, this.props.result);
   }
 }
@@ -25,10 +25,11 @@ describe('react-mixout-memoize', () => {
   });
 
   it('should properly call selectors with props and pass the results to resolver', () => {
-    const memo = memoize('result',
+    const memo = memoize(
+      'result',
       props => props.cash,
       props => props.credit,
-      (cash, credit) => cash + credit
+      (cash, credit) => cash + credit,
     );
 
     const Mixout = mixout(memo)(Test);
@@ -37,10 +38,11 @@ describe('react-mixout-memoize', () => {
   });
 
   it('should properly call selectors with context and pass the results to resolver', () => {
-    const memo = memoize('result',
+    const memo = memoize(
+      'result',
       (_p, context) => context.cash,
       (_p, context) => context.credit,
-      (cash, credit) => cash + credit
+      (cash, credit) => cash + credit,
     );
 
     const Mixout = mixout(memo, context('cash'), context('credit'))(Test);
@@ -50,21 +52,22 @@ describe('react-mixout-memoize', () => {
 
   it('should call resolver only when selectors return a different value', () => {
     let called = 0;
-    const memo = memoize('result',
+    const memo = memoize(
+      'result',
       (_p, context) => context.pocket.cash,
       (_p, context) => context.pocket.coins,
       props => props.accounting.credit,
       props => props.accounting.debt,
-      (cash, coins, credit, debt) => { called++; return cash + coins + credit - debt; }
+      (cash, coins, credit, debt) => { called++; return cash + coins + credit - debt; },
     );
 
     const Mixout = mixout(memo)(Test);
     const wrapper = mount(
       React.createElement(Mixout, { accounting: { credit: 100, debt: 50 } }),
       {
-        context: { pocket: { cash: 1, coins: 10 } },
         childContextTypes: { pocket: React.PropTypes.any },
-      }
+        context: { pocket: { cash: 1, coins: 10 } },
+      },
     );
 
     expect(wrapper.find(Test).at(0).prop('result')).to.be.equals(61);

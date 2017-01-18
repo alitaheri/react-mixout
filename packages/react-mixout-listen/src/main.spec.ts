@@ -8,15 +8,15 @@ const FunctionComponent = () => null!;
 
 function buildClass(onClick: () => void) {
   class Test extends React.Component<any, any> {
-    onClick() {
+    public onClick() {
       onClick();
     }
 
-    render() {
+    public render() {
       return null;
     }
   }
-  return Test
+  return Test;
 }
 
 describe('react-mixout-listen', () => {
@@ -87,11 +87,11 @@ describe('react-mixout-listen', () => {
     let b: any;
 
     class Test extends React.Component<any, any> {
-      onClick() {
+      public onClick() {
         calls.push('test');
       }
 
-      render() {
+      public render() {
         return React.createElement('button', { ref: i => b = i, onClick: () => calls.push('button') });
       }
     }

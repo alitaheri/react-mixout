@@ -24,8 +24,8 @@ function normalize(method: string | Alias): Alias {
 
 export default function proxy(
   refName: string,
-  methods: Array<string | Alias> | string | Alias,
-  failOnNullRef = true
+  methods: (string | Alias)[] | string | Alias,
+  failOnNullRef = true,
 ): Injector {
   let normalizedMethods: Alias[] = [];
 
@@ -39,8 +39,6 @@ export default function proxy(
   }
 
   return {
-    initialStateInjector: (_p, _c, state) => state.refSetter = (instance: any) => state.ref = instance,
-    propInjector: (setProp, _p, _c, state) => setProp(refName, state.refSetter),
     imperativeMethodInjector: setImperativeMethod => {
       normalizedMethods.forEach(method => {
         setImperativeMethod(method.as, (args, _p, _c, state) => {
@@ -50,12 +48,14 @@ export default function proxy(
 
           if (state.ref) {
             if (typeof state.ref[method.name] !== 'function') {
-              throw new Error(`Function ${method.name} does not exist on the targetted component`)
+              throw new Error(`Function ${method.name} does not exist on the targetted component`);
             }
             return state.ref[method.name](...args);
           }
         });
       });
     },
+    initialStateInjector: (_p, _c, state) => state.refSetter = (instance: any) => state.ref = instance,
+    propInjector: (setProp, _p, _c, state) => setProp(refName, state.refSetter),
   };
 }
