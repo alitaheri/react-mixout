@@ -3,16 +3,10 @@
     "target": "es5",
     "module": "commonjs",
     "jsx": "react",
-    "strictNullChecks": true,
     "pretty": true,
-    "noUnusedParameters": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": false,
-    "newLine": "LF",
-    "noImplicitAny": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true
+    "newLine": "LF"
   },
   "exclude": [
     "node_modules"

@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { shallow, mount } from 'enzyme';
 
 import mixout, { isClassComponent } from './mixout';
@@ -10,8 +11,8 @@ describe('react-mixout: isClassComponent', () => {
   it('should correctly determine if passed component is class based', () => {
     const FunctionComponent = () => null;
     const ClassComponent = class extends React.Component<any, any>{ public render() { return null; } };
-    expect(isClassComponent(FunctionComponent)).to.be.false;
-    expect(isClassComponent(ClassComponent)).to.be.true;
+    expect(isClassComponent(FunctionComponent)).to.be.equals(false);
+    expect(isClassComponent(ClassComponent)).to.be.equals(true);
   });
 
 });
@@ -24,28 +25,28 @@ describe('react-mixout: mixout', () => {
       const Mixout = mixout(
         {
           contextTypeInjector: (setContextType) => {
-            setContextType('a', React.PropTypes.number);
-            setContextType('b', React.PropTypes.string);
-            setContextType('c', React.PropTypes.any);
-            setContextType('a', React.PropTypes.any);
+            setContextType('a', PropTypes.number);
+            setContextType('b', PropTypes.string);
+            setContextType('c', PropTypes.any);
+            setContextType('a', PropTypes.any);
           },
         },
         {
           contextTypeInjector: (setContextType) => {
-            setContextType('d', React.PropTypes.number);
-            setContextType('e', React.PropTypes.string);
-            setContextType('f', React.PropTypes.any);
-            setContextType('e', React.PropTypes.bool);
+            setContextType('d', PropTypes.number);
+            setContextType('e', PropTypes.string);
+            setContextType('f', PropTypes.any);
+            setContextType('e', PropTypes.bool);
           },
         },
       )(() => null!);
 
-      expect(Mixout.contextTypes!['a']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.contextTypes!['b']).to.be.equals(React.PropTypes.string);
-      expect(Mixout.contextTypes!['c']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.contextTypes!['d']).to.be.equals(React.PropTypes.number);
-      expect(Mixout.contextTypes!['e']).to.be.equals(React.PropTypes.bool);
-      expect(Mixout.contextTypes!['f']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.contextTypes!['a']).to.be.equals(PropTypes.any);
+      expect(Mixout.contextTypes!['b']).to.be.equals(PropTypes.string);
+      expect(Mixout.contextTypes!['c']).to.be.equals(PropTypes.any);
+      expect(Mixout.contextTypes!['d']).to.be.equals(PropTypes.number);
+      expect(Mixout.contextTypes!['e']).to.be.equals(PropTypes.bool);
+      expect(Mixout.contextTypes!['f']).to.be.equals(PropTypes.any);
     });
 
   });
@@ -56,28 +57,28 @@ describe('react-mixout: mixout', () => {
       const Mixout = mixout(
         {
           childContextTypeInjector: (setChildContextType) => {
-            setChildContextType('a', React.PropTypes.number);
-            setChildContextType('b', React.PropTypes.string);
-            setChildContextType('c', React.PropTypes.any);
-            setChildContextType('a', React.PropTypes.any);
+            setChildContextType('a', PropTypes.number);
+            setChildContextType('b', PropTypes.string);
+            setChildContextType('c', PropTypes.any);
+            setChildContextType('a', PropTypes.any);
           },
         },
         {
           childContextTypeInjector: (setChildContextType) => {
-            setChildContextType('d', React.PropTypes.number);
-            setChildContextType('e', React.PropTypes.string);
-            setChildContextType('f', React.PropTypes.any);
-            setChildContextType('e', React.PropTypes.bool);
+            setChildContextType('d', PropTypes.number);
+            setChildContextType('e', PropTypes.string);
+            setChildContextType('f', PropTypes.any);
+            setChildContextType('e', PropTypes.bool);
           },
         },
       )(() => null!);
 
-      expect(Mixout.childContextTypes!['a']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.childContextTypes!['b']).to.be.equals(React.PropTypes.string);
-      expect(Mixout.childContextTypes!['c']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.childContextTypes!['d']).to.be.equals(React.PropTypes.number);
-      expect(Mixout.childContextTypes!['e']).to.be.equals(React.PropTypes.bool);
-      expect(Mixout.childContextTypes!['f']).to.be.equals(React.PropTypes.any);
+      expect(Mixout.childContextTypes!['a']).to.be.equals(PropTypes.any);
+      expect(Mixout.childContextTypes!['b']).to.be.equals(PropTypes.string);
+      expect(Mixout.childContextTypes!['c']).to.be.equals(PropTypes.any);
+      expect(Mixout.childContextTypes!['d']).to.be.equals(PropTypes.number);
+      expect(Mixout.childContextTypes!['e']).to.be.equals(PropTypes.bool);
+      expect(Mixout.childContextTypes!['f']).to.be.equals(PropTypes.any);
     });
 
   });
@@ -89,34 +90,34 @@ describe('react-mixout: mixout', () => {
       const Mixout = mixout(
         {
           propTypeInjector: (setPropType) => {
-            setPropType('a', React.PropTypes.number, 1);
-            setPropType('b', React.PropTypes.string);
-            setPropType('c', React.PropTypes.any, obj);
-            setPropType('a', React.PropTypes.any);
+            setPropType('a', PropTypes.number, 1);
+            setPropType('b', PropTypes.string);
+            setPropType('c', PropTypes.any, obj);
+            setPropType('a', PropTypes.any);
           },
         },
         {
           propTypeInjector: (setPropType) => {
-            setPropType('d', React.PropTypes.number, 5);
-            setPropType('e', React.PropTypes.string);
-            setPropType('f', React.PropTypes.any, obj);
-            setPropType('e', React.PropTypes.bool, true);
+            setPropType('d', PropTypes.number, 5);
+            setPropType('e', PropTypes.string);
+            setPropType('f', PropTypes.any, obj);
+            setPropType('e', PropTypes.bool, true);
           },
         },
       )(() => null!);
 
-      expect(Mixout.propTypes!['a']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.propTypes!['b']).to.be.equals(React.PropTypes.string);
-      expect(Mixout.propTypes!['c']).to.be.equals(React.PropTypes.any);
-      expect(Mixout.propTypes!['d']).to.be.equals(React.PropTypes.number);
-      expect(Mixout.propTypes!['e']).to.be.equals(React.PropTypes.bool);
-      expect(Mixout.propTypes!['f']).to.be.equals(React.PropTypes.any);
+      expect((<any>Mixout).propTypes['a']).to.be.equals(PropTypes.any);
+      expect((<any>Mixout).propTypes['b']).to.be.equals(PropTypes.string);
+      expect((<any>Mixout).propTypes['c']).to.be.equals(PropTypes.any);
+      expect((<any>Mixout).propTypes['d']).to.be.equals(PropTypes.number);
+      expect((<any>Mixout).propTypes['e']).to.be.equals(PropTypes.bool);
+      expect((<any>Mixout).propTypes['f']).to.be.equals(PropTypes.any);
 
       expect(Mixout.defaultProps).not.to.haveOwnProperty('a');
       expect(Mixout.defaultProps).not.to.haveOwnProperty('b');
       expect((<any>Mixout.defaultProps)['c']).to.be.equals(obj);
       expect((<any>Mixout.defaultProps)['d']).to.be.equals(5);
-      expect((<any>Mixout.defaultProps)['e']).to.be.true;
+      expect((<any>Mixout.defaultProps)['e']).to.be.equals(true);
       expect((<any>Mixout.defaultProps)['f']).to.be.equals(obj);
     });
 
@@ -164,11 +165,11 @@ describe('react-mixout: mixout', () => {
       const Component = () => null!;
       const Mixout = mixout(
         {
-          contextTypeInjector: setContextType => setContextType('color', React.PropTypes.string),
+          contextTypeInjector: setContextType => setContextType('color', PropTypes.string),
           propInjector: (setProp, _op, ownContext) => setProp('a', ownContext.color),
         },
         {
-          contextTypeInjector: setContextType => setContextType('theme', React.PropTypes.object),
+          contextTypeInjector: setContextType => setContextType('theme', PropTypes.object),
           propInjector: (setProp, _op, ownContext) => setProp('b', ownContext.theme),
         },
       )(Component);
@@ -206,16 +207,16 @@ describe('react-mixout: mixout', () => {
       };
 
       (<any>Component).contextTypes = {
-        a: React.PropTypes.number,
-        b: React.PropTypes.number,
-        c: React.PropTypes.number,
+        a: PropTypes.number,
+        b: PropTypes.number,
+        c: PropTypes.number,
       };
 
       const Mixout = mixout(
         {
           childContextTypeInjector: (setChildContextType) => {
-            setChildContextType('a', React.PropTypes.bool);
-            setChildContextType('b', React.PropTypes.number);
+            setChildContextType('a', PropTypes.bool);
+            setChildContextType('b', PropTypes.number);
           },
           contextInjector: (setContext) => {
             setContext('a', true);
@@ -224,8 +225,8 @@ describe('react-mixout: mixout', () => {
         },
         {
           childContextTypeInjector: (setChildContextType) => {
-            setChildContextType('c', React.PropTypes.number);
-            setChildContextType('a', React.PropTypes.number);
+            setChildContextType('c', PropTypes.number);
+            setChildContextType('a', PropTypes.number);
           },
           contextInjector: (setContext) => {
             setContext('c', 10);
@@ -248,13 +249,13 @@ describe('react-mixout: mixout', () => {
       };
 
       (<any>Component).contextTypes = {
-        a: React.PropTypes.string,
-        b: React.PropTypes.string,
+        a: PropTypes.string,
+        b: PropTypes.string,
       };
 
       const Mixout = mixout(
-        { childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string) },
-        { childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string) },
+        { childContextTypeInjector: setCCT => setCCT('a', PropTypes.string) },
+        { childContextTypeInjector: setCCT => setCCT('b', PropTypes.string) },
         { contextInjector: (setContext, ownProps) => setContext('a', ownProps.hello) },
         { contextInjector: (setContext, ownProps) => setContext('b', ownProps.world) },
       )(Component);
@@ -273,24 +274,24 @@ describe('react-mixout: mixout', () => {
       };
 
       (<any>Component).contextTypes = {
-        a: React.PropTypes.string,
-        b: React.PropTypes.object,
+        a: PropTypes.string,
+        b: PropTypes.object,
       };
 
       const Mixout = mixout(
         {
-          childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string),
+          childContextTypeInjector: setCCT => setCCT('a', PropTypes.string),
           contextInjector: (setContext, _op, ownContext) => setContext('a', ownContext.color),
-          contextTypeInjector: setContextType => setContextType('color', React.PropTypes.string),
+          contextTypeInjector: setContextType => setContextType('color', PropTypes.string),
         },
         {
-          childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string),
+          childContextTypeInjector: setCCT => setCCT('b', PropTypes.string),
           contextInjector: (setContext, _op, ownContext) => setContext('b', ownContext.theme),
-          contextTypeInjector: setContextType => setContextType('theme', React.PropTypes.object),
+          contextTypeInjector: setContextType => setContextType('theme', PropTypes.object),
         },
       )(Component);
       mount(React.createElement(Mixout), {
-        childContextTypes: { color: React.PropTypes.string, theme: React.PropTypes.object },
+        childContextTypes: { color: PropTypes.string, theme: PropTypes.object },
         context: { color: '#FFF', theme: obj },
       });
       expect(passedContext['a']).to.be.equals('#FFF');
@@ -305,18 +306,18 @@ describe('react-mixout: mixout', () => {
       };
 
       (<any>Component).contextTypes = {
-        a: React.PropTypes.string,
-        b: React.PropTypes.string,
+        a: PropTypes.string,
+        b: PropTypes.string,
       };
 
       const Mixout = mixout(
         {
-          childContextTypeInjector: setCCT => setCCT('a', React.PropTypes.string),
+          childContextTypeInjector: setCCT => setCCT('a', PropTypes.string),
           contextInjector: (setContext, _op, _oc, ownState) => setContext('a', ownState.foo),
           initialStateInjector: (_p, _c, s) => s['foo'] = 'bar',
         },
         {
-          childContextTypeInjector: setCCT => setCCT('b', React.PropTypes.string),
+          childContextTypeInjector: setCCT => setCCT('b', PropTypes.string),
           contextInjector: (setContext, _op, _oc, ownState) => setContext('b', ownState.baz),
           initialStateInjector: (_p, _c, s) => s['baz'] = 'foobar',
         },
@@ -349,11 +350,11 @@ describe('react-mixout: mixout', () => {
       let foobar: any;
       const Mixout = mixout(
         {
-          contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
+          contextTypeInjector: ((setContextType => setContextType('foo', PropTypes.string))),
           initialStateInjector: (_op, ownContext) => foo = ownContext['foo'],
         },
         {
-          contextTypeInjector: ((setContextType => setContextType('foobar', React.PropTypes.string))),
+          contextTypeInjector: ((setContextType => setContextType('foobar', PropTypes.string))),
           initialStateInjector: (_op, ownContext) => foobar = ownContext['foobar'],
         },
       )(Component);
@@ -396,7 +397,7 @@ describe('react-mixout: mixout', () => {
       let called = false;
       const callback = () => called = true;
       updater1(callback);
-      expect(called).to.be.true;
+      expect(called).to.be.equals(true);
       expect(renders).to.be.equals(2);
       updater2();
       expect(renders).to.be.equals(3);
@@ -416,11 +417,11 @@ describe('react-mixout: mixout', () => {
       )(Component);
       const wrapper = shallow(React.createElement(Mixout));
       (<any>wrapper.instance())['focus']();
-      expect(focusCalled).to.be.true;
-      expect(blurCalled).to.be.false;
+      expect(focusCalled).to.be.equals(true);
+      expect(blurCalled).to.be.equals(false);
       (<any>wrapper.instance())['blue']();
-      expect(focusCalled).to.be.true;
-      expect(blurCalled).to.be.true;
+      expect(focusCalled).to.be.equals(true);
+      expect(blurCalled).to.be.equals(true);
     });
 
     it('should properly return the result of imperative method call', () => {
@@ -467,7 +468,7 @@ describe('react-mixout: mixout', () => {
       const implementation = (_args: any, _op: any, ownContext: any) => foo = ownContext.foo;
       const Mixout = mixout(
         {
-          contextTypeInjector: ((setContextType => setContextType('foo', React.PropTypes.string))),
+          contextTypeInjector: ((setContextType => setContextType('foo', PropTypes.string))),
           imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation),
         },
       )(Component);
@@ -496,7 +497,7 @@ describe('react-mixout: mixout', () => {
         { imperativeMethodInjector: setImperativeMethod => setImperativeMethod('focus', implementation) },
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect((<any>wrapper.instance())['focus']()).to.be.undefined;
+      expect((<any>wrapper.instance())['focus']()).to.be.equals(undefined);
     });
 
     it('should properly pass instance as child if child is class component', () => {
@@ -542,7 +543,7 @@ describe('react-mixout: mixout', () => {
         },
       )(Component);
       mount(React.createElement(Mixout), {
-        childContextTypes: { foo: React.PropTypes.string, bar: React.PropTypes.string },
+        childContextTypes: { foo: PropTypes.string, bar: PropTypes.string },
         context: { foo: 'foo', bar: 'bar' },
       });
       expect(foo).to.be.equals('foo');
@@ -578,7 +579,7 @@ describe('react-mixout: mixout', () => {
         },
       );
       mount(React.createElement(mountTester(FunctionComponent)));
-      expect(theChild).to.be.undefined;
+      expect(theChild).to.be.equals(undefined);
       mount(React.createElement(mountTester(ClassComponent)));
       expect(theChild.foo()).to.be.equals(1);
     });
@@ -596,11 +597,11 @@ describe('react-mixout: mixout', () => {
         { componentWillReceivePropsHook: (_np, nextContext) => bar = nextContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: '' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setContext({ bar: 'bar' });
       wrapper.setProps({ foo: 'foo' });
       expect(foo).to.be.equals('foo');
@@ -616,11 +617,11 @@ describe('react-mixout: mixout', () => {
         { componentWillReceivePropsHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: 'bar' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setProps({ foo: 'fo1' });
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
@@ -641,8 +642,8 @@ describe('react-mixout: mixout', () => {
         },
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setProps({ blah: 'blah' });
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
@@ -660,7 +661,7 @@ describe('react-mixout: mixout', () => {
       );
       const wrapper1 = mount(React.createElement(mountTester(FunctionComponent)));
       wrapper1.setProps({ blah: 'blah' });
-      expect(theChild).to.be.undefined;
+      expect(theChild).to.be.equals(undefined);
       const wrapper2 = mount(React.createElement(mountTester(ClassComponent)));
       wrapper2.setProps({ blah: 'blah' });
       expect(theChild.foo()).to.be.equals(1);
@@ -679,11 +680,11 @@ describe('react-mixout: mixout', () => {
         { shouldComponentUpdateHook: (_np, nextContext) => bar = nextContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: '' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setContext({ bar: 'bar' });
       wrapper.setProps({ foo: 'foo' });
       expect(foo).to.be.equals('foo');
@@ -699,11 +700,11 @@ describe('react-mixout: mixout', () => {
         { shouldComponentUpdateHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: 'bar' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setProps({ foo: 'fo1' });
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
@@ -761,11 +762,11 @@ describe('react-mixout: mixout', () => {
         { componentDidUpdateHook: (_np, nextContext) => bar = nextContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: '' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setContext({ bar: 'bar' });
       wrapper.setProps({ foo: 'foo' });
       expect(foo).to.be.equals('foo');
@@ -781,11 +782,11 @@ describe('react-mixout: mixout', () => {
         { componentDidUpdateHook: (_np, _nc, _op, ownContext) => bar = ownContext.bar },
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }), {
-        childContextTypes: { bar: React.PropTypes.string },
+        childContextTypes: { bar: PropTypes.string },
         context: { bar: 'bar' },
       });
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setProps({ foo: 'fo1' });
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
@@ -806,8 +807,8 @@ describe('react-mixout: mixout', () => {
         },
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect(foo).to.be.undefined;
-      expect(bar).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
+      expect(bar).to.be.equals(undefined);
       wrapper.setProps({ blah: 'blah' });
       expect(foo).to.be.equals('foo');
       expect(bar).to.be.equals('bar');
@@ -830,8 +831,8 @@ describe('react-mixout: mixout', () => {
 
       const wrapper1 = mount(React.createElement(mountTester(FunctionComponent)));
       wrapper1.setProps({ blah: 'blah' });
-      expect(child1).to.be.undefined;
-      expect(child2).to.be.undefined;
+      expect(child1).to.be.equals(undefined);
+      expect(child2).to.be.equals(undefined);
       const wrapper2 = mount(React.createElement(mountTester(ClassComponent)));
       wrapper2.setProps({ blah: 'blah' });
       expect(child1).to.be.equals(child2);
@@ -849,7 +850,7 @@ describe('react-mixout: mixout', () => {
         { componentWillUnmountHook: ownProps => foo = ownProps.foo },
       )(Component);
       const wrapper = mount(React.createElement(Mixout, { foo: 'foo' }));
-      expect(foo).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
       wrapper.unmount();
       expect(foo).to.be.equals('foo');
     });
@@ -861,10 +862,10 @@ describe('react-mixout: mixout', () => {
         { componentWillUnmountHook: (_op, ownContext) => foo = ownContext.foo },
       )(Component);
       const wrapper = mount(React.createElement(Mixout), {
-        childContextTypes: { foo: React.PropTypes.string },
+        childContextTypes: { foo: PropTypes.string },
         context: { foo: 'foo' },
       });
-      expect(foo).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
       wrapper.unmount();
       expect(foo).to.be.equals('foo');
     });
@@ -879,7 +880,7 @@ describe('react-mixout: mixout', () => {
         },
       )(Component);
       const wrapper = mount(React.createElement(Mixout));
-      expect(foo).to.be.undefined;
+      expect(foo).to.be.equals(undefined);
       wrapper.unmount();
       expect(foo).to.be.equals('foo');
     });

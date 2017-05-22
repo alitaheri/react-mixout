@@ -6,13 +6,15 @@ require('source-map-support').install({
   handleUncaughtExceptions: false,
 });
 
-const jsdom = require('jsdom').jsdom;
+const { JSDOM } = require('jsdom');
 
-(<any>global).document = jsdom('');
-(<any>global).window = document.defaultView;
-Object.keys(document.defaultView).forEach((property) => {
+const dom = new JSDOM(``);
+
+(<any>global).window = dom.window;
+(<any>global).document = window.document;
+Object.keys(window).forEach(property => {
   if ((<any>global)[property] === undefined) {
-    (<any>global)[property] = (<any>document.defaultView)[property];
+    (<any>global)[property] = (<any>window)[property];
   }
 });
 
