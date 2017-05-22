@@ -130,7 +130,7 @@ describe('react-mixout-proxy', () => {
       const Mixout = mixout(proxy('blah', 'focus', false))(TestHOC);
       const wrapper = mount(React.createElement(Mixout));
       expect(() => (<any>wrapper.instance())['focus']()).not.to.throw();
-      expect((<any>wrapper.instance())['focus']()).to.be.undefined;
+      expect((<any>wrapper.instance())['focus']()).to.be.equals(undefined);
     });
 
   });

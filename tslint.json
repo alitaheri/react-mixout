@@ -108,8 +108,6 @@
 		"no-unnecessary-override": true,
 		"no-unsafe-finally": true,
 		"no-unused-expression": true,
-		"no-unused-new": true,
-		"no-use-before-declare": true,
 		"no-var-keyword": true,
 		"object-literal-key-quotes": false,
 		"object-literal-shorthand": true,

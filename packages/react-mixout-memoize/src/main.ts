@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Injector } from 'react-mixout';
 
 export interface Selector<TResult> {
@@ -135,6 +134,6 @@ export default function memoize(name: string, ...selectorsAndResolver: any[]): I
 
 export function context(name: string): Injector {
   return {
-    contextTypeInjector: setContextType => setContextType(name, React.PropTypes.any),
+    contextTypeInjector: setContextType => setContextType(name, () => null),
   };
 }

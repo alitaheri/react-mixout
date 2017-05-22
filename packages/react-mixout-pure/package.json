@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-pure",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Pure render implementation for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -30,10 +30,10 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "devDependencies": {
-    "typescript": "^2.1.5"
+    "typescript": "^2.3.2"
   },
   "peerDependencies": {
-    "react-mixout": "^0.5.0",
-    "react": ">=0.14.0"
+    "react": ">=0.14.0",
+    "react-mixout": "^0.5.0"
   }
 }

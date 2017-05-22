@@ -24,8 +24,8 @@ export interface UncontrolOptions<T> {
 
 export const uncontrolValue = uncontrol('value', {
   callbackPropName: 'onChange',
-  callbackPropValidator: React.PropTypes.func,
-  defaultValuePropValidator: React.PropTypes.any,
+  callbackPropValidator: () => null,
+  defaultValuePropValidator: () => null,
   passedDownCallbackPropName: 'onChange',
 });
 

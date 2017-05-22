@@ -14,7 +14,7 @@ describe('react-mixout-pass-context', () => {
     };
 
     (<any>Component).contextTypes = {
-      foo: React.PropTypes.string,
+      foo: () => null,
     };
 
     const Mixout = mixout(passContext('foo', props => props.a + props.b))(Component);

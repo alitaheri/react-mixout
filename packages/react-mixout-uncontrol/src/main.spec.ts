@@ -9,8 +9,8 @@ class Test extends React.Component<any, any> {
     setTimeout(() => this.props.onChange({ target: { value: 'foo' } }));
     return React.createElement('input', {
       id: 'input',
+      onChange: () => null,
       type: 'text',
-      onChange() { return; },
       value: this.props.value,
     });
   }
@@ -24,8 +24,8 @@ class FlexibleTest extends React.Component<any, any> {
     });
     return React.createElement('input', {
       id: 'input',
+      onChange: () => null,
       type: 'text',
-      onChange() { return; },
       value: this.props[this.props.propName],
     });
   }
@@ -64,18 +64,20 @@ describe('react-mixout-uncontrol', () => {
 
   it('should properly set propTypes and defaults', () => {
     const callback = () => { return; };
+    const validator1 = () => null;
+    const validator2 = () => null;
     const Mixout = mixout(uncontrol('val', {
       callbackPropDefault: callback,
-      callbackPropValidator: React.PropTypes.func,
+      callbackPropValidator: validator1,
       defaultValuePropDefault: 1,
-      defaultValuePropValidator: React.PropTypes.number,
+      defaultValuePropValidator: validator2,
     }))(FlexibleTest);
 
-    expect((<any>Mixout.propTypes)['defaultVal']).to.be.equals(React.PropTypes.number);
-    expect((<any>Mixout.propTypes)['onValChange']).to.be.equals(React.PropTypes.func);
+    expect((<any>Mixout).propTypes['defaultVal']).to.be.equals(validator2);
+    expect((<any>Mixout).propTypes['onValChange']).to.be.equals(validator1);
 
-    expect((<any>Mixout.defaultProps)['defaultVal']).to.be.equals(1);
-    expect((<any>Mixout.defaultProps)['onValChange']).to.be.equals(callback);
+    expect((<any>Mixout).defaultProps['defaultVal']).to.be.equals(1);
+    expect((<any>Mixout).defaultProps['onValChange']).to.be.equals(callback);
   });
 
   it('should work with custom stated props', (done) => {

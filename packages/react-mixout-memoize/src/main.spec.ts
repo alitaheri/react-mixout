@@ -65,7 +65,7 @@ describe('react-mixout-memoize', () => {
     const wrapper = mount(
       React.createElement(Mixout, { accounting: { credit: 100, debt: 50 } }),
       {
-        childContextTypes: { pocket: React.PropTypes.any },
+        childContextTypes: { pocket: () => null },
         context: { pocket: { cash: 1, coins: 10 } },
       },
     );

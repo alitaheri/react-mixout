@@ -31,7 +31,7 @@ describe('react-mixout-pure', () => {
     const Mixout = mixout(pure)(Component);
 
     const wrapper = mount(React.createElement(Mixout), {
-      childContextTypes: { prop: React.PropTypes.string },
+      childContextTypes: { prop: () => null },
       context: { prop: 'foo' },
     });
 

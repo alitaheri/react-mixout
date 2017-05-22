@@ -13,7 +13,7 @@ export default function forwardContext<T>(name: string, options: ForwardContextO
   let validator = options.validator;
 
   if (typeof validator !== 'function') {
-    validator = React.PropTypes.any;
+    validator = () => null;
   }
 
   const alias = typeof options.alias === 'string' ? options.alias : name;

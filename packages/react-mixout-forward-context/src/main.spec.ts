@@ -17,7 +17,7 @@ describe('react-mixout-forward-context', () => {
   it('should not forward value from context if context does not have the prop', () => {
     const Mixout = mixout(forwardContext('myProp'))(Component);
     const wrapper = shallow(React.createElement(Mixout), { context: {} });
-    expect(wrapper.find(Component).at(0).prop('myProp')).to.be.undefined;
+    expect(wrapper.find(Component).at(0).prop('myProp')).to.be.equals(undefined);
   });
 
   it('should forward value from context to props as aliased', () => {
@@ -34,12 +34,13 @@ describe('react-mixout-forward-context', () => {
 
   it('should properly set validator on contextType even if none is provided', () => {
     const Mixout = mixout(forwardContext('myProp'))(Component);
-    expect((<any>Mixout.contextTypes)['myProp']).to.be.equals(React.PropTypes.any);
+    expect((<any>Mixout.contextTypes)['myProp']()).to.be.equals(null);
   });
 
   it('should properly override the provided validator on contextType', () => {
-    const Mixout = mixout(forwardContext('myProp', { validator: React.PropTypes.number }))(Component);
-    expect((<any>Mixout.contextTypes)['myProp']).to.be.equals(React.PropTypes.number);
+    const validator = () => null;
+    const Mixout = mixout(forwardContext('myProp', { validator }))(Component);
+    expect((<any>Mixout.contextTypes)['myProp']).to.be.equals(validator);
   });
 
   it('should properly pass down default if no context is available', () => {

@@ -92,7 +92,10 @@ describe('react-mixout-listen', () => {
       }
 
       public render() {
-        return React.createElement('button', { ref: i => b = i, onClick: () => calls.push('button') });
+        return React.createElement('button', {
+          onClick: () => calls.push('button'),
+          ref: (i: any) => b = i,
+        });
       }
     }
 
