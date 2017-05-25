@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "bump": "lerna publish --skip-git",
+    "lerna": "lerna",
     "lint": "tslint -e \"packages/*/node_modules/**\" -e \"packages/*/lib/**\" \"packages/**/*.ts\" \"packages/**/*.tsx\"",
     "test": "mocha --compilers ts:ts-node/register,tsx:ts-node/register -r ./testSetup.ts \"packages/**/*.spec.ts\""
   },
@@ -13,25 +14,24 @@
     "@types/jquery": "^2.0.45",
     "@types/jsdom": "^2.0.30",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.21",
+    "@types/node": "^7.0.22",
     "@types/prop-types": "^15.5.1",
-    "@types/react": "^15.0.24",
+    "@types/react": "^15.0.25",
     "@types/react-addons-test-utils": "^0.14.18",
     "chai": "^3.5.0",
     "enzyme": "^2.8.2",
     "jsdom": "^11.0.0",
-    "lerna": "2.0.0-rc.4",
-    "mocha": "^3.4.1",
+    "lerna": "2.0.0-rc.5",
+    "mocha": "^3.4.2",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
-    "react-mixout": "^0.5.1",
     "source-map-support": "^0.4.15",
     "ts-node": "^3.0.4",
-    "tslint": "^5.2.0",
+    "tslint": "^5.3.2",
     "tslint-eslint-rules": "^4.1.0",
     "tslint-microsoft-contrib": "^5.0.0",
-    "typescript": "^2.3.2"
+    "typescript": "^2.3.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-forward-context",
-  "version": "0.5.2",
+  "version": "0.5.4",
   "description": "Context to prop forwarding mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -28,11 +28,10 @@
     "url": "https://github.com/alitaheri/react-mixout/issues"
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
+  "dependencies": {
+    "react-mixout": "^0.5.4"
+  },
   "devDependencies": {
     "typescript": "^2.3.2"
-  },
-  "peerDependencies": {
-    "react": ">=0.14.0",
-    "react-mixout": "^0.5.0"
   }
 }
