@@ -92,7 +92,7 @@
 		"no-reference": true,
 		"no-regex-spaces": true,
 		"no-require-imports": false,
-		"no-shadowed-variable": true,
+		"no-shadowed-variable": false,
 		"no-sparse-arrays": true,
 		"no-string-based-set-immediate": true,
 		"no-string-based-set-interval": true,
@@ -111,7 +111,7 @@
 		"no-var-keyword": true,
 		"object-literal-key-quotes": false,
 		"object-literal-shorthand": true,
-		"object-literal-sort-keys": true,
+		"object-literal-sort-keys": false,
 		"one-line": [
 			true,
 			"check-catch",

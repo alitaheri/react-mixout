@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-listen",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Global event listeners for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -32,9 +32,9 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "dependencies": {
-    "react-mixout": "^0.5.4"
+    "react-mixout": "^0.5.5"
   },
   "devDependencies": {
-    "typescript": "^2.3.2"
+    "typescript": "^2.4.2"
   }
 }
