@@ -256,10 +256,9 @@ function mixout(...injectors: Injector[]) {
     if (childContextTypeInjectors.length > 0) {
       Mixout.childContextTypes = {};
 
-      const setChildContextType
-        = function setChildContextType(name: string, validator: React.Validator<any>) {
-          Mixout.childContextTypes[name] = validator;
-        };
+      const setChildContextType = function(name: string, validator: React.Validator<any>) {
+        Mixout.childContextTypes[name] = validator;
+      };
 
       childContextTypeInjectors.forEach(
         childContextTypeInjector => childContextTypeInjector(setChildContextType),
