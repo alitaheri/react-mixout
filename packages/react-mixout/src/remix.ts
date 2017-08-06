@@ -1,5 +1,5 @@
 export interface RemixRenderer {
-  <P>(props: P): JSX.Element | null;
+  (props: any): JSX.Element | null;
 }
 
 export class Remix<R extends RemixRenderer> {
