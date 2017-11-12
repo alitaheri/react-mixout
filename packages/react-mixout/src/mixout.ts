@@ -80,9 +80,9 @@ function mixout(...injectors: Injector[]) {
     contextTypeInjectors.forEach(contextTypeInjector => contextTypeInjector(setContextType));
 
     class Mixout extends React.Component<any, void> {
-      public static displayName = Component instanceof Remix && Component.displayName
+      public static displayName = Component instanceof Remix
         ? Component.displayName
-        : 'Mixout';
+        : `mixout(${Component.displayName || (<any>Component).name || 'Component'})`;
       public static propTypes = propTypes;
       public static contextTypes = contextTypes;
       public static childContextTypes: any;
@@ -256,7 +256,7 @@ function mixout(...injectors: Injector[]) {
     if (childContextTypeInjectors.length > 0) {
       Mixout.childContextTypes = {};
 
-      const setChildContextType = function(name: string, validator: React.Validator<any>) {
+      const setChildContextType = function (name: string, validator: React.Validator<any>) {
         Mixout.childContextTypes[name] = validator;
       };
 

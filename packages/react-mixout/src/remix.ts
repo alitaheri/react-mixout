@@ -16,10 +16,10 @@ export default function remix<R extends RemixRenderer>(displayName: string, rend
 export default function remix<R extends RemixRenderer>(renderer: R): Remix<R>;
 export default function remix<R extends RemixRenderer>(displayName: string | R, renderer?: R): Remix<R> {
   if (typeof displayName === 'function') {
-    return new Remix<R>(displayName);
+    return new Remix<R>(displayName, (<any>displayName).name || 'AnonymousRemix');
   }
   if (typeof renderer === 'function') {
-    return new Remix<R>(renderer, <string>displayName);
+    return new Remix<R>(renderer, <string>displayName || (<any>renderer).name || 'AnonymousRemix');
   }
 
   throw new TypeError('No renderer was provided.');
