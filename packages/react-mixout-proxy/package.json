@@ -1,6 +1,6 @@
 {
   "name": "react-mixout-proxy",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Imperative method proxying for react-mixout",
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/alitaheri/react-mixout#readme",
   "dependencies": {
-    "react-mixout": "^0.5.6"
+    "react-mixout": "^0.5.7"
   },
   "devDependencies": {
     "typescript": "^2.6.1"
