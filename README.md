@@ -1,3 +1,9 @@
+# DEPRECATED in favor of react hooks
+
+[React Hooks](https://reactjs.org/docs/hooks-intro.html) are the best solution to this problem. Hence, rending this project obsolete.
+
+-----------------------------------------------------------------
+
 # [React Mixout](https://github.com/alitaheri/react-mixout)
 [![npm](https://badge.fury.io/js/react-mixout.svg)](https://badge.fury.io/js/react-mixout)
 [![Build Status](https://travis-ci.org/alitaheri/react-mixout.svg?branch=master)](https://travis-ci.org/alitaheri/react-mixout)
